@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Project section</title>
+    </head>
+    <body>
+        <h1>Project section</h1>
+        <h2>Projects: </h2>
+        {% for p in projects %}
+            <div>
+                <p>created: {{ p.created }}</p>
+                <h3>{{ p.name }}</h3>
+                <p>description: {{ p.description }}</p>
+            </div>
+        {% endfor %}
+        <h2>Files: </h2>
+        {% for f in files %}
+            <div>
+                <p>belongs: {{ f.id_project }}</p>
+                <h2>{{ f.filename }}</h1>
+            </div>
+        {% endfor %}
+    </body>
+</html>
