@@ -1,23 +1,18 @@
 <html>
     <head>
-        <title>Project section</title>
+        <title>Projects section</title>
     </head>
     <body>
         <h1>Project section</h1>
-        <h2>Projects: </h2>
-        {% for p in projects %}
-            <div>
-                <p>created: {{ p.created }}</p>
-                <h3>{{ p.name }}</h3>
-                <p>description: {{ p.description }}</p>
-            </div>
-        {% endfor %}
-        <h2>Files: </h2>
-        {% for f in files %}
-            <div>
-                <p>belongs: {{ f.id_project }}</p>
-                <h2>{{ f.filename }}</h1>
-            </div>
-        {% endfor %}
+        <h2>List of all projects: </h2>
+        {% if all_projects %}
+            <ul>
+                {% for project in all_projects %}
+                    <li><a href="/projects/{{ project.id_project }}/">{{ project.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h3>No projects!</h3>
+        {% endif %}
     </body>
 </html>
