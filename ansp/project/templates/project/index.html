@@ -33,16 +33,25 @@
     </nav>
     <!-- body -->
     <body>
-        <h1>Project section</h1>
-        <h2>List of all projects: </h2>
-        {% if all_projects %}
-            <ul>
-                {% for project in all_projects %}
-                    <li><a href="{% url 'project:detail' project.id_project %}">{{ project.name }}</a></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <h3>No projects!</h3>
-        {% endif %}
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- <img class="center-block" src="{% static 'project/images/gears.png' %}" height="380" width="380"> -->
+                    <h1>project section</h1>
+                </div>
+                <div class="col-sm-6"> 
+                    <h2>list of all projects: </h2>
+                    {% if all_projects %}
+                    <ul>
+                        {% for project in all_projects %}
+                            <li><a href="{% url 'project:detail' project.id_project %}">{{ project.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                        <h3>No projects!</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </body>
 </html>

@@ -2,12 +2,14 @@
 
 body {
     font-family: 'Fira Sans', sans-serif;
-    background: #4ABDAC;
+    background: white;    /*#4ABDAC, #66B9BF, #77C9D4, #01ABAA */
 }
 
 h1 {
     font-size: 52px;
     font-weight: bold;
+    /* another class, just test */
+    text-align: center;
 }
 
 h2 {
@@ -33,7 +35,6 @@ h6 {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Fira Sans', sans-serif;
-    color: white;
 }
 
 /* navbar, menu */
