@@ -1,6 +1,4 @@
-from django.shortcuts import render
-from django.http import Http404
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import Project, File
 
@@ -13,10 +11,7 @@ def index(request):
     
    
 def detail(request, id_project):
-    try:
-        specific_project = Project.objects.get(pk=id_project)
-    except Project.DoesNotExist:
-        raise Http404("Project does not exist")
+    specific_project = get_object_or_404(Project, pk=id_project)
     files = File.objects.filter(id_project=id_project)
     context = {
         "specific_project": specific_project,
