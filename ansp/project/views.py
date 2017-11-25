@@ -1,3 +1,4 @@
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views import generic
 from .models import Project
 
@@ -16,4 +17,9 @@ class DetailView(generic.DetailView):
     model = Project
     context_object_name = 'specific_project'
     template_name = 'project/detail.html'
+
+
+class ProjectCreate(CreateView):
+    model = Project
+    fields = ['name', 'description', 'created', 'finished', 'deadline']
     
