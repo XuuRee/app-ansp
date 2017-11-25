@@ -1,22 +1,20 @@
-from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
+#from django.shortcuts import render, get_object_or_404
+#from django.utils import timezone
+from django.views import generic
 from .models import Project, File
 
 # Create your views here.
 
+class IndexView(generic.ListView):
+    
+    template_name = 'project/index.html'
+    context_object_name = 'all_projects'
 
-def index(request):
-    all_projects = Project.objects.all()
-    return render(request, "project/index.html/", { "all_projects": all_projects })
+    def get_queryset(self):
+        return Project.objects.all()
+
+
+class DetailView(generic.DetailView):
     
-   
-def detail(request, id_project):
-    specific_project = get_object_or_404(Project, pk=id_project)
-    files = File.objects.filter(id_project=id_project)
-    context = {
-        "specific_project": specific_project,
-        "files": files,
-    }
-    return render(request, "project/detail.html", context)
-    
-    
+    model = Project
+    template_name = 'project/detail.html'
