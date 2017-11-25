@@ -1,15 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans');
 
-body {
+html, body {
     font-family: 'Fira Sans', sans-serif;
     background: white;    /*#4ABDAC, #66B9BF, #77C9D4, #01ABAA */
+    
 }
 
 h1 {
     font-size: 52px;
     font-weight: bold;
-    /* another class, just test */
-    text-align: center;
 }
 
 h2 {
@@ -49,4 +48,17 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-nav > li {
     padding-left: 10px;
     padding-right: 10px;
+}
+
+/* content */
+.col-pad {
+    padding: 50px;
+}
+
+/* footer */
+footer {
+    background-color: #222222;
+    color: #686868;
+    margin-top: 20px;
+    padding: 20px;
 }

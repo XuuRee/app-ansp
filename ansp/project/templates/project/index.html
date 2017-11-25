@@ -33,13 +33,13 @@
     </nav>
     <!-- body -->
     <body>
-        <div class="col-md-12">
+        <!-- content -->
+        <div class="cotainer"> 
             <div class="row">
-                <div class="col-sm-6">
-                    <!-- <img class="center-block" src="{% static 'project/images/gears.png' %}" height="380" width="380"> -->
-                    <h1>project section</h1>
+                <div class="col-pad col-sm-6">
+                    <h2>pinned notes:</h2>
                 </div>
-                <div class="col-sm-6"> 
+                <div class="col-pad col-sm-6"> 
                     <h2>list of all projects: </h2>
                     {% if all_projects %}
                     <ul>
@@ -53,5 +53,18 @@
                 </div>
             </div>
         </div>
+        <!-- footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <p>Filip Valchar</p> 
+                    </div>
+                    <div class="col-sm-4">
+                        <p>Bachelor thesis.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
