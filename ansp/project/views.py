@@ -21,5 +21,5 @@ class DetailView(generic.DetailView):
 
 class ProjectCreate(CreateView):
     model = Project
-    fields = ['name', 'description', 'created', 'finished', 'deadline']
+    fields = ['author', 'name', 'description', 'created', 'finished', 'deadline']
     

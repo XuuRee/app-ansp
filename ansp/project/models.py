@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 # Create your models here.
 
@@ -11,6 +12,9 @@ class Project(models.Model):
     created = models.DateField()
     deadline = models.DateField()
     finished = models.DateField(blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse('project:detail', kwargs={'pk': self.id_project})
 
     def publish(self):
         self.published_date = timezone.now()
