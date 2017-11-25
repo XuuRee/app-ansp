@@ -1,70 +1,24 @@
-<!-- Static files -->
-{% load staticfiles %}
+{% extends 'project/base.html' %}
 
-<html>
-    <head>
-        <title>Projects section</title>
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="{% static 'project/style.css' %}"/>
-    </head>
-    <!-- navigation -->
-    <nav class="navbar navbar-inverse"> 
-        <div class="container-fluid">
-            <!-- header -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#extend">
-                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                </button>
+{% block body %}
+    <!-- content -->
+    <div class="container"> 
+        <div class="row">
+            <div class="col-pad col-sm-6">
+                <h4>pinned notes:</h4>
             </div>
-            <!-- items-->
-            <div class="collapse navbar-collapse" id="extend">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a class="navbar-font" href="#" aria-hidden="true"><span class="glyphicon glyphicon-plus"></span>&nbsp; add project</a></li>
-                    <li><a class="navbar-font" href="#" aria-hidden="true">about</a></li>
-                    <li><a class="navbar-font" href="#" aria-hidden="true">help</a></li>
-                    <li><a class="navbar-font" href="#" aria-hidden="true"><span class="glyphicon glyphicon-log-out"></span>&nbsp; logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- body -->
-    <body>
-        <!-- content -->
-        <div class="container"> 
-            <div class="row">
-                <div class="col-pad col-sm-6">
-                    <h4>pinned notes:</h4>
-                </div>
-                <div class="col-pad col-sm-6"> 
-                    <h4>projects:</h4>
-                    {% if all_projects %}
+            <div class="col-pad col-sm-6"> 
+                <h4>projects:</h4>
+                {% if all_projects %}
                     <ul>
                         {% for project in all_projects %}
                             <li><a href="{% url 'project:detail' project.id_project %}">{{ project.name }}</a><br>Deadline: <b>{{project.deadline}}</b></li>
                         {% endfor %}
                     </ul>
-                    {% else %}
-                        <h3>No projects!</h3>
-                    {% endif %}
-                </div>
+                {% else %}
+                    <h3>No projects!</h3>
+                {% endif %}
             </div>
         </div>
-        <!-- footer -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <p>Filip Valchar</p> 
-                    </div>
-                    <div class="col-sm-4">
-                        <p>Bachelor thesis.</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </body>
-</html>
+    </div>
+{% endblock %}
