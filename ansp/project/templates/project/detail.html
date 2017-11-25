@@ -10,6 +10,10 @@
         <p>created: {{ specific_project.created }}</p>
         <p>deadline: {{ specific_project.deadline }}</p>
         <p>finished: {{ specific_project.finished }}</p>
+        {% for file in specific_project.file_set.all %}
+            <p>files: {{ file.filename }}</p>
+        {% endfor %}
+        <!-- 
         {% if files %}
             {% for file in files %}
                 <p>files: {{ file.filename }}</p>
@@ -17,7 +21,8 @@
         {% else %}
             <h3>No files attachment!</h3>
         {% endif %}
+        -->
     {% else %}
-        <h3>No projects!</h3>
+        <h3>No project detail!</h3>
     {% endif %}
 {% endblock %}
