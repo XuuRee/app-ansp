@@ -9,13 +9,20 @@
                 <h4>pinned notes:</h4>
             </div>
             <div class="col-pad col-sm-6"> 
-                <h4>projects:</h4>
+                <h5>projects:</h5>
                 {% if all_projects %}
-                    <ul>
+                    <div class="list-group">
                         {% for project in all_projects %}
-                            <li><a href="{% url 'project:detail' project.id_project %}">{{ project.name }}</a><br>Deadline: <b>{{project.deadline}}</b></li>
+                            <a href="{% url 'project:detail' project.id_project %}"
+                               class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ project.name }}</h6>
+                                </div>
+                                <p class="mb-1">Deadline: <b>{{ project.deadline }}</b></p>
+                                <button type="button" class="btn btn-danger">Detail view</button>
+                            </a>
                         {% endfor %}
-                    </ul>
+                    </div>
                 {% else %}
                     <h3>No projects!</h3>
                 {% endif %}

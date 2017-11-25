@@ -1,11 +1,8 @@
-#from django.shortcuts import render, get_object_or_404
-#from django.utils import timezone
-from .models import Project
 from django.views import generic
-
+from .models import Project
 
 # Create your views here.
-# Generic views IndexView(), DetailView()
+
 
 class IndexView(generic.ListView):
     template_name = 'project/index.html'

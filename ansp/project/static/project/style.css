@@ -26,6 +26,7 @@ h4 {
 
 h5 {
     font-size: 28px;
+    font-weight: bold;
 }
 
 h6 {
@@ -48,6 +49,11 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-nav > li {
     padding-left: 10px;
     padding-right: 10px;
+}
+
+/*list group hover */
+.list-group-hover .list-group-item:hover {
+    background-color: black;
 }
 
 /* content */
