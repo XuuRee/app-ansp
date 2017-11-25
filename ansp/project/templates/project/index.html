@@ -34,17 +34,17 @@
     <!-- body -->
     <body>
         <!-- content -->
-        <div class="cotainer"> 
+        <div class="container"> 
             <div class="row">
                 <div class="col-pad col-sm-6">
-                    <h2>pinned notes:</h2>
+                    <h4>pinned notes:</h4>
                 </div>
                 <div class="col-pad col-sm-6"> 
-                    <h2>list of all projects: </h2>
+                    <h4>projects:</h4>
                     {% if all_projects %}
                     <ul>
                         {% for project in all_projects %}
-                            <li><a href="{% url 'project:detail' project.id_project %}">{{ project.name }}</a></li>
+                            <li><a href="{% url 'project:detail' project.id_project %}">{{ project.name }}</a><br>Deadline: <b>{{project.deadline}}</b></li>
                         {% endfor %}
                     </ul>
                     {% else %}
