@@ -9,18 +9,23 @@
                 <h4>pinned notes:</h4>
             </div>
             <div class="col-pad col-sm-6"> 
-                <h5>projects:</h5>
+                <h5>Overview</h5>
+                <p>List of all your projects.</p>
                 {% if all_projects %}
                     <div class="list-group">
                         {% for project in all_projects %}
-                            <a href="{% url 'project:detail' project.id_project %}"
-                               class="list-group-item list-group-item-action flex-column align-items-start">
+                            <grp-item class="list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h6 class="mb-1">{{ project.name }}</h6>
                                 </div>
                                 <p class="mb-1">Deadline: <b>{{ project.deadline }}</b></p>
-                                <button type="button" class="btn btn-danger">Detail view</button>
-                            </a>
+                                <a href="{% url 'project:detail' project.id_project %}">
+                                    <button type="button" class="btn btn-danger">Detail view</button>
+                                </a>
+                                <a href="#">
+                                    <button type="button" class="btn btn-sm btn-warning">Delete project</button>
+                                </a>
+                            </grp-item>
                         {% endfor %}
                     </div>
                 {% else %}

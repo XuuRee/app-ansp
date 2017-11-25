@@ -52,8 +52,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*list group hover */
-.list-group-hover .list-group-item:hover {
-    background-color: black;
+grp-item:hover {
+    background-color: #F3F3F3;
 }
 
 /* content */
