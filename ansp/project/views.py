@@ -1,4 +1,5 @@
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.core.urlresolvers import reverse_lazy
 from django.views import generic
 from .models import Project
 
@@ -22,4 +23,13 @@ class DetailView(generic.DetailView):
 class ProjectCreate(CreateView):
     model = Project
     fields = ['author', 'name', 'description', 'created', 'finished', 'deadline']
-    
+
+
+class ProjectUpdate(UpdateView):
+    model = Project
+    fields = ['author', 'name', 'description', 'created', 'finished', 'deadline']
+
+
+class ProjectDelete(DeleteView):
+    model = Project
+    success_url = reverse_lazy('project:index')

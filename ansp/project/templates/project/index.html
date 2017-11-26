@@ -14,18 +14,23 @@
                 {% if all_projects %}
                     <div class="list-group">
                         {% for project in all_projects %}
+                            <!-- project item -->
                             <div class="bck list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h6 class="mb-1">{{ project.name }}</h6>
                                     <p>Author: {{ project.author }}</p>
                                 </div>
                                 <p class="mb-1">Deadline: <b>{{ project.deadline }}</b></p>
-                                <a href="{% url 'project:detail' project.id_project %}">
-                                    <button type="button" class="btn btn-danger">Detail view</button>
-                                </a>
-                                <a href="#">
-                                    <button type="button" class="btn btn-sm btn-warning">Delete project</button>
-                                </a>
+                                <!-- detail button -->
+                                <a href="{% url 'project:detail' project.id_project %}" class="btn btn-primary">Detail view</a>
+                                <!-- delete button -->
+                                <form action="{% url 'project:project-delete' project.id_project %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id_project" value="{{ project.id_project }}"/>
+                                    <button type="submit" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </form>
                             </div>
                         {% endfor %}
                     </div>
