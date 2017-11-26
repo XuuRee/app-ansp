@@ -17,14 +17,12 @@
                             <!-- project item -->
                             <div class="bck list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <!-- detail button -->
-                                    <h6>
-                                    <a href="{% url 'project:project-update' project.id_project %}">
-                                    <span class="glyphicon glyphicon-edit"></span></a> &nbsp{{ project.name }}
-                                    </h6>
+                                    <!-- edit button -->
+                                    <h6><a href="{% url 'project:project-update' project.id_project %}">
+                                    <span class="glyphicon glyphicon-edit"></span></a> &nbsp{{ project.name }}</h6>
                                     <p>Author: {{ project.author }}</p>
+                                    <p class="mb-1">Deadline: <b>{{ project.deadline }}</b></p>
                                 </div>
-                                <p class="mb-1">Deadline: <b>{{ project.deadline }}</b></p>
                                 <!-- detail button -->
                                 <a href="{% url 'project:detail' project.id_project %}" class="btn btn-primary">Detail view</a>
                                 <!-- delete button -->
