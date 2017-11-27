@@ -1,6 +1,7 @@
 # Bachelor thesis.
 
 ## Requirements
+
 Functional requirements:
 1. Task managment:
    - create,
@@ -15,6 +16,7 @@ Functional requirements:
    - deleting files,
 5. Searching.
 6. Authentication.
+
 Non-functional requirements:
 1. Web application.
 2. Simple UI.
