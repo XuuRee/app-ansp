@@ -19,7 +19,7 @@
                                 <div class="d-flex w-100 justify-content-between">
                                     <!-- edit button -->
                                     <h6><a href="{% url 'project:project-update' project.id_project %}">
-                                    <span class="glyphicon glyphicon-edit"></span></a> &nbsp{{ project.name }}</h6>
+                                    <span class="glyphicon glyphicon-edit"></span>&nbsp{{ project.name }}</a></h6>
                                     <p>Author: {{ project.author }}</p>
                                     <p class="mb-1">Deadline: <b>{{ project.deadline }}</b></p>
                                 </div>
@@ -37,7 +37,7 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <h3>No projects!</h3>
+                    <p>You don't have any projects. Start right now!<p>
                 {% endif %}
             </div>
         </div>

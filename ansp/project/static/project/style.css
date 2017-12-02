@@ -37,6 +37,10 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Fira Sans', sans-serif;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 /* navbar, menu */
 .navbar {
     border-radius: 0;
@@ -68,9 +72,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* footer */
-footer {
-    background-color: #222222;
-    color: #686868;
-    margin-top: 20px;
+.footer {
+    font-size: 15px;
+    color: grey;
     padding: 20px;
 }

@@ -24,7 +24,7 @@ class File(models.Model):
     id_file = models.AutoField(primary_key=True)        # delete item
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
     filename = models.CharField(max_length=200)
-    date = models.DateField(blank=True, null=True)
+    filepath = models.FileField(null=True, blank=True)
 
     def __str__(self):
         return self.filename

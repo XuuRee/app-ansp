@@ -11,7 +11,8 @@
         <p>deadline: {{ specific_project.deadline }}</p>
         <p>finished: {{ specific_project.finished }}</p>
         {% for file in specific_project.file_set.all %}
-            <p>files: {{ file.filename }}</p>
+            <p>file name: {{ file.filename }}</p>
+            <img src="{{ file.filepath.url }}" class="img-responsive">
         {% endfor %}
     {% else %}
         <h3>No project detail!</h3>
