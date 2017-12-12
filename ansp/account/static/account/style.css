@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+
+html, body {
+    font-family: 'Fira Sans', sans-serif;
+    background: white;    /*#4ABDAC, #66B9BF, #77C9D4, #01ABAA */
+    
+}
+
+h1 {
+    font-size: 52px;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 46px;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 40px;
+}
+ 
+h4 {
+    font-size: 34px;
+}
+
+h5 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+h6 {
+    font-size: 22px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* navbar, menu */
+.navbar {
+    border-radius: 0;
+}
+
+.navbar-font {
+    font-size: 17px;
+}
+
+.navbar-nav > li {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/*list group hover */
+.bck {
+    border-style: dotted;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.bck:hover {
+    background-color: #F3F3F3;
+}
+
+/* content */
+.col-pad {
+    padding: 20px;
+}
+
+/* footer */
+.footer {
+    font-size: 15px;
+    color: grey;
+    padding: 20px;
+}

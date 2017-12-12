@@ -4,4 +4,4 @@ from django.shortcuts import render, HttpResponse
 
 
 def home(request):
-    return HttpResponse('Account page.')
+    return render(request, 'account/login.html')
