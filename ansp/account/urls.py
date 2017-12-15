@@ -12,5 +12,5 @@ urlpatterns = [
     # /account/logout
     url(r'^logout/$', logout, {'template_name': 'account/logout.html'}),
     # /account/register
-    url(r'^logout/$', logout, {'template_name': 'account/register.html'}),
+    url(r'^register/$', views.register, name="register"),
 ]
