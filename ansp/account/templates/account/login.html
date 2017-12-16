@@ -9,12 +9,12 @@
             </div>
             <div class="col-md-4">
                 <div class="page-header">
-                    <h2><b>Administration</b></h2>
+                    <h2><b>Administration</b></h2> <!-- Sign in -->
                     <p>Please login to access this application. <a href="#">Forgot password?</a></p>
                 </div>
                 <form method="post">
                     {% csrf_token %}
-                    {{ form|crispy }}   <!-- {{ form.as_p }} -->
+                    {{ form|crispy }}
                     <br><button type="submit" class="btn btn-block btn-success">Login</button>
                 </form>
                 <br><a href="/accounts/register" class="btn btn-block btn-info" role="button">Register</a><br>

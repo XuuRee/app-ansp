@@ -1,14 +1,25 @@
 {% extends 'account/base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}Registration{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Registration</h1>
-        <p>Welcome - please register here.</p>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-success">Save</button>
-        </form>
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-6">
+                <div class="page-header">
+                    <h2><b>Registration</b></h2>
+                    <p>Welcome. Please register here. <a href="#">Do you want to go back?</a></p>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <br><button type="submit" class="btn btn-block btn-success">Register</button><br>
+                </form>
+            </div>
+            <div class="col-md-5">
+            </div>
+        </div>
     </div>
 {% endblock %}
