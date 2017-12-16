@@ -14,5 +14,5 @@ urlpatterns = [
     # /account/profile
     url(r'^profile/$', views.view_profile, name="view_profile"),
     # /account/profile/edit
-    url(r'^profile/edit$', views.edit_profile, name="edit_profile"),
+    url(r'^profile/edit/$', views.edit_profile, name="edit_profile"),
 ]

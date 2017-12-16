@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from account.forms import RegistrationForm
+from account.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 
@@ -25,12 +25,12 @@ def view_profile(request):
 
 def edit_profile(request):
     if request.method == 'POST':
-        form = UserChangeForm(request.POST, instance=request.user)
+        form = EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('/accounts/profile') 
     else:
-        form = UserChangeForm(request.POST, instance=request.user)
+        form = EditProfileForm(instance=request.user)
         args = {'form': form}
         return render(request, 'account/edit_profile.html', args)
     

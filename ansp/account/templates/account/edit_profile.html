@@ -1,8 +1,8 @@
 {% extends 'account/base.html' %}
-{% block title %}Profile{% endblock %}
+{% block title %}Edit profile{% endblock %}
 
 {% block navbar %}
-    <li><a class="navbar-font" href="/projects" aria-hidden="true">projects</a></li>
+    <li><a class="navbar-font" href="/accounts/profile" aria-hidden="true">profile</a></li>
 {% endblock %}
 
 {% block body %}
@@ -12,5 +12,6 @@
             {{ form.as_p }}
             <button type="submit">Submit</button>
         </form>
+        <br/>
     </div>
 {% endblock %}
