@@ -4,10 +4,6 @@ from account.forms import RegistrationForm
 # Create your views here.
 
 
-def home(request):
-    return render(request, 'account/login.html')
-
-
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)

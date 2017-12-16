@@ -1,6 +1,10 @@
 {% extends 'account/base.html' %}
 {% block title %}Login{% endblock %}
 
+{% block navbar %}
+    <li><a class="navbar-font" href="/accounts/register" aria-hidden="true">registration</a></li>
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <h1>Administration</h1>
@@ -8,7 +12,7 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Login</button>
+            <button type="submit" class="btn btn-success">Login</button>
         </form>
     </div>
 {% endblock %}
