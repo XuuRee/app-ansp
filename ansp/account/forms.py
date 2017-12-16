@@ -30,7 +30,7 @@ class RegistrationForm(UserCreationForm):
 
 class EditProfileForm(UserChangeForm):
     
-    class meta:
+    class Meta:
         model = User
         fields = [
             'email',

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from account.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserChangeForm
+#from django.contrib.auth.forms import UserChangeForm
 
 # after registration user must be log in
 def register(request):
