@@ -10,11 +10,13 @@ from django.contrib.auth import update_session_auth_hash
 
 # after registration user must be log in
 def register(request):
+    #if request.user.is_authenticated():
+    #    return redirect('/accounts/login')
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/projects')
+            return redirect('/accounts/login')
     else:
         form = RegistrationForm()
         args = {'form': form}
@@ -46,9 +48,10 @@ def change_password(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            return redirect('/accounts/profile') 
+            return redirect('/accounts/profile')
+        else:
+            return redirect('/accounts/change-password')
     else:
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
         return render(request, 'account/change_password.html', args)
-    
