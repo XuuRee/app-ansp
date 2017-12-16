@@ -1,6 +1,6 @@
+from . import views
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout
-from . import views
 
 app_name = 'account'
 
@@ -12,5 +12,7 @@ urlpatterns = [
     # /account/register
     url(r'^register/$', views.register, name="register"),
     # /account/profile
-    url(r'^profile/$', views.profile, name="profile"),
+    url(r'^profile/$', views.view_profile, name="view_profile"),
+    # /account/profile/edit
+    url(r'^profile/edit$', views.edit_profile, name="edit_profile"),
 ]

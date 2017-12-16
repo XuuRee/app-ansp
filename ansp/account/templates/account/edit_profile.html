@@ -1,0 +1,16 @@
+{% extends 'account/base.html' %}
+{% block title %}Profile{% endblock %}
+
+{% block navbar %}
+    <li><a class="navbar-font" href="/projects" aria-hidden="true">projects</a></li>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}
