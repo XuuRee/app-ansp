@@ -1,0 +1,17 @@
+{% extends 'account/base.html' %}
+{% block title %}Profile{% endblock %}
+
+{% block navbar %}
+    <li><a class="navbar-font" href="/projects" aria-hidden="true">projects</a></li>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Profile</h1>
+        <h6>Your data:</h6>
+        <p><b>Username: </b>{{ user.username }}</p>
+        <p><b>Name: </b>{{ user.first_name }}</p>
+        <p><b>Surname: </b>{{ user.last_name }}</p>
+        <p><b>E-mail: </b>{{ user.email }}</p>
+    </div>
+{% endblock %}
