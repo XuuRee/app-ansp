@@ -3,15 +3,13 @@ from account.forms import (
     RegistrationForm,
     EditProfileForm
 )
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
 
 # after registration user must be log in
 def register(request):
-    #if request.user.is_authenticated():
-    #    return redirect('/accounts/login')
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
