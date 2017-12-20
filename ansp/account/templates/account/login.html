@@ -17,7 +17,7 @@
                     {{ form|crispy }}
                     <br><button type="submit" class="btn btn-block btn-success">Login</button>
                 </form>
-                <br><a href="/accounts/register" class="btn btn-block btn-info" role="button">Register</a><br>
+                <br><a href="{% url 'account:register' %}" class="btn btn-block btn-info" role="button">Register</a><br>
             </div>
             <div class="col-md-4">
             </div>

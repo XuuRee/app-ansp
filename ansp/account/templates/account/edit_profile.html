@@ -2,7 +2,7 @@
 {% block title %}Edit profile{% endblock %}
 
 {% block navbar %}
-    <li><a class="navbar-font" href="/accounts/profile" aria-hidden="true">profile</a></li>
+    <li><a class="navbar-font" href="{% url 'account:view_profile' %}" aria-hidden="true">profile</a></li>
 {% endblock %}
 
 {% block body %}

@@ -13,9 +13,9 @@ app_name = 'account'
 
 urlpatterns = [
     # /accounts/login
-    url(r'^login/$', login, {'template_name': 'account/login.html'}),
+    url(r'^login/$', login, {'template_name': 'account/login.html'}, name="login"),
     # /accounts/logout
-    url(r'^logout/$', logout, {'template_name': 'account/logout.html'}),
+    url(r'^logout/$', logout, {'template_name': 'account/logout.html'}, name="logout"),
     # /accounts/register
     url(r'^register/$', views.register, name="register"),
     # /accounts/profile

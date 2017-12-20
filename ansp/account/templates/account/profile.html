@@ -2,7 +2,7 @@
 {% block title %}Profile{% endblock %}
 
 {% block navbar %}
-    <li><a class="navbar-font" href="/projects" aria-hidden="true">projects</a></li>
+    <li><a class="navbar-font" href="{% url 'project:index' %}" aria-hidden="true">projects</a></li>
 {% endblock %}
 
 {% block body %}
