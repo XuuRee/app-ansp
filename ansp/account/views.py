@@ -10,7 +10,9 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
 
-# after registration user must be log in
+# after registration user must be log in and
+# login function: if user is authenticated,
+# than show home page.
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
