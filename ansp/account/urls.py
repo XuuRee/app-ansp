@@ -3,7 +3,7 @@ from django.conf.urls import url
 from django.contrib.auth.views import (
     login,
     logout,
-    password_reset,
+    password_reset,         # not done
     password_reset_done,
     password_reset_confirm,
     password_reset_complete
@@ -24,5 +24,4 @@ urlpatterns = [
     url(r'^profile/edit/$', views.edit_profile, name="edit_profile"),
     # /accounts/change-password
     url(r'^change-password/$', views.change_password, name="change_password")
-    # reset password urls
 ]
