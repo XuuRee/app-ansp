@@ -2,16 +2,21 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
 from .models import Project
+from django.shortcuts import render
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-
-class IndexView(generic.ListView):
-    template_name = 'project/index.html'
-    context_object_name = 'all_projects'
-
-    def get_queryset(self):
-        return Project.objects.all()
+@login_required
+def index(request):
+    author_name = request.user.username
+    all_projects = Project.objects.filter(author=request.user)
+    context = {
+        'author_name': author_name,
+        'all_projects': all_projects
+    }
+    return render(request, "project/index.html/", context)
 
 
 class DetailView(generic.DetailView):
