@@ -1,4 +1,5 @@
 {% extends 'project/base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}Create project{% endblock %}
 
 {% block body %}
@@ -9,7 +10,8 @@
                 <div class="panel-body">
                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {% include 'project/form_template.html' %}
+                        {{ form|crispy }}
+                        <!-- {% include 'project/form_template.html' %} -->
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-success">Save</button>

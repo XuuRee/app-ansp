@@ -1,17 +1,22 @@
 from django import forms
-from .models import Project, File
-
+from django.forms.models import inlineformset_factory
+from project.models import (
+    Project,
+    File,
+)
 
 class ProjectForm(forms.ModelForm):
     
     class Meta:
         model = Project
-        fields = ['name', 'description', 'created', 'deadline']
+        exclude = ()
 
 
 class FileForm(forms.ModelForm):
     
     class Meta:
         model = File
-        fields = ['filename', 'filepath']
-    
+        exclude = ()
+        
+
+FileFormSet = inlineformset_factory(Project, File, form=FileForm, extra=1)  # extra=2
