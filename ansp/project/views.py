@@ -1,7 +1,7 @@
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, FileForm, FileFormSet
+from project.forms import ProjectForm
 from .models import Project
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
@@ -27,21 +27,18 @@ class DetailView(generic.DetailView):
 
 @login_required
 def create_project(request):
-    """ Create new project with files. """
+    """ Create new project. """
     if request.method == 'POST':
-        form_project = ProjectForm(request.POST)
-        if form_project.is_valid():
-            project = form_project.save(commit=False)
-            formset = FileFormSet(request.POST, instance=project)
-            if formset.is_valid():
-                project.save()
-                formset.save()
-                return redirect('/projects')
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.author = request.user
+            form.save()
+            return redirect('/projects')
     else:
-        form_project, formset = ProjectForm(), FileFormSet()
+        form = ProjectForm()
         context = {
-            'form_project': form_project,
-            'formset': formset,
+            'form': form,
         }
         return render(request, 'project/project_form.html', context)
 

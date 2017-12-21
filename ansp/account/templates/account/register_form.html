@@ -4,23 +4,6 @@
 
 {% block body %}
     <div class="container">
-        <form method="post">
-            {% csrf_token %}
-            {{ form_project|crispy }}
-            <button type="submit" class="btn btn-success">Register</button>
-        </form>
-        {% for form in formset.forms %}
-            <table>
-            {% for field in form %}
-                <tr><th>{{field.label_tag}}</th><td>{{field}}{{field.errors}}</td></tr>
-            {% endfor %}
-
-            {% if form.pk %} {# empty forms do not have a pk #}
-                 <tr><th>Delete?</th><td>{{field.DELETE}}</td></tr>
-            {% endif %}
-            </table>
-        {% endfor %}
-        <!--
         <div class="row">
             <div class="col-md-1">
             </div>
@@ -38,6 +21,5 @@
             <div class="col-md-5">
             </div>
         </div>
-        -->
     </div>
 {% endblock %}
