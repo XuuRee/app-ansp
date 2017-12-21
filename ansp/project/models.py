@@ -1,9 +1,6 @@
-#from django import forms
-from django.db import models
-#from django.forms import extras
 import datetime
+from django.db import models
 from django.utils.translation import gettext_lazy as _
-#from django.utils.timezone import now
 from django.core.urlresolvers import reverse
 
 

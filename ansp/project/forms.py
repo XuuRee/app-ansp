@@ -1,9 +1,7 @@
 import datetime
-#from django.forms.extras.widgets import SelectDateWidget
 from django.utils.translation import gettext_lazy as _
 from django.forms import ModelForm, Form
-from django import forms
-#from django.contrib.admin import widgets 
+from django import forms 
 from django.forms.models import inlineformset_factory
 from project.models import (
     Project,
@@ -17,7 +15,7 @@ class ProjectForm(forms.ModelForm):
         model = Project
         fields = ['name', 'description', 'created', 'deadline']
         labels = {
-            'decription': _('Decription (optional)'),
+            'decription': _('Description (optional)'),
         }
         error_messages = {
             'name': {
@@ -53,7 +51,7 @@ class NoteForm(forms.ModelForm):
         exclude = ['id_project']
         field = ['note_text']
         label = {       # work?
-            'note_text': _('Write a note'),
+            'note_text': _("Write a note"), # text field
         }
         error_messages = {
             'note_text': {

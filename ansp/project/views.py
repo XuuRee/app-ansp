@@ -8,6 +8,9 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 
 
+IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
+
+
 @login_required
 def index(request):
     """ Index page. """
