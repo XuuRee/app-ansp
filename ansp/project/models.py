@@ -12,9 +12,9 @@ class Project(models.Model):
     author = models.ForeignKey('auth.User')             # delete item
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
-    created = models.DateField(_("Date"), default=datetime.date.today)
+    created = models.DateField(_("Created"), default=datetime.date.today)
     deadline = models.DateField()
-    finished = models.DateField()
+    finished = models.DateField(null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse('project:detail', kwargs={'pk': self.id_project})

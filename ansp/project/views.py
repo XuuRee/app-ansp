@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
+    """ Index page. """
     author_name = request.user.username
     all_projects = Project.objects.filter(author=request.user)
     context = {
@@ -45,7 +46,7 @@ def create_project(request):
 
 class ProjectUpdate(UpdateView):
     model = Project
-    fields = ['author', 'name', 'description', 'created', 'finished', 'deadline']
+    fields = ['name', 'description', 'created', 'finished', 'deadline']
 
 
 class ProjectDelete(DeleteView):

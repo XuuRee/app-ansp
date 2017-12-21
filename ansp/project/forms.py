@@ -1,10 +1,9 @@
 import datetime
-from django.forms.extras.widgets import SelectDateWidget
+#from django.forms.extras.widgets import SelectDateWidget
 from django.utils.translation import gettext_lazy as _
-from django.forms import ModelForm, Form
-import datetime 
+from django.forms import ModelForm, Form 
 from django import forms
-from django.contrib.admin import widgets 
+#from django.contrib.admin import widgets 
 from django.forms.models import inlineformset_factory
 from project.models import (
     Project,
