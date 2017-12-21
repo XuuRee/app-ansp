@@ -1,0 +1,25 @@
+{% extends 'project/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Add note{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-6">
+            <div class="page-header">
+                <h2><b>Add note</b></h2>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <!-- {% include 'project/form_template.html' %} -->
+                <br><button type="submit" class="btn btn-block btn-success">Add note.</button><br>
+            </form>
+        </div>
+        <div class="col-md-5">
+        </div>
+    </div>
+</div>
+{% endblock %}

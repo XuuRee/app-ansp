@@ -14,7 +14,7 @@
                 </div>
                 <form method="post">
                     {% csrf_token %}
-                    {{ form_project|crispy }}
+                    {{ form|crispy }}
                     <br><button type="submit" class="btn btn-block btn-success">Register</button><br>
                 </form>
             </div>

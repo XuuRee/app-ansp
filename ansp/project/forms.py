@@ -1,13 +1,14 @@
 import datetime
 #from django.forms.extras.widgets import SelectDateWidget
 from django.utils.translation import gettext_lazy as _
-from django.forms import ModelForm, Form 
+from django.forms import ModelForm, Form
 from django import forms
 #from django.contrib.admin import widgets 
 from django.forms.models import inlineformset_factory
 from project.models import (
     Project,
     File,
+    Note,
 )
 
 class ProjectForm(forms.ModelForm):
@@ -31,5 +32,19 @@ class FileForm(forms.ModelForm):
         model = File
         exclude = ()
         
+        
 
-FileFormSet = inlineformset_factory(Project, File, form=FileForm, extra=1)  # extra=2
+class NoteForm(forms.ModelForm):
+    
+    class Meta:
+        model = Note
+        exclude = ['id_project']
+        field = ['note_text']
+        label = {
+            'note_text': _('Write a note'),
+        }
+        error_messages = {
+            'note_text': {
+                'max_length': _("This text is too long (400 characters max)."),
+            },
+        }
