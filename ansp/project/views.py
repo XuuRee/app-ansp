@@ -1,8 +1,8 @@
 from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, NoteForm
-from .models import Project
+from project.forms import ProjectForm, FileForm, NoteForm
+from .models import Project, File, Note
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
@@ -56,10 +56,21 @@ def add_note(request, pk):
             return redirect('/projects/{}/'.format(pk))
     else:
         form = NoteForm()
-        context = {
-            'form': form,
-        }
-        return render(request, 'project/note_form.html', context)
+        return render(request, 'project/note_form.html', {'form': form})
+
+
+@login_required
+def add_file(request, pk):
+    if request.method == 'POST':
+        form = FileForm(request.POST)
+        if form.is_valid():
+            file = form.save(commit=False)
+            file.id_project = Project.objects.get(id_project=pk)
+            form.save()
+            return redirect('/projects/{}/'.format(pk))
+    else:
+        form = FileForm()
+        return render(request, 'project/file_form.html', {'form': form})
 
 
 class ProjectUpdate(UpdateView):

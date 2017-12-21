@@ -30,8 +30,20 @@ class FileForm(forms.ModelForm):
     
     class Meta:
         model = File
-        exclude = ()
-        
+        exclude = ['id_project']
+        filed = [
+            'filename',
+            'filepath'
+        ]
+        label = {                   
+            'filename': _('Filename'),
+            'filepath': _('Path'),
+        }
+        error_messages = {
+            'filename': {
+                'max_length': _("This text is too long (100 characters max)."),
+            },
+        }
         
 
 class NoteForm(forms.ModelForm):
@@ -40,7 +52,7 @@ class NoteForm(forms.ModelForm):
         model = Note
         exclude = ['id_project']
         field = ['note_text']
-        label = {
+        label = {       # work?
             'note_text': _('Write a note'),
         }
         error_messages = {
