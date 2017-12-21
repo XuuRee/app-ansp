@@ -7,7 +7,7 @@ urlpatterns = [
     # /projects/
     url(r'^$', views.index, name='index'),    #views.IndexView.as_view()
     # /projects/<id_project>
-    url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name="detail"),
+    url(r'^(?P<pk>[0-9]+)/$', views.detail, name="detail"),
     # /projects/create
     url(r'create/$', views.create_project, name="project-create"),
     # /projects/<id_project>/add-note

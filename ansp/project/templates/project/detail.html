@@ -29,6 +29,16 @@
                     <h2><b>Notes</b></h2>
                     <p><a href="#">+ add note</a></p>
                 </div>
+                <!-- items -->
+                {% if notes %}
+                    <div class="list-group">
+                        {% for note in notes %}
+                            <p>{{note.note_text}}<p>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>You don't have any projects. Start right now!<p>
+                {% endif %}
             </div>
         </div>
     </div>

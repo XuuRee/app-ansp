@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views import generic
 from project.forms import ProjectForm, FileForm, NoteForm
 from .models import Project, File, Note
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 
@@ -23,10 +23,17 @@ def index(request):
     return render(request, "project/index.html/", context)
 
 
-class DetailView(generic.DetailView):
-    model = Project
-    context_object_name = 'specific_project'
-    template_name = 'project/detail.html'
+@login_required
+def detail(request, pk):
+    specific_project = Project.objects.get(id_project=pk)
+    files = File.objects.filter(id_project=pk)
+    notes = Note.objects.filter(id_project=pk)
+    context = {
+        "specific_project": specific_project,
+        "files": files,
+        "notes": notes,
+    }
+    return render(request, "project/detail.html", context)
 
 
 @login_required
