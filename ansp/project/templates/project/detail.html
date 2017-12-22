@@ -28,21 +28,19 @@
             <div class="col-md-5">
                 <div class="page-header">
                     <h4><b>Files</b></h4>
-                    <p><a href="#">+ add files</a></p>
+                    <p>
+                        <a href="#">+ add files</a> / <a href="#">view files</a>
+                    </p>
                 </div>
                 <div class="page-header">
                     <h4><b>Notes</b></h4>
-                    <p><a href="#">+ add note</a></p>
-                    <div id="overlay">
-                        <div>
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form|crispy }}
-                                <button type="submit" class="btn btn-success">Add note</button><br>
-                            </form>
-                        </div>
-                    </div>
                 </div>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Add note</button>
+                </form>
+                <hr>
                 <!-- items -->
                 {% if notes %}
                     <div class="list-group">

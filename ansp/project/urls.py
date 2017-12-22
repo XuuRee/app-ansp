@@ -11,7 +11,7 @@ urlpatterns = [
     # /projects/create
     url(r'create/$', views.create_project, name="project-create"),
     # /projects/<id_project>/add-note
-    url(r'^(?P<pk>[0-9]+)/$', views.add_note, name="add-note"),    #url(r'^(?P<pk>[0-9]+)/add-note/$', views.add_note, name="add-note"),
+    #url(r'^(?P<pk>[0-9]+)/$', views.add_note, name="add-note"),    #url(r'^(?P<pk>[0-9]+)/add-note/$', views.add_note, name="add-note"),
     # /projects/<id_project>/add-file
     url(r'^(?P<pk>[0-9]+)/add-file/$', views.add_file, name="add-file"),
     # /projects/<id_project>/update

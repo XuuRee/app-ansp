@@ -3,7 +3,6 @@
 html, body {
     font-family: 'Fira Sans', sans-serif;
     background: white;    /*#4ABDAC, #66B9BF, #77C9D4, #01ABAA */
-    
 }
 
 h1 {
@@ -55,7 +54,7 @@ a:hover {
     padding-right: 10px;
 }
 
-/*list group hover */
+/* list group hover */
 .bck {
     border-style: dotted;
     margin-top: 5px;
