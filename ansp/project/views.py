@@ -25,15 +25,25 @@ def index(request):
 
 @login_required
 def detail(request, pk):
-    specific_project = Project.objects.get(id_project=pk)
-    files = File.objects.filter(id_project=pk)
-    notes = Note.objects.filter(id_project=pk)
-    context = {
-        "specific_project": specific_project,
-        "files": files,
-        "notes": notes,
-    }
-    return render(request, "project/detail.html", context)
+    if request.method == 'POST':    # better solution
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.id_project = Project.objects.get(id_project=pk)
+            form.save()
+            return redirect('/projects/{}/'.format(pk))
+    else:
+        specific_project = Project.objects.get(id_project=pk)
+        files = File.objects.filter(id_project=pk)
+        notes = Note.objects.filter(id_project=pk)
+        form = NoteForm()
+        context = {
+            "specific_project": specific_project,
+            "files": files,
+            "notes": notes,
+            "form": form,
+        }
+        return render(request, "project/detail.html", context)
 
 
 @login_required
