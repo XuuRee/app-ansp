@@ -45,7 +45,15 @@
                 {% if notes %}
                     <div class="list-group">
                         {% for note in notes %}
-                            <p>{{note.note_text}}<p>
+                            <p>{{note.note_text}}<p> 
+                            <!-- delete button -->
+                            <form action="{% url 'project:delete-note' note.id_note %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_note" value="{{ note.id_note }}"/>
+                                <button type="submit" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </form>
                         {% endfor %}
                     </div>
                 {% else %}

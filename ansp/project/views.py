@@ -6,6 +6,7 @@ from .models import Project, File, Note
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
@@ -26,12 +27,7 @@ def index(request):
 @login_required
 def detail(request, pk):
     if request.method == 'POST':    # better solution
-        form = NoteForm(request.POST)
-        if form.is_valid():
-            note = form.save(commit=False)
-            note.id_project = Project.objects.get(id_project=pk)
-            form.save()
-            return redirect('/projects/{}/'.format(pk))
+        return add_note(request, pk)
     else:
         specific_project = Project.objects.get(id_project=pk)
         files = File.objects.filter(id_project=pk)
@@ -58,25 +54,24 @@ def create_project(request):
             return redirect('/projects')
     else:
         form = ProjectForm()
-        context = {
-            'form': form,
-        }
-        return render(request, 'project/project_form.html', context)
+        return render(request, 'project/project_form.html', {'form': form})
 
 
 @login_required
 def add_note(request, pk):
     """ Add a note to the project. """
-    if request.method == 'POST':
-        form = NoteForm(request.POST)
-        if form.is_valid():
-            note = form.save(commit=False)
-            note.id_project = Project.objects.get(id_project=pk)
-            form.save()
-            return redirect('/projects/{}/'.format(pk))
-    else:
-        form = NoteForm()
-        return render(request, 'project/note_form.html', {'form': form})
+    form = NoteForm(request.POST)
+    if form.is_valid():
+        note = form.save(commit=False)
+        note.id_project = Project.objects.get(id_project=pk)
+        form.save()
+        return redirect('/projects/{}/'.format(pk))
+
+
+@login_required
+def delete_note(request, pk):
+    note = Note.objects.get(pk=pk).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
 
 
 @login_required
