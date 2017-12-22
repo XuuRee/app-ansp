@@ -6,30 +6,32 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7">
-                <div class="page-header">
-                    <h2><b>Detail of project</b></h2>
-                    <p> - all informations at one place.</p>
-                </div>
-                {% if specific_project %}
-                    <p>Name: {{ specific_project.name }}</p>
-                    <p>author: {{ specific_project.author }}</p>
-                    <p>description: {{ specific_project.description }}</p>
-                    <p>created: {{ specific_project.created }}</p>
-                    <p>deadline: {{ specific_project.deadline }}</p>
-                    <p>finished: {{ specific_project.finished }}</p>
-                    <!--
-                    {% if file %}
-                        {% for file in specific_project.file_set.all %}
-                            <p>file name: {{ file.filename }}</p>
-                            <img src="{{ file.filepath.url }}" class="img-responsive">
-                        {% endfor %}
+                <div>
+                    <div class="page-header">
+                        <h2><b>{{ specific_project.name }}</b></h2>
+                        <p><a href="#">edit information</a> / <a href="#">go back</a></p>
+                    </div>
+                    {% if specific_project %}
+                        <p><b>Author</b> {{ specific_project.author }}</p>
+                        <p><b>Description</b><br>{{ specific_project.description }}</p>
+                        <p>Created: {{ specific_project.created }}</p>
+                        <p>Deadline: {{ specific_project.deadline }}</p>
+                        {% if specific_project.finished %}
+                            <p>Finished: {{ specific_project.finished }}</p>
+                        {% endif %}
+                        <p>Collaborators: </p>
                     {% else %}
-                        <p>You don't have any stored files.</p>
+                        <h3>No project detail!</h3>
                     {% endif %}
-                    -->
-                {% else %}
-                    <h3>No project detail!</h3>
-                {% endif %}
+                    <!-- buttons -->
+                    <a href="#" class="btn btn-success">Finished</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                </div>
+                <div>
+                    <div class="page-header">
+                        <h2><b>Comments</b></h2>
+                    </div>
+                </div>
             </div>
             <div class="col-md-5">
                 <div class="page-header">
