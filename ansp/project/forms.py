@@ -29,11 +29,11 @@ class FileForm(forms.ModelForm):
     class Meta:
         model = File
         exclude = ['id_project']
-        filed = [
+        fields = [
             'filename',
             'filepath'
         ]
-        label = {                   
+        labels = {                   
             'filename': _('Filename'),
             'filepath': _('Path'),
         }
@@ -49,8 +49,8 @@ class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
         exclude = ['id_project']
-        field = ['note_text']
-        label = {       # work?
+        fields = ['note_text']
+        labels = {       # work?
             'note_text': _("Write a note"), # text field
         }
         error_messages = {

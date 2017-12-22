@@ -8,7 +8,7 @@
             <div class="col-md-7">
                 <div class="page-header">
                     <h2><b>Detail of project</b></h2>
-                    <p>All informations at one place.</p>
+                    <p> - all informations at one place.</p>
                 </div>
                 {% if specific_project %}
                     <p>Name: {{ specific_project.name }}</p>
@@ -17,10 +17,16 @@
                     <p>created: {{ specific_project.created }}</p>
                     <p>deadline: {{ specific_project.deadline }}</p>
                     <p>finished: {{ specific_project.finished }}</p>
-                    {% for file in specific_project.file_set.all %}
-                        <p>file name: {{ file.filename }}</p>
-                        <img src="{{ file.filepath.url }}" class="img-responsive">
-                    {% endfor %}
+                    <!--
+                    {% if file %}
+                        {% for file in specific_project.file_set.all %}
+                            <p>file name: {{ file.filename }}</p>
+                            <img src="{{ file.filepath.url }}" class="img-responsive">
+                        {% endfor %}
+                    {% else %}
+                        <p>You don't have any stored files.</p>
+                    {% endif %}
+                    -->
                 {% else %}
                     <h3>No project detail!</h3>
                 {% endif %}
@@ -28,12 +34,14 @@
             <div class="col-md-5">
                 <div class="page-header">
                     <h4><b>Files</b></h4>
-                    <p>
-                        <a href="#">+ add files</a> / <a href="#">view files</a>
-                    </p>
+                    {% if not file %}
+                        <p>You don't have any stored files.</p>
+                    {% endif %}
+                    <p><a href="#">+ add files</a> / <a href="#">view files</a></p>
                 </div>
                 <div class="page-header">
                     <h4><b>Notes</b></h4>
+                    <p>You can keep all your notes here.</p>
                 </div>
                 <form method="post">
                     {% csrf_token %}
@@ -45,15 +53,15 @@
                 {% if notes %}
                     <div class="list-group">
                         {% for note in notes %}
-                            <p>{{note.note_text}}<p> 
-                            <!-- delete button -->
-                            <form action="{% url 'project:delete-note' note.id_note %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="id_note" value="{{ note.id_note }}"/>
-                                <button type="submit" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            </form>
+                            <div class="bck list-group-item list-group-item-warning list-group-item-action flex-column align-items-start">
+                                <p>{{note.note_text}}<p> 
+                                <!-- delete button -->
+                                <form action="{% url 'project:delete-note' note.id_note %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id_note" value="{{ note.id_note }}"/>
+                                    <button type="submit" class="btn btn-xs btn-warning">delete note</button>
+                                </form>
+                            </div>
                         {% endfor %}
                     </div>
                 {% else %}
