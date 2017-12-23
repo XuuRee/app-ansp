@@ -11,7 +11,7 @@ class Project(models.Model):
     description = models.TextField(null=True, blank=True)
     created = models.DateField(_("Created"), default=datetime.date.today)
     deadline = models.DateField(null=True, blank=True)
-    finish = models.BooleanField(default=True)
+    finish = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse('project:detail', kwargs={'pk': self.id_project})

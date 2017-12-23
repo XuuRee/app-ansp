@@ -99,9 +99,17 @@ def delete_file(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
+def project_finish(request, pk):
+    project = Project.objects.get(pk=pk)
+    project.finish = True
+    project.save()
+    return redirect('/projects'.format(pk))
+
+
 class ProjectUpdate(UpdateView):
     model = Project
-    fields = ['name', 'description', 'created', 'finished', 'deadline']
+    fields = ['name', 'description', 'created', 'deadline']
 
 
 class ProjectDelete(DeleteView):
