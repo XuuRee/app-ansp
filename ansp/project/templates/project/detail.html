@@ -34,13 +34,15 @@
                 </div>
             </div>
             <div class="col-md-5">
+                <!-- files -->
                 <div class="page-header">
                     <h4><b>Files</b></h4>
                     {% if not file %}
                         <p>You don't have any stored files.</p>
                     {% endif %}
-                    <p><a href="#">+ add files</a> / <a href="#">view files</a></p>
+                    <p><a href="/projects/{{specific_project.id_project}}/add-file">+ add files</a> / <a href="#">view files</a></p>
                 </div>
+                <!-- notes -->
                 <div class="page-header">
                     <h4><b>Notes</b></h4>
                     <p>You can keep all your notes here.</p>
