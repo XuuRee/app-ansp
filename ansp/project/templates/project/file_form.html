@@ -19,15 +19,15 @@
             <div class="page-header">
                 <h2><b>Gallery</b></h2>
                 <p>You can view all your files here.</p>
-                {% for file in files %}
-                    <img src="{{ file.filepath.url }}" class="img-responsive">
-                    <form action="{% url 'project:delete-file' file.id_file %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="id_note" value="{{ file.id_file }}"/>
-                        <p><button type="submit" class="btn btn-xs btn-warning">delete</button> {{ file.filename }}</b></p>
-                    </form>
-                {% endfor %}
             </div>
+            {% for file in files %}
+                <img src="{{ file.filepath.url }}" class="img-responsive">
+                <form action="{% url 'project:delete-file' file.id_file %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id_note" value="{{ file.id_file }}"/>
+                    <p><button type="submit" class="btn btn-xs btn-warning">delete</button> {{ file.filename }}</b></p>
+                </form>
+            {% endfor %}
         </div>
     </div>
 </div>

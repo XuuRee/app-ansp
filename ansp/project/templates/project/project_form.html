@@ -15,7 +15,6 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <!-- {% include 'project/form_template.html' %} -->
                 <br><button type="submit" class="btn btn-block btn-success">Create project</button><br>
             </form>
         </div>
