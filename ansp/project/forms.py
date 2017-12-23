@@ -16,6 +16,7 @@ class ProjectForm(forms.ModelForm):
         fields = ['name', 'description', 'created', 'deadline']
         labels = {
             'decription': _('Description (optional)'),
+            'deadline': _('Deadline (optional)'),
         }
         error_messages = {
             'name': {
@@ -34,8 +35,8 @@ class FileForm(forms.ModelForm):
             'filepath'
         ]
         labels = {                   
-            'filename': _('Filename'),
-            'filepath': _('Path'),
+            'filename': _('Name of the file'),
+            'filepath': _('Select a file'),
         }
         error_messages = {
             'filename': {

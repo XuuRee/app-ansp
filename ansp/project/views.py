@@ -70,9 +70,9 @@ def add_note(request, pk):
 
 @login_required
 def delete_note(request, pk):
-    note = Note.objects.get(pk=pk).delete()
+    Note.objects.get(pk=pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
-
+    
 
 @login_required
 def add_file(request, pk):
