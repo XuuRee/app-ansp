@@ -12,19 +12,17 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <!--<input type="file" name="myfile">-->
                 <br><button type="submit" class="btn btn-block btn-success">add file</button><br>
             </form>
-            <!--
-            {% if uploaded_file_url %}
-                <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-            {% endif %}
-            -->
         </div>
         <div class="col-md-8">
             <div class="page-header">
                 <h2><b>Gallery</b></h2>
                 <p>You can view all your files here.</p>
+                {% for file in files %}
+                    <p>file name: {{ file.filename }}</p>
+                    <img src="{{ file.filepath.url }}" class="img-responsive">
+                {% endfor %}
             </div>
         </div>
     </div>

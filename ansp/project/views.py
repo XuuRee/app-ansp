@@ -85,7 +85,12 @@ def add_file(request, pk):
             return redirect('/projects/{}/add-file'.format(pk))
     else:
         form = FileForm()
-        return render(request, 'project/file_form.html', {'form': form})
+        files = File.objects.filter(id_project=pk)
+        context = {
+            'form': form,
+            'files': files,
+        }
+        return render(request, 'project/file_form.html', context)
 
 
 class ProjectUpdate(UpdateView):
