@@ -91,6 +91,12 @@ def add_file(request, pk):
             'files': files,
         }
         return render(request, 'project/file_form.html', context)
+    
+
+@login_required
+def delete_file(request, pk):
+    File.objects.get(pk=pk).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class ProjectUpdate(UpdateView):
