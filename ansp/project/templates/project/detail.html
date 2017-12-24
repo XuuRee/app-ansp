@@ -41,10 +41,12 @@
                 <!-- files -->
                 <div class="page-header">
                     <h4><b>Files</b></h4>
-                    {% if not file %}
+                    {% if not files %}
                         <p>You don't have any stored files.</p>
+                    {% else %}
+                        <p>You have stored files.</p>
                     {% endif %}
-                    <p><a href="/projects/{{specific_project.id_project}}/add-file">+ add files</a> / <a href="#">view files</a></p>
+                    <p><span class="glyphicon glyphicon-file"></span><a href="/projects/{{specific_project.id_project}}/add-file"> &nbsp; file handler</a></p>
                 </div>
                 <!-- notes -->
                 <div class="page-header">

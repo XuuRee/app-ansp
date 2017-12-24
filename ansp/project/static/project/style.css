@@ -65,6 +65,15 @@ a:hover {
     background-color: #F3F3F3;
 }
 
+/* backgroung change color */
+.background_change {
+    background-color: transparent;    
+}
+
+.background_change:hover {
+    background-color: #F3F3F3;
+}
+
 /* content */
 .col-pad {
     padding: 20px;

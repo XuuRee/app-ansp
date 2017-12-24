@@ -1,13 +1,16 @@
 {% extends 'project/base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Add file{% endblock %}
+{% block title %}File handler{% endblock %}
 
 {% block body %}
 <div class="container">
     <div class="row">
+        <div class="page-header">
+            <h2><a href="/projects/" class="btn btn-lg btn-primary">RETURN</a> File handler</h2>
+        </div>
         <div class="col-md-4">
             <div class="page-header">
-                <h2><b>Upload new file</b></h2>
+                <h3><b>Upload new file</b></h3>
             </div>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -17,17 +20,42 @@
         </div>
         <div class="col-md-8">
             <div class="page-header">
-                <h2><b>Gallery</b></h2>
-                <p>You can view all your files here.</p>
+                <h3><b>Image files</b></h3>
+                <!-- <img src="{{ file.filepath.url }}" class="img-responsive"> -->
             </div>
-            {% for file in files %}
-                <img src="{{ file.filepath.url }}" class="img-responsive">
-                <form action="{% url 'project:delete-file' file.id_file %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="id_note" value="{{ file.id_file }}"/>
-                    <p><button type="submit" class="btn btn-xs btn-warning">delete</button> {{ file.filename }}</b></p>
-                </form>
-            {% endfor %}
+            <div class="page-header">
+                <h3><b>Other files</b></h3>
+            </div>
+            {% if files %}
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Filename</th>
+                            <th scope="col">Stored</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                            <tr class="background_change">
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ file.filename }}</td>
+                                <td><a href="{{ file.filepath.url }}">{{ file.filepath.url }}</a></td>
+                                <td>
+                                    <form action="{% url 'project:delete-file' file.id_file %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id_note" value="{{ file.id_file }}"/>
+                                        <button type="submit" class="btn btn-xs btn-warning">delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>There are no files stored at the moment.</p>
+            {% endif %}
         </div>
     </div>
 </div>
