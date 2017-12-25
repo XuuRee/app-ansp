@@ -85,3 +85,69 @@ a:hover {
     color: grey;
     padding: 20px;
 }
+
+/* logo */
+
+.top-spaces {
+    margin-top: 40px;
+}
+
+.logo {
+    font-family: sans-serif;
+}
+
+.logo-navbar {
+    font-size: 12px;
+}
+
+.logo-header {
+    font-size: 65px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.btn-logo { 
+    color: #FFFFFF; 
+    background-color: #00A8C6; 
+    border-color: #00A8C6; 
+} 
+ 
+.btn-logo:hover, 
+.btn-logo:focus, 
+.btn-logo:active, 
+.btn-logo.active, 
+.open .dropdown-toggle.btn-logo { 
+    color: #FFFFFF; 
+    background-color: #00A8C6; 
+    border-color: #00A8C6; 
+} 
+ 
+.btn-logo:active, 
+.btn-logo.active, 
+.open .dropdown-toggle.btn-logo { 
+    background-image: none; 
+} 
+ 
+.btn-logo.disabled, 
+.btn-logo[disabled], 
+fieldset[disabled] .btn-logo, 
+.btn-logo.disabled:hover, 
+.btn-logo[disabled]:hover, 
+fieldset[disabled] .btn-logo:hover, 
+.btn-logo.disabled:focus, 
+.btn-logo[disabled]:focus, 
+fieldset[disabled] .btn-logo:focus, 
+.btn-logo.disabled:active, 
+.btn-logo[disabled]:active, 
+fieldset[disabled] .btn-logo:active, 
+.btn-logo.disabled.active, 
+.btn-logo[disabled].active, 
+fieldset[disabled] .btn-logo.active { 
+    background-color: #00A8C6; 
+    border-color: #00A8C6; 
+} 
+ 
+.btn-logo .badge { 
+    color: #00A8C6; 
+    background-color: #FFFFFF; 
+}
