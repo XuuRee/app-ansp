@@ -1,7 +1,7 @@
 from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, FileForm, NoteForm
+from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm
 from .models import Project, File, Note
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
@@ -84,7 +84,7 @@ def add_file(request, pk):
         return redirect('/projects/{}/files'.format(pk))
 
 
-def get_images(files, types):
+def get_files(files, types):
     images = []
     for f in files:
         file_type = f.filepath.url.split('.')[-1]
@@ -95,7 +95,7 @@ def get_images(files, types):
 
 
 @login_required
-def file_handler_images(request, pk):
+def file_handler_filter(request, pk):
     if request.method == 'POST':
         return add_file(request, pk)
     else:
@@ -116,9 +116,11 @@ def file_handler(request, pk):
         return add_file(request, pk)
     else:
         form = FileForm()
+        filter_form = SearchFileForm()
         files = File.objects.filter(id_project=pk)
         context = {
             'form': form,
+            'filter_form': filter_form,
             'files': files,
             'primary_key': pk,
         }

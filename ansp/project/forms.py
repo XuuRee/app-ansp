@@ -59,3 +59,9 @@ class NoteForm(forms.ModelForm):
                 'max_length': _("This text is too long (400 characters max)."),
             },
         }
+
+
+class SearchFileForm(forms.Form):
+    
+    file_types = forms.CharField(max_length=200, label="",
+                                 widget=forms.TextInput(attrs={'placeholder': 'jpg, png, pdf etc.'}))

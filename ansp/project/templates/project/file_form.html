@@ -13,7 +13,7 @@
             <div class="page-header">
                 <h3><b>Upload new file</b></h3>
             </div>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" id="NoteForm">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <br><button type="submit" class="btn btn-block btn-success">add file</button><br>
@@ -22,12 +22,18 @@
         <div class="col-md-8">
             <div class="page-header">
                 <h3><b>Files</b></h3>
-                <p><span class="glyphicon glyphicon-file"></span>&nbsp;
-                    <a href="{% url 'project:file-handler' primary_key %}">all</a> / 
-                    <a href="{% url 'project:file-handler-images' primary_key %}">images</a> / 
-                    <a href="#">pdf files</a>
-                </p>
+                <a href="{% url 'project:file-handler' primary_key %}"><span class="glyphicon glyphicon-file"></span>&nbsp; view files</a>
             </div>
+            <form method="post" id="SearchFileForm">
+                <div class="col-xs-6">
+                    {% csrf_token %}
+                    {{ filter_form|crispy }}
+                </div>
+                <div class="col-xs-6">
+                    <button type="submit" class="btn btn-success">Search</button>
+                </div>
+            </form>
+            <hr>
             {% if files %}
                 <table class="table">
                     <thead class="thead-light">
