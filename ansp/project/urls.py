@@ -13,7 +13,9 @@ urlpatterns = [
     # /projects/<id_project>/delete !
     url(r'^(?P<pk>[0-9]+)/delete-note/$', views.delete_note, name="delete-note"),
     # /projects/<id_project>/add-file
-    url(r'^(?P<pk>[0-9]+)/add-file/$', views.add_file, name="add-file"),
+    url(r'^(?P<pk>[0-9]+)/files/$', views.file_handler, name="file-handler"),
+    # /projects/<id_project>/add-file
+    url(r'^(?P<pk>[0-9]+)/files/images$', views.file_handler_images, name="file-handler-images"),
     # /projects/<id_project>/delete 
     url(r'^(?P<pk>[0-9]+)/delete-file/$', views.delete_file, name="delete-file"),
     

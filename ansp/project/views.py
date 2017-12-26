@@ -72,23 +72,55 @@ def add_note(request, pk):
 def delete_note(request, pk):
     Note.objects.get(pk=pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
-    
+
+
+def add_file(request, pk):
+    """ Add a file to the project. """
+    form = FileForm(request.POST, request.FILES)
+    if form.is_valid():
+        file = form.save(commit=False)
+        file.id_project = Project.objects.get(id_project=pk)
+        form.save()
+        return redirect('/projects/{}/files'.format(pk))
+
+
+def get_images(files, types):
+    images = []
+    for f in files:
+        file_type = f.filepath.url.split('.')[-1]
+        file_type = file_type.lower()
+        if file_type in types:
+            images.append(f)
+    return images
+
 
 @login_required
-def add_file(request, pk):
+def file_handler_images(request, pk):
     if request.method == 'POST':
-        form = FileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = form.save(commit=False)
-            file.id_project = Project.objects.get(id_project=pk)
-            form.save()
-            return redirect('/projects/{}/add-file'.format(pk))
+        return add_file(request, pk)
+    else:
+        form = FileForm()
+        files = File.objects.filter(id_project=pk)
+        files = get_images(files, IMAGE_FILE_TYPES)
+        context = {
+            'form': form,
+            'files': files,
+            'primary_key': pk,
+        }
+        return render(request, 'project/file_form.html', context)
+
+
+@login_required
+def file_handler(request, pk):
+    if request.method == 'POST':
+        return add_file(request, pk)
     else:
         form = FileForm()
         files = File.objects.filter(id_project=pk)
         context = {
             'form': form,
             'files': files,
+            'primary_key': pk,
         }
         return render(request, 'project/file_form.html', context)
     

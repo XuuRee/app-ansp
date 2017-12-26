@@ -46,7 +46,7 @@
                     {% else %}
                         <p>You have stored files.</p>
                     {% endif %}
-                    <p><span class="glyphicon glyphicon-file"></span><a href="/projects/{{specific_project.id_project}}/add-file"> &nbsp; file handler</a></p>
+                    <p><span class="glyphicon glyphicon-file"></span><a href="{% url 'project:file-handler' specific_project.id_project %}"> &nbsp; file handler</a></p> <!-- /projects/{{specific_project.id_project}}/files -->
                 </div>
                 <!-- notes -->
                 <div class="page-header">

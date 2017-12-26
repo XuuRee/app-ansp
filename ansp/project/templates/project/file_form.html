@@ -6,7 +6,8 @@
 <div class="container">
     <div class="row">
         <div class="page-header">
-            <h2><a href="/projects/" class="btn btn-lg btn-primary">RETURN</a> File handler</h2>
+            <h2>File handler</h2>
+            <a href="{% url 'project:detail' primary_key %}"><span class="glyphicon glyphicon-arrow-left"></span> back</a>
         </div>
         <div class="col-md-4">
             <div class="page-header">
@@ -20,11 +21,12 @@
         </div>
         <div class="col-md-8">
             <div class="page-header">
-                <h3><b>Image files</b></h3>
-                <!-- <img src="{{ file.filepath.url }}" class="img-responsive"> -->
-            </div>
-            <div class="page-header">
-                <h3><b>Other files</b></h3>
+                <h3><b>Files</b></h3>
+                <p><span class="glyphicon glyphicon-file"></span>&nbsp;
+                    <a href="{% url 'project:file-handler' primary_key %}">all</a> / 
+                    <a href="{% url 'project:file-handler-images' primary_key %}">images</a> / 
+                    <a href="#">pdf files</a>
+                </p>
             </div>
             {% if files %}
                 <table class="table">
