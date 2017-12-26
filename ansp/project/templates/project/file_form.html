@@ -13,24 +13,22 @@
             <div class="page-header">
                 <h3><b>Upload new file</b></h3>
             </div>
-            <form method="post" id="NoteForm">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <br><button type="submit" class="btn btn-block btn-success">add file</button><br>
+                <br><button type="submit" class="btn btn-block btn-success" name="FileFormButton">add file</button><br>
             </form>
         </div>
         <div class="col-md-8">
             <div class="page-header">
                 <h3><b>Files</b></h3>
-                <a href="{% url 'project:file-handler' primary_key %}"><span class="glyphicon glyphicon-file"></span>&nbsp; view files</a>
+                <a href="{% url 'project:file-handler' primary_key %}"><span class="glyphicon glyphicon-file"></span>&nbsp; view all files</a>
             </div>
-            <form method="post" id="SearchFileForm">
-                <div class="col-xs-6">
+            <form class="form-inline" method="post">
+                <div class="form-group">
                     {% csrf_token %}
                     {{ filter_form|crispy }}
-                </div>
-                <div class="col-xs-6">
-                    <button type="submit" class="btn btn-success">Search</button>
+                    <button type="submit" class="btn btn-success" name="SearchFileFormButton">Filter</button>
                 </div>
             </form>
             <hr>

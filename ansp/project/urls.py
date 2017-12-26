@@ -9,7 +9,6 @@ urlpatterns = [
     url(r'create/$', views.create_project, name="project-create"),
     url(r'^(?P<pk>[0-9]+)/delete-note/$', views.delete_note, name="delete-note"),
     url(r'^(?P<pk>[0-9]+)/files/$', views.file_handler, name="file-handler"),
-    url(r'^(?P<pk>[0-9]+)/files/filter/$', views.file_handler_filter, name="file-handler-filter"),
     url(r'^(?P<pk>[0-9]+)/delete-file/$', views.delete_file, name="delete-file"),
     url(r'^(?P<pk>[0-9]+)/project-finish/$', views.project_finish, name="project-finish"),
     url(r'^(?P<pk>[0-9]+)/update/$', views.ProjectUpdate.as_view(), name="project-update"),

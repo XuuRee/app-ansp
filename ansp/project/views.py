@@ -85,25 +85,25 @@ def add_file(request, pk):
 
 
 def get_files(files, types):
-    images = []
-    for f in files:
-        file_type = f.filepath.url.split('.')[-1]
+    types, match = list(map(lambda s:s.strip(), types.split(','))), []
+    for orig_file in files:
+        file_type = orig_file.filepath.url.split('.')[-1]
         file_type = file_type.lower()
         if file_type in types:
-            images.append(f)
-    return images
+            match.append(orig_file)
+    return match
 
 
-@login_required
-def file_handler_filter(request, pk):
-    if request.method == 'POST':
-        return add_file(request, pk)
-    else:
-        form = FileForm()
-        files = File.objects.filter(id_project=pk)
-        files = get_images(files, IMAGE_FILE_TYPES)
+def filter_files(request, pk):
+    form = SearchFileForm(request.POST)     #not search, but filter form
+    if form.is_valid():
+        file_types = form.cleaned_data['file_types']
+        files = File.objects.filter(id_project=pk)  # twice
+        files = get_files(files, file_types)
+        form, filter_form = FileForm(), SearchFileForm()        
         context = {
             'form': form,
+            'filter_form': filter_form,
             'files': files,
             'primary_key': pk,
         }
@@ -113,10 +113,12 @@ def file_handler_filter(request, pk):
 @login_required
 def file_handler(request, pk):
     if request.method == 'POST':
-        return add_file(request, pk)
+        if 'FileFormButton' in request.POST:
+            return add_file(request, pk)    # empty file!
+        if 'SearchFileFormButton' in request.POST:
+            return filter_files(request, pk)    
     else:
-        form = FileForm()
-        filter_form = SearchFileForm()
+        form, filter_form = FileForm(), SearchFileForm()
         files = File.objects.filter(id_project=pk)
         context = {
             'form': form,
