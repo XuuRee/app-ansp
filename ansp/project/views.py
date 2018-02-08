@@ -1,8 +1,8 @@
 from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm
-from .models import Project, File, Note
+from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm
+from .models import Project, File, Note, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
@@ -33,11 +33,13 @@ def detail(request, pk):
         files = File.objects.filter(id_project=pk)
         notes = Note.objects.filter(id_project=pk)
         form = NoteForm()
+        comment_form = CommentForm()
         context = {
             "specific_project": specific_project,
             "files": files,
             "notes": notes,
             "form": form,
+            "comment_form": comment_form,
         }
         return render(request, "project/detail.html", context)
 

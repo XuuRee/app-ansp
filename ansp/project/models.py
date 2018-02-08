@@ -34,3 +34,11 @@ class Note(models.Model):
     id_note = models.AutoField(primary_key=True)
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
     note_text = models.CharField(max_length=400)
+
+
+class Comment(models.Model):
+    id_comment = models.AutoField(primary_key=True)
+    id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    author = models.ForeignKey('auth.User')
+    comment_text = models.TextField(blank=False)
+

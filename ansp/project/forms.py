@@ -7,6 +7,7 @@ from project.models import (
     Project,
     File,
     Note,
+    Comment,
 )
 
 class ProjectForm(forms.ModelForm):
@@ -65,3 +66,15 @@ class SearchFileForm(forms.Form):
     
     file_types = forms.CharField(max_length=200, label="",
                                  widget=forms.TextInput(attrs={'placeholder': 'jpg, png, pdf etc.'}))
+
+
+class CommentForm(forms.ModelForm):
+    
+    class Meta:
+        model = Comment
+        exclude = ['id_project', 'author']
+        fields = ['comment_text']
+        labels = {       
+            'comment_text': _("Write a comment"),
+        }
+

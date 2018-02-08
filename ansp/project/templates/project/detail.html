@@ -43,6 +43,11 @@
                     <div class="page-header">
                         <h2><b>Comments</b></h2>
                     </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ comment_form|crispy }}
+                        <button type="submit" class="btn btn-success">Add comment</button>
+                    </form>
                 </div>
             </div>
             <div class="col-md-5">
