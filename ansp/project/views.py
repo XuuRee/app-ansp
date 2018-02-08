@@ -140,7 +140,15 @@ def project_finish(request, pk):
     project = Project.objects.get(pk=pk)
     project.finish = True
     project.save()
-    return redirect('/projects'.format(pk))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def project_continue(request, pk):
+    project = Project.objects.get(pk=pk)
+    project.finish = False
+    project.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class ProjectUpdate(UpdateView):

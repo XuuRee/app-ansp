@@ -11,6 +11,23 @@
                         <h2><b>{{ specific_project.name }}</b></h2>
                         <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a>
                     </div>
+                    {% if specific_project.finish %}
+                        <p><b><span class="glyphicon glyphicon-ok"></span></b> &nbsp;Project has been already finished.</p>
+                        <form action="{% url 'project:project-continue' specific_project.id_project %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
+                            <button class="btn btn-xs btn-success">Open project</button>
+                        </form>
+                        <hr>
+                    {% else %}
+                        <form action="{% url 'project:project-finish' specific_project.id_project %}" method="post">
+                            <p><b><span class="glyphicon glyphicon-pencil"></span></b> &nbsp;This project is not finish.</p>
+                            {% csrf_token %}
+                            <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
+                            <button class="btn btn-xs btn-success">Finish project</button>
+                        </form>
+                        <hr>
+                    {% endif %}
                     {% if specific_project %}
                         <p><b>Author</b> {{ specific_project.author }}</p>
                         <p><b>Description</b><br>{{ specific_project.description }}</p>
@@ -19,15 +36,6 @@
                         <p>Collaborators: </p>
                     {% else %}
                         <h3>No project detail!</h3>
-                    {% endif %}
-                    {% if specific_project.finish %}
-                        <p>Project has been already finished.</p>
-                    {% else %}
-                        <form action="{% url 'project:project-finish' specific_project.id_project %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
-                            <button class="btn btn-success">Project is finished</button>
-                        </form>
                     {% endif %}
                     <!-- <a href="#" class="btn btn-danger">Delete</a> -->
                 </div>
