@@ -39,6 +39,5 @@ class Note(models.Model):
 class Comment(models.Model):
     id_comment = models.AutoField(primary_key=True)
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    author = models.ForeignKey('auth.User')
     comment_text = models.TextField(blank=False)
 

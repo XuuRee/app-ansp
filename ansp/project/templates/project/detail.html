@@ -46,8 +46,20 @@
                     <form method="post">
                         {% csrf_token %}
                         {{ comment_form|crispy }}
-                        <button type="submit" class="btn btn-success">Add comment</button>
+                        <button type="submit" class="btn btn-success" name="CommentFormButton">Add comment</button>
                     </form>
+                    <!-- items -->
+                    {% if comments %}
+                        <br>
+                        <div class="list-group">
+                            {% for c in comments %}
+                                <p>{{c.comment_text}}</p> 
+                                <hr>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>You don't have any comments. Be first!<p>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-5">
@@ -69,7 +81,7 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <button type="submit" class="btn btn-success">Add note</button>
+                    <button type="submit" class="btn btn-success" name="NoteFormButton">Add note</button>
                 </form>
                 <hr>
                 <!-- items -->
@@ -77,7 +89,7 @@
                     <div class="list-group">
                         {% for note in notes %}
                             <div class="bck list-group-item list-group-item-warning list-group-item-action flex-column align-items-start">
-                                <p>{{note.note_text}}<p> 
+                                <p>{{note.note_text}}</p>
                                 <!-- delete button -->
                                 <form action="{% url 'project:delete-note' note.id_note %}" method="post">
                                     {% csrf_token %}

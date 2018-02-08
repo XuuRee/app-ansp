@@ -27,11 +27,15 @@ def index(request):
 @login_required
 def detail(request, pk):
     if request.method == 'POST':    # better solution
-        return add_note(request, pk)
+        if 'NoteFormButton' in request.POST:
+            return add_note(request, pk)
+        if 'CommentFormButton' in request.POST:
+            return add_comment(request, pk)
     else:
         specific_project = Project.objects.get(id_project=pk)
         files = File.objects.filter(id_project=pk)
         notes = Note.objects.filter(id_project=pk)
+        comments = Comment.objects.filter(id_project=pk)
         form = NoteForm()
         comment_form = CommentForm()
         context = {
@@ -39,6 +43,7 @@ def detail(request, pk):
             "files": files,
             "notes": notes,
             "form": form,
+            "comments": comments,
             "comment_form": comment_form,
         }
         return render(request, "project/detail.html", context)
@@ -66,6 +71,17 @@ def add_note(request, pk):
     if form.is_valid():
         note = form.save(commit=False)
         note.id_project = Project.objects.get(id_project=pk)
+        form.save()
+        return redirect('/projects/{}/'.format(pk))
+
+
+@login_required
+def add_comment(request, pk):
+    """ Add a comment to the project. """
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.id_project = Project.objects.get(id_project=pk)
         form.save()
         return redirect('/projects/{}/'.format(pk))
 

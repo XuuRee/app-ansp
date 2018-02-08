@@ -72,7 +72,7 @@ class CommentForm(forms.ModelForm):
     
     class Meta:
         model = Comment
-        exclude = ['id_project', 'author']
+        exclude = ['id_project']
         fields = ['comment_text']
         labels = {       
             'comment_text': _("Write a comment"),
