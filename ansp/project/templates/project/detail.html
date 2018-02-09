@@ -9,7 +9,10 @@
                 <div>
                     <div class="page-header">
                         <h2><b>{{ specific_project.name }}</b></h2>
-                        <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a>
+                        <p>
+                            <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a> /
+                            <a href="#">assign collaborators</a>
+                        </p>
                     </div>
                     {% if specific_project.finish %}
                         <p><b><span class="glyphicon glyphicon-ok"></span></b> &nbsp;Project has been already finished.</p>
