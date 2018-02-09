@@ -74,6 +74,9 @@ class CommentForm(forms.ModelForm):
         model = Comment
         exclude = ['id_project']
         fields = ['comment_text']
+        widgets = {
+          'comment_text': forms.Textarea(attrs={'rows': 3, 'cols': 15}),
+        }
         labels = {       
             'comment_text': _("Write a comment"),
         }

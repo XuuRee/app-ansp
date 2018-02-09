@@ -48,13 +48,16 @@
                         {{ comment_form|crispy }}
                         <button type="submit" class="btn btn-success" name="CommentFormButton">Add comment</button>
                     </form>
+                    <hr>
                     <!-- items -->
                     {% if comments %}
-                        <br>
                         <div class="list-group">
                             {% for c in comments %}
-                                <p>{{c.comment_text}}</p> 
-                                <hr>
+                                <p><span class="glyphicon glyphicon-user"></span><b> &nbsp;{{c.author.username}}</b> wrote:</p>
+                                <p style="margin-left: 20px;">{{c.comment_text}}</p>
+                                {% if not forloop.last %}
+                                    <hr>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     {% else %}

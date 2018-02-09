@@ -82,6 +82,7 @@ def add_comment(request, pk):
     if form.is_valid():
         comment = form.save(commit=False)
         comment.id_project = Project.objects.get(id_project=pk)
+        comment.author = request.user
         form.save()
         return redirect('/projects/{}/'.format(pk))
 
