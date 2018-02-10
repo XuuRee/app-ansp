@@ -11,32 +11,27 @@
                         <h2><b>{{ specific_project.name }}</b></h2>
                         <p>
                             <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a> /
-                            <a href="{% url 'project:assign-collaborators' specific_project.id_project %}">assign collaborators</a>
+                            <a href="{% url 'project:assign-collaborators' specific_project.id_project %}">assign collaborators</a> /
+                            <a href="#">delete collaborators</a>
                         </p>
+                        {% if specific_project.finish %}
+                            <form action="{% url 'project:project-continue' specific_project.id_project %}" style="margin-bottom: 8px;" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
+                                <button class="btn btn-xs btn-warning">Open project</button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'project:project-finish' specific_project.id_project %}" style="margin-bottom: 8px;" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
+                                <button class="btn btn-xs btn-success">Finish project</button>
+                            </form>
+                        {% endif %}
                     </div>
-                    {% if specific_project.finish %}
-                        <p><b><span class="glyphicon glyphicon-ok"></span></b> &nbsp;Project has been already finished.</p>
-                        <form action="{% url 'project:project-continue' specific_project.id_project %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
-                            <button class="btn btn-xs btn-success">Open project</button>
-                        </form>
-                        <hr>
-                    {% else %}
-                        <form action="{% url 'project:project-finish' specific_project.id_project %}" method="post">
-                            <p><b><span class="glyphicon glyphicon-pencil"></span></b> &nbsp;This project is not finish.</p>
-                            {% csrf_token %}
-                            <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
-                            <button class="btn btn-xs btn-success">Finish project</button>
-                        </form>
-                        <hr>
-                    {% endif %}
                     {% if specific_project %}
-                        <p><b>Author</b> {{ specific_project.author }}</p>
                         <p><b>Description</b><br>{{ specific_project.description }}</p>
-                        <p>Created: {{ specific_project.created }}</p>
-                        <p>Deadline: {{ specific_project.deadline }}</p>
-                        <p>Collaborators: </p>
+                        <p>Created: {{ specific_project.created }}<br>Deadline: {{ specific_project.deadline }}</p>
+                        <p><b>Collaborators</b></p>
                         <p>
                             {% for c in specific_project.collaborators.all %}
                                 <b><span class="glyphicon glyphicon-user"></span> &nbsp;{{c.get_username}}</b>
@@ -46,11 +41,17 @@
                     {% else %}
                         <h3>No project detail!</h3>
                     {% endif %}
-                    <!-- <a href="#" class="btn btn-danger">Delete</a> -->
                 </div>
+                <!-- Tasks -->
                 <div>
                     <div class="page-header">
-                        <h2><b>Comments</b></h2>
+                        <h4><b>Tasks</b></h4>
+                    </div>
+                </div>
+                <!-- Comments -->
+                <div>
+                    <div class="page-header">
+                        <h4><b>Comments</b></h4>
                     </div>
                     <form method="post">
                         {% csrf_token %}

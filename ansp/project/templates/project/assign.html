@@ -9,7 +9,7 @@
             <a href="{% url 'project:detail' primary_key %}"><span class="glyphicon glyphicon-arrow-left"></span> back</a>
         </div>
         {% for user in users %}
-            <p>{{user.get_username}}</p>
+            <h6>{{user.get_username}}</h6>
         {% endfor %}
     </div>
 {% endblock%}
