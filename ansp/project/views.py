@@ -1,7 +1,7 @@
 from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm
+from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, SearchUserForm
 from .models import Project, File, Note, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
@@ -163,9 +163,11 @@ def delete_file(request, pk):
 @login_required
 def assign_collaborators(request, pk):
     users = User.objects.all()
+    form = SearchUserForm()
     context = {
         'users': users,
         'primary_key': pk,
+        'form': form,
     }
     return render(request, 'project/assign.html', context)
 
