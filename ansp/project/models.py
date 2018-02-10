@@ -2,11 +2,13 @@ import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 
 class Project(models.Model):
     id_project = models.AutoField(primary_key=True)
-    author = models.ForeignKey('auth.User')
+    #author = models.ForeignKey('auth.User')
+    collaborators = models.ManyToManyField(User)
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     created = models.DateField(_("Created"), default=datetime.date.today)

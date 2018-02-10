@@ -17,10 +17,15 @@ IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 def index(request):
     """ Index page. """
     author_name = request.user.username
-    all_projects = Project.objects.filter(author=request.user)
+    all_projects, projects = Project.objects.all(), []
+    # better solution
+    for project in all_projects:
+        if request.user in project.collaborators.all():
+            projects.append(project)
+    # ---
     context = {
         'author_name': author_name,
-        'all_projects': all_projects
+        'all_projects': projects,
     }
     return render(request, "project/index.html/", context)
 
@@ -57,8 +62,8 @@ def create_project(request):
         form = ProjectForm(request.POST)
         if form.is_valid():
             project = form.save(commit=False)
-            project.author = request.user
             form.save()
+            project.collaborators.add(request.user)
             return redirect('/projects')
     else:
         form = ProjectForm()

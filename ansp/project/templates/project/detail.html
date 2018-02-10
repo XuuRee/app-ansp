@@ -37,6 +37,12 @@
                         <p>Created: {{ specific_project.created }}</p>
                         <p>Deadline: {{ specific_project.deadline }}</p>
                         <p>Collaborators: </p>
+                        <p>
+                            {% for c in specific_project.collaborators.all %}
+                                <b><span class="glyphicon glyphicon-user"></span> &nbsp;{{c.get_username}}</b>
+                                {% if not forloop.last %}, {% endif %} 
+                            {% endfor %}
+                        </p>
                     {% else %}
                         <h3>No project detail!</h3>
                     {% endif %}
