@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
@@ -152,6 +153,16 @@ def file_handler(request, pk):
 def delete_file(request, pk):
     File.objects.get(pk=pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def assign_collaborators(request, pk):
+    users = User.objects.all()
+    context = {
+        'users': users,
+        'primary_key': pk,
+    }
+    return render(request, 'project/assign.html', context)
 
 
 @login_required

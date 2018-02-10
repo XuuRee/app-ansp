@@ -1,0 +1,15 @@
+{% extends 'project/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Assign collaborators{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-header">
+            <h2>Assign collaborators</h2>
+            <a href="{% url 'project:detail' primary_key %}"><span class="glyphicon glyphicon-arrow-left"></span> back</a>
+        </div>
+        {% for user in users %}
+            <p>{{user.get_username}}</p>
+        {% endfor %}
+    </div>
+{% endblock%}
