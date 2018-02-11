@@ -164,24 +164,27 @@ def delete_file(request, pk):
 def add_remove_member(request, pk, operation):
     """ Add or remove member from project according to
     given operation. """
-    success = False
+    success = True
     form = ManageUserForm(request.POST)
     if form.is_valid():
-        project = Project.objects.get(id_project=pk)
         userstring = request.POST.get('users')
-        user = User.objects.get(username=userstring)   # not only username?
-        if operation == 'add':
-            project.collaborators.add(user)
-            success = True
-        elif operation == 'remove':
-            project.collaborators.remove(user)
-            success = True 
+        try:
+            project = Project.objects.get(id_project=pk)
+            user = User.objects.get(username=userstring)   # not only username?
+        except User.DoesNotExist or Project.DoesNotExit:
+            success = False
+        # what else?
+        if success:
+            if operation == 'add':
+                project.collaborators.add(user)
+            elif operation == 'remove':
+                project.collaborators.remove(user)
     form = ManageUserForm()
     context = {
         'primary_key': pk,
         'form': form,
         'success': success,
-        'string': operation,
+        'operation': operation,
     }
     return render(request, 'project/member_form.html', context)
 

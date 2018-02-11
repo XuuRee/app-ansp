@@ -14,7 +14,14 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <strong>Success!</strong> Your changes have been made.
+                    <strong>Success!</strong> Your '{{operation}}' operation have been made.
+                </div>
+            {% else %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>Oh no!</strong> User was not found.
                 </div>
             {% endif %}
             <form method="post">
