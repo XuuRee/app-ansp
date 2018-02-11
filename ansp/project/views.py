@@ -160,33 +160,28 @@ def delete_file(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def add_member(request, pk):
-    """ Add member to the project. """
-    form = ManageUserForm(request.POST)
-    if form.is_valid():
-        project = Project.objects.get(id_project=pk)
-        userstring = request.POST.get('users')
-        user = User.objects.get(username=userstring)
-        project.collaborators.add(user)
-        return redirect('/projects/{}/members'.format(pk))
-
-
-def remove_member(request, pk):
-    """ Remove member to the project. """
+# what happen if remove yourself?
+def add_remove_member(request, pk, operation):
+    """ Add or remove member from project according to
+    given operation. """
     success = False
     form = ManageUserForm(request.POST)
     if form.is_valid():
         project = Project.objects.get(id_project=pk)
         userstring = request.POST.get('users')
-        user = User.objects.get(username=userstring)
-        project.collaborators.remove(user)
-        success = True
-        #return redirect('/projects/{}/members'.format(pk))
+        user = User.objects.get(username=userstring)   # not only username?
+        if operation == 'add':
+            project.collaborators.add(user)
+            success = True
+        elif operation == 'remove':
+            project.collaborators.remove(user)
+            success = True 
     form = ManageUserForm()
     context = {
         'primary_key': pk,
         'form': form,
         'success': success,
+        'string': operation,
     }
     return render(request, 'project/member_form.html', context)
 
@@ -195,9 +190,9 @@ def remove_member(request, pk):
 def manage_members(request, pk):
     if request.method == 'POST':
         if 'SelectMemberButton' in request.POST:
-            return add_member(request, pk)   
+            return add_remove_member(request, pk, 'add')   
         if 'RemoveUserButton' in request.POST:
-            return remove_member(request, pk)
+            return add_remove_member(request, pk, 'remove')
         if 'SearchUserButton' in request.POST:
             return filter_files(request, pk)
     else:
