@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/delete-file/$', views.delete_file, name="delete-file"),
     url(r'^(?P<pk>[0-9]+)/project-finish/$', views.project_finish, name="project-finish"),
     url(r'^(?P<pk>[0-9]+)/project-continue/$', views.project_continue, name="project-continue"),
-    url(r'^(?P<pk>[0-9]+)/assign/$', views.assign_collaborators, name="assign-collaborators"),
+    url(r'^(?P<pk>[0-9]+)/members/$', views.manage_members, name="manage-members"),
     url(r'^(?P<pk>[0-9]+)/update/$', views.ProjectUpdate.as_view(), name="project-update"),
     url(r'^(?P<pk>[0-9]+)/delete/$', views.ProjectDelete.as_view(), name="project-delete"),
 ]

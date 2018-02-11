@@ -1,7 +1,7 @@
 from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, SearchUserForm
+from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, ManageUserForm
 from .models import Project, File, Note, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
@@ -160,16 +160,54 @@ def delete_file(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@login_required
-def assign_collaborators(request, pk):
-    users = User.objects.all()
-    form = SearchUserForm()
+def add_member(request, pk):
+    """ Add member to the project. """
+    form = ManageUserForm(request.POST)
+    if form.is_valid():
+        project = Project.objects.get(id_project=pk)
+        userstring = request.POST.get('users')
+        user = User.objects.get(username=userstring)
+        project.collaborators.add(user)
+        return redirect('/projects/{}/members'.format(pk))
+
+
+def remove_member(request, pk):
+    """ Remove member to the project. """
+    success = False
+    form = ManageUserForm(request.POST)
+    if form.is_valid():
+        project = Project.objects.get(id_project=pk)
+        userstring = request.POST.get('users')
+        user = User.objects.get(username=userstring)
+        project.collaborators.remove(user)
+        success = True
+        #return redirect('/projects/{}/members'.format(pk))
+    form = ManageUserForm()
     context = {
-        'users': users,
         'primary_key': pk,
         'form': form,
+        'success': success,
     }
-    return render(request, 'project/assign.html', context)
+    return render(request, 'project/member_form.html', context)
+
+
+@login_required
+def manage_members(request, pk):
+    if request.method == 'POST':
+        if 'SelectMemberButton' in request.POST:
+            return add_member(request, pk)   
+        if 'RemoveUserButton' in request.POST:
+            return remove_member(request, pk)
+        if 'SearchUserButton' in request.POST:
+            return filter_files(request, pk)
+    else:
+        form = ManageUserForm()
+        context = {
+            'primary_key': pk,
+            'form': form,
+            'success': None,
+        }
+        return render(request, 'project/member_form.html', context)
 
 
 @login_required

@@ -11,8 +11,7 @@
                         <h2><b>{{ specific_project.name }}</b></h2>
                         <p>
                             <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a> /
-                            <a href="{% url 'project:assign-collaborators' specific_project.id_project %}">assign collaborators</a> /
-                            <a href="#">delete collaborators</a>
+                            <a href="{% url 'project:manage-members' specific_project.id_project %}">manage collaborators</a>
                         </p>
                         {% if specific_project.finish %}
                             <form action="{% url 'project:project-continue' specific_project.id_project %}" style="margin-bottom: 8px;" method="post">

@@ -82,9 +82,9 @@ class CommentForm(forms.ModelForm):
         }
 
 
-class SearchUserForm(forms.Form):
+class ManageUserForm(forms.Form):
     
     users = forms.CharField(max_length=200, label="",
-                            widget=forms.TextInput(attrs={'placeholder': 'name of the user'}))
+                            widget=forms.TextInput(attrs={'placeholder': 'username'}))
     
     
