@@ -173,12 +173,10 @@ def add_remove_member(request, pk, operation):
             user = User.objects.get(username=userstring)   # not only username?
         except User.DoesNotExist or Project.DoesNotExit:
             success = False
-        # what else?
-        if success:
-            if operation == 'add':
-                project.collaborators.add(user)
-            elif operation == 'remove':
-                project.collaborators.remove(user)
+        if success and operation == 'add':
+            project.collaborators.add(user)
+        if success and operation == 'remove':
+            project.collaborators.remove(user)
     form = ManageUserForm()
     context = {
         'primary_key': pk,
