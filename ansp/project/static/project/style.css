@@ -29,7 +29,15 @@ h5 {
 }
 
 h6 {
+    font-size: 18px;
+}
+
+.badge-circle {
     font-size: 22px;
+    background-color: #428bca;
+    border-radius: 1em;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 h1, h2, h3, h4, h5, h6 {

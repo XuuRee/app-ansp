@@ -71,17 +71,6 @@ def create_project(request):
 
 
 @login_required
-def add_note(request, pk):
-    """ Add a note to the project. """
-    form = NoteForm(request.POST)
-    if form.is_valid():
-        note = form.save(commit=False)
-        note.id_project = Project.objects.get(id_project=pk)
-        form.save()
-        return redirect('/projects/{}/'.format(pk))
-
-
-@login_required
 def add_comment(request, pk):
     """ Add a comment to the project. """
     form = CommentForm(request.POST)
@@ -89,6 +78,24 @@ def add_comment(request, pk):
         comment = form.save(commit=False)
         comment.id_project = Project.objects.get(id_project=pk)
         comment.author = request.user
+        form.save()
+        return redirect('/projects/{}/'.format(pk))
+
+
+@login_required
+def delete_comment(request, pk):
+    """ Delete comment from the project. """
+    Comment.objects.get(pk=pk).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
+
+
+@login_required
+def add_note(request, pk):
+    """ Add a note to the project. """
+    form = NoteForm(request.POST)
+    if form.is_valid():
+        note = form.save(commit=False)
+        note.id_project = Project.objects.get(id_project=pk)
         form.save()
         return redirect('/projects/{}/'.format(pk))
 
