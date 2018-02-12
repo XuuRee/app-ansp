@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from datetime import date
 
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
@@ -30,6 +31,10 @@ def index(request):
     return render(request, "project/index.html/", context)
 
 
+def is_past_due(project_date):
+    return date.today() > project_date
+
+
 @login_required
 def detail(request, pk):
     if request.method == 'POST':    # better solution
@@ -42,15 +47,16 @@ def detail(request, pk):
         files = File.objects.filter(id_project=pk)
         notes = Note.objects.filter(id_project=pk)
         comments = Comment.objects.filter(id_project=pk)
-        form = NoteForm()
-        comment_form = CommentForm()
+        note_form, comment_form = NoteForm(), CommentForm()
+        date_deadline = is_past_due(specific_project.deadline)
         context = {
-            "specific_project": specific_project,
-            "files": files,
-            "notes": notes,
-            "form": form,
-            "comments": comments,
-            "comment_form": comment_form,
+            'specific_project': specific_project,
+            'files': files,
+            'notes': notes,
+            'form': note_form,
+            'comments': comments,
+            'comment_form': comment_form,
+            'date_deadline': date_deadline,
         }
         return render(request, "project/detail.html", context)
 

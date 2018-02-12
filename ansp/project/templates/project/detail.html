@@ -27,9 +27,25 @@
                             </form>
                         {% endif %}
                     </div>
+                    {% if not specific_project.finish and date_deadline %}
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <strong>Deadline!</strong> Your project is still not finish.
+                        </div>
+                    {% endif %}
                     {% if specific_project %}
-                        <p><b>Description</b><br>{{ specific_project.description }}</p>
-                        <p>Created: {{ specific_project.created }}<br>Deadline: {{ specific_project.deadline }}</p>
+                        <p style="text-align: justify;"><b>Description</b><br>{{ specific_project.description }}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><b>Created<br></b>{{ specific_project.created }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><b>Deadline<br></b>{{ specific_project.deadline }}</p>
+                            </div>
+                        </div>
+                        <hr>
                         <p><b>Collaborators</b></p>
                         <p>
                             {% for c in specific_project.collaborators.all %}

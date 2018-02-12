@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 
 class Project(models.Model):
     id_project = models.AutoField(primary_key=True)
-    #author = models.ForeignKey('auth.User')
     collaborators = models.ManyToManyField(User)
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
