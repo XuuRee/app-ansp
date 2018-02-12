@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.forms import ModelForm, Form
 from django import forms 
 from django.forms.models import inlineformset_factory
+from django.contrib.auth.models import User
 from project.models import (
     Project,
     File,
@@ -88,3 +89,12 @@ class ManageUserForm(forms.Form):
                             widget=forms.TextInput(attrs={'placeholder': 'username'}))
     
     
+class RemoveUserForm(forms.Form):
+    
+    users = forms.ChoiceField(choices = [], label="Remove user from project")    #model choice field
+    
+    def __init__(self, id_project, *args, **kwargs):
+        super(RemoveUserForm, self).__init__(*args, **kwargs)
+        project = Project.objects.get(id_project=id_project)
+        self.fields['users'].choices = ((x.username, x.username) for x in project.collaborators.all())
+

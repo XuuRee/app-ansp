@@ -1,7 +1,7 @@
 from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, ManageUserForm
+from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, ManageUserForm, RemoveUserForm
 from .models import Project, File, Note, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
@@ -32,6 +32,7 @@ def index(request):
 
 
 def is_past_due(project_date):
+    """ Check if deadline is past due. """
     return date.today() > project_date
 
 
@@ -178,9 +179,17 @@ def add_remove_member(request, pk, operation):
     """ Add or remove member from project according to
     given operation. """
     success = True
-    form = ManageUserForm(request.POST)
-    if form.is_valid():
+    if operation == 'remove':
+        form = ManageUserForm(request.POST)
         userstring = request.POST.get('users')
+    if operation == 'remove':
+        form = RemoveUserForm(request.POST)
+        users = form.cleaned_data['users']
+        userstring = dict(form.fields['users'].choices)[users]
+        #userstring = request.POST.get('users')
+        #userstring = userstring[1]
+    if form.is_valid():
+        #userstring = request.POST.get('users')
         try:
             project = Project.objects.get(id_project=pk)
             user = User.objects.get(username=userstring)   # not only username?
@@ -211,9 +220,11 @@ def manage_members(request, pk):
             return filter_files(request, pk)
     else:
         form = ManageUserForm()
+        remove_form = RemoveUserForm(pk)
         context = {
             'primary_key': pk,
             'form': form,
+            'remove_form': remove_form,
             'success': None,
         }
         return render(request, 'project/member_form.html', context)
