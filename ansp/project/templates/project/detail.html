@@ -137,10 +137,18 @@
                 {% if notes %}
                     <div class="list-group">
                         {% for note in notes %}
-                            <div class="bs-callout bs-callout-primary">
+                            <div id="{{note.id_note}}" class="bs-callout bs-callout-primary">
                                 <div class="row">
                                     <div class="col-md-10">
                                         <p style="text-align: justify;">{{note.note_text}}</p>
+                                        <a style="cursor: pointer;" onclick="changeVisibility({{note.id_note}})">change colours &nbsp;<span class="glyphicon glyphicon-chevron-down"></span></a>
+                                        <!-- change visibility only add or remove hidden -->
+                                        <div id="visible{{note.id_note}}" class ="btn-toolbar btn-group-xs hidden">
+                                            <button type ="button" onClick="changeToPrimary({{note.id_note}})" class ="btn btn-default btn-primary">&nbsp; &nbsp;</button>
+                                            <button type ="button" onClick="changeToSuccess({{note.id_note}})" class ="btn btn-default btn-success">&nbsp; &nbsp;</button>
+                                            <button type ="button" onClick="changeToWarning({{note.id_note}})" class ="btn btn-default btn-warning">&nbsp; &nbsp;</button>
+                                            <button type ="button" onClick="changeToDanger({{note.id_note}})" class ="btn btn-default btn-danger">&nbsp; &nbsp;</button>
+                                        </div>
                                     </div>
                                     <div class="col-md-2">
                                         <form action="{% url 'project:delete-note' note.id_note %}" method="post">
@@ -154,6 +162,27 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        <script type="text/javascript">
+                            function changeToPrimary(id) {
+                                document.getElementById(id).className = "bs-callout bs-callout-primary";
+                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs hidden";
+                            }
+                            function changeToSuccess(id) {
+                                document.getElementById(id).className = "bs-callout bs-callout-success";
+                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs hidden";
+                            }
+                            function changeToWarning(id) {
+                                document.getElementById(id).className = "bs-callout bs-callout-warning";
+                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs hidden";
+                            }
+                            function changeToDanger(id) {
+                                document.getElementById(id).className = "bs-callout bs-callout-danger";
+                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs hidden";
+                            }
+                            function changeVisibility(id) {
+                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs";
+                            }
+                        </script>
                     </div>
                 {% else %}
                     <p>You don't have any notes.<p>
