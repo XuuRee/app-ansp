@@ -10,6 +10,7 @@
                     <div class="page-header">
                         <h2><b>{{ specific_project.name }}</b></h2>
                         <p>
+                            <a href="#"><span class="glyphicon glyphicon-arrow-left"></span> home</a> /
                             <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a> /
                             <a href="{% url 'project:manage-members' specific_project.id_project %}">manage collaborators</a>
                         </p>
@@ -74,7 +75,6 @@
                         <button type="submit" class="btn btn-success" name="CommentFormButton">Add comment</button>
                     </form>
                     <hr>
-                    <!-- items -->
                     {% if comments %}
                         <div class="list-group">
                             {% for c in comments %}
@@ -105,28 +105,10 @@
                                 {% if not forloop.last %}
                                     <hr>
                                 {% endif %}
-                                <!--
-                                <h6>
-                                    <span class="glyphicon glyphicon-user"></span><b> &nbsp;{{c.author.username}}</b>
-                                    {% if c.author.username == user.get_username %}
-                                        <span class="label label-primary">it is you</span>
-                                        
-                                        <form action="{% url 'project:delete-comment' c.id_comment %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="id_note" value="{{ c.id_comment }}"/>
-                                            <button type="submit" class="btn btn-xs">remove</button>
-                                        </form>
-                                    {% endif %}
-                                </h6>
-                                <p style="margin-left: 30px;">{{c.comment_text}}</p>
-                                {% if not forloop.last %}
-                                    <hr>
-                                {% endif %}
-                                -->
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p>You don't have any comments. Be first!<p>
+                        <p>You don't have any comments.<p>
                     {% endif %}
                 </div>
             </div>
@@ -143,7 +125,7 @@
                 </div>
                 <!-- notes -->
                 <div class="page-header">
-                    <h4><b>Notes</b></h4>
+                    <h4><b>Private notes</b> <span class="badge badge-circle">{{notes|length}}</span></h4>
                     <p>You can keep all your notes here.</p>
                 </div>
                 <form method="post">
@@ -152,18 +134,24 @@
                     <button type="submit" class="btn btn-success" name="NoteFormButton">Add note</button>
                 </form>
                 <hr>
-                <!-- items -->
                 {% if notes %}
                     <div class="list-group">
                         {% for note in notes %}
-                            <div class="bck list-group-item list-group-item-warning list-group-item-action flex-column align-items-start">
-                                <p>{{note.note_text}}</p>
-                                <!-- delete button -->
-                                <form action="{% url 'project:delete-note' note.id_note %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="id_note" value="{{ note.id_note }}"/>
-                                    <button type="submit" class="btn btn-xs btn-warning">delete note</button>
-                                </form>
+                            <div class="bs-callout bs-callout-primary">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <p style="text-align: justify;">{{note.note_text}}</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <form action="{% url 'project:delete-note' note.id_note %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_note" value="{{ note.id_note }}"/>
+                                            <button style="margin-left: 10px;" type="submit" class="btn btn-xs">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         {% endfor %}
                     </div>

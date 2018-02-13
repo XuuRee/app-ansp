@@ -33,6 +33,8 @@ def index(request):
 
 def is_past_due(project_date):
     """ Check if deadline is past due. """
+    if project_date is None:
+        return False
     return date.today() > project_date
 
 
@@ -47,6 +49,7 @@ def detail(request, pk):
         specific_project = Project.objects.get(id_project=pk)
         files = File.objects.filter(id_project=pk)
         notes = Note.objects.filter(id_project=pk)
+        notes = notes.filter(author=request.user)
         comments = Comment.objects.filter(id_project=pk)
         note_form, comment_form = NoteForm(), CommentForm()
         date_deadline = is_past_due(specific_project.deadline)
@@ -103,6 +106,7 @@ def add_note(request, pk):
     if form.is_valid():
         note = form.save(commit=False)
         note.id_project = Project.objects.get(id_project=pk)
+        note.author = request.user
         form.save()
         return redirect('/projects/{}/'.format(pk))
 
