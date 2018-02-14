@@ -1,7 +1,7 @@
 from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, ManageUserForm, RemoveUserForm
+from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, ManageUserForm, ChooseUserForm
 from .models import Project, File, Note, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
@@ -178,60 +178,56 @@ def delete_file(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# what happen if remove yourself?
-def add_remove_member(request, pk, operation):
-    """ Add or remove member from project according to
+def remove_member(request, project, pk):
+    """ Remove a member from project according to
     given operation. """
-    success = True
-    if operation == 'remove':
-        form = ManageUserForm(request.POST)
-        userstring = request.POST.get('users')
-    if operation == 'remove':
-        form = RemoveUserForm(request.POST)
-        users = form.cleaned_data['users']
-        userstring = dict(form.fields['users'].choices)[users]
-        #userstring = request.POST.get('users')
-        #userstring = userstring[1]
+    userstring = request.POST.get('user')
+    try:
+        user = User.objects.get(username=userstring)   # not only username?
+    except User.DoesNotExist or Project.DoesNotExit:
+        return False
+    project.collaborators.remove(user)
+    return True
+
+
+def add_member(request, project, pk):
+    """ Add a member from project according to
+    given operation. """
+    form = ManageUserForm(request.POST)
     if form.is_valid():
-        #userstring = request.POST.get('users')
+        userstring = form.cleaned_data['user']
         try:
-            project = Project.objects.get(id_project=pk)
             user = User.objects.get(username=userstring)   # not only username?
         except User.DoesNotExist or Project.DoesNotExit:
-            success = False
-        if success and operation == 'add':
-            project.collaborators.add(user)
-        if success and operation == 'remove':
-            project.collaborators.remove(user)
-    form = ManageUserForm()
-    context = {
-        'primary_key': pk,
-        'form': form,
-        'success': success,
-        'operation': operation,
-    }
-    return render(request, 'project/member_form.html', context)
+            return False
+        project.collaborators.add(user)
+        return True
+    return False
 
 
 @login_required
 def manage_members(request, pk):
+    # what happen if remove myself?
+    project = Project.objects.get(id_project=pk)
+    add_success, remove_success = False, False
     if request.method == 'POST':
         if 'SelectMemberButton' in request.POST:
-            return add_remove_member(request, pk, 'add')   
+            add_success = add_member(request, project, pk)   
         if 'RemoveUserButton' in request.POST:
-            return add_remove_member(request, pk, 'remove')
+            remove_success = remove_member(request, project, pk)
         if 'SearchUserButton' in request.POST:
             return filter_files(request, pk)
-    else:
-        form = ManageUserForm()
-        remove_form = RemoveUserForm(pk)
-        context = {
-            'primary_key': pk,
-            'form': form,
-            'remove_form': remove_form,
-            'success': None,
-        }
-        return render(request, 'project/member_form.html', context)
+    add_form = ManageUserForm()
+    choices = ((x.username, x.username) for x in project.collaborators.all())
+    remove_form = ChooseUserForm(choices)  
+    context = {
+        'primary_key': pk,
+        'add_form': add_form,
+        'remove_form': remove_form,
+        'add_success': add_success,
+        'remove_success': remove_success,
+    }
+    return render(request, 'project/member_form.html', context)
 
 
 @login_required

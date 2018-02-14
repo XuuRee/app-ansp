@@ -85,16 +85,15 @@ class CommentForm(forms.ModelForm):
 
 class ManageUserForm(forms.Form):
     
-    users = forms.CharField(max_length=200, label="",
+    user = forms.CharField(max_length=200, label="",
                             widget=forms.TextInput(attrs={'placeholder': 'username'}))
     
     
-class RemoveUserForm(forms.Form):
+class ChooseUserForm(forms.Form):
     
-    users = forms.ChoiceField(choices = [], label="Remove user from project")    #model choice field
+    user = forms.ChoiceField(choices = [], label="Choose user from project")
     
-    def __init__(self, id_project, *args, **kwargs):
-        super(RemoveUserForm, self).__init__(*args, **kwargs)
-        project = Project.objects.get(id_project=id_project)
-        self.fields['users'].choices = ((x.username, x.username) for x in project.collaborators.all())
+    def __init__(self, choices, *args, **kwargs):
+        super(ChooseUserForm, self).__init__(*args, **kwargs)
+        self.fields['user'].choices = choices
 
