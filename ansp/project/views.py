@@ -184,7 +184,7 @@ def remove_member(request, project, pk):
     userstring = request.POST.get('user')
     try:
         user = User.objects.get(username=userstring)   # not only username?
-    except User.DoesNotExist or Project.DoesNotExit:
+    except User.DoesNotExist:
         return False
     project.collaborators.remove(user)
     return True
@@ -198,30 +198,45 @@ def add_member(request, project, pk):
         userstring = form.cleaned_data['user']
         try:
             user = User.objects.get(username=userstring)   # not only username?
-        except User.DoesNotExist or Project.DoesNotExit:
+        except User.DoesNotExist:
             return False
         project.collaborators.add(user)
         return True
     return False
+
+# authenticate user
+def search_members(request, project, pk):
+    """ Search specific user in database of users. """
+    result_list = []
+    form = ManageUserForm(request.POST)
+    if form.is_valid():
+        userstring = form.cleaned_data['user']
+        all_users = User.objects.all()
+        for user in all_users:
+            if userstring in user.username:
+                result_list.append(user)
+    return result_list
 
 
 @login_required
 def manage_members(request, pk):
     # what happen if remove myself?
     project = Project.objects.get(id_project=pk)
-    add_success, remove_success = False, False
+    searched_members = []
+    add_success, remove_success = None, None
     if request.method == 'POST':
         if 'SelectMemberButton' in request.POST:
             add_success = add_member(request, project, pk)   
         if 'RemoveUserButton' in request.POST:
             remove_success = remove_member(request, project, pk)
         if 'SearchUserButton' in request.POST:
-            return filter_files(request, pk)
+            searched_members = search_members(request, project, pk)
     add_form = ManageUserForm()
     choices = ((x.username, x.username) for x in project.collaborators.all())
     remove_form = ChooseUserForm(choices)  
     context = {
         'primary_key': pk,
+        'searched_members': searched_members,
         'add_form': add_form,
         'remove_form': remove_form,
         'add_success': add_success,
