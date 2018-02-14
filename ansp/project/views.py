@@ -204,7 +204,20 @@ def add_member(request, project, pk):
         return True
     return False
 
-# authenticate user
+
+@login_required
+def add_searched_member(request, pk):
+    print ("ID_USER ", pk)
+    id_project = request.GET["pk"]
+    print ("ID ", id_project)
+    project = Project.objects.get(id_project=id_project)
+    user = User.object.get(id=id_user)
+    project.collaborators.add(user)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+
+# not search authenticate user, and user that are already
+# in project
 def search_members(request, project, pk):
     """ Search specific user in database of users. """
     result_list = []

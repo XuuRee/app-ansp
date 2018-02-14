@@ -10,6 +10,8 @@
                 <a href="{% url 'project:detail' primary_key %}"><span class="glyphicon glyphicon-arrow-left"></span> back</a> /
                 <a href="#"> don't want be in this project</a>
             </div>
+            <p>You can join...</p>
+            <hr>
             {% if add_success is not None or remove_success is not None %}
                 {% if add_success %}
                     <div class="alert alert-warning alert-dismissible" role="alert">
@@ -49,7 +51,11 @@
         </div>
         <div class="col-md-5">
             <div class="page-header">
-                <h5><b>Search members</b></h5>
+                <h5><b>Search members</b>
+                    {% if searched_members %}
+                        <span class="badge badge-circle">{{searched_members|length}}</span>
+                    {% endif %}
+                </h5>
                 <p>List of all register people in application.</p>
                 <form class="form-inline" method="post">
                     <div class="form-group">
@@ -69,7 +75,13 @@
                             <p><b>{{member.get_username}}</b><br>{{member.get_full_name}}</p>
                         </div>
                         <div class="col-md-1">
-                            <h6><span class="glyphicon glyphicon-plus"></span></h6>
+                            <form action="{% url 'project:add-searched-member' member.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_user" value="{{ member.id }}"/>
+                                <button type="submit" class="btn btn-sm">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                     {% if not forloop.last %}
@@ -79,11 +91,6 @@
             {% else %}
                 <p>Please type searched username.</p>
             {% endif %}
-            <!-- 
-            {% for user in users %}
-                <h6><span class="glyphicon glyphicon-user"></span> &nbsp;{{user.get_username}}</h6>
-            {% endfor %}
-            -->
         </div>
     </div>
 {% endblock%}

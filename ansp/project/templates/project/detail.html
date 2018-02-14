@@ -99,7 +99,7 @@
                                         {% if c.author.username == user.get_username %}
                                             <form action="{% url 'project:delete-comment' c.id_comment %}" method="post">
                                                 {% csrf_token %}
-                                                <input type="hidden" name="id_note" value="{{ c.id_comment }}"/>
+                                                <input type="hidden" name="id_note" value="{{ c.id_comment }}"/> <!-- id comment -->
                                                 <button type="submit" class="btn btn-xs">
                                                     <span class="glyphicon glyphicon-remove"></span>
                                                 </button>
