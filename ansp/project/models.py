@@ -43,4 +43,13 @@ class Comment(models.Model):
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
     author = models.ForeignKey('auth.User', null=True) # delete null
     comment_text = models.TextField(blank=False)
+    
+    
+class Task(models.Model):
+    id_task = models.AutoField(primary_key=True)
+    id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    collaborators = models.ManyToManyField(User)
+    description = models.TextField(blank=False)
+    important = models.BooleanField(default=False)
+    finish = models.BooleanField(default=False)
 
