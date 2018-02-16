@@ -75,7 +75,7 @@
                             <p><b>{{member.get_username}}</b><br>{{member.get_full_name}}</p>
                         </div>
                         <div class="col-md-1">
-                            <form action="{% url 'project:add-searched-member' member.id %}" method="post">
+                            <form action="{% url 'project:add-searched-member' primary_key %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="id_user" value="{{ member.id }}"/>
                                 <button type="submit" class="btn btn-sm">

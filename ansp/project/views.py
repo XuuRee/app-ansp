@@ -207,14 +207,18 @@ def add_member(request, project, pk):
 
 @login_required
 def add_searched_member(request, pk):
-    print ("ID_USER ", pk)
-    id_project = request.GET["pk"]
-    print ("ID ", id_project)
-    project = Project.objects.get(id_project=id_project)
-    user = User.object.get(id=id_user)
+    id_user = request.POST["id_user"]
+    project = Project.objects.get(id_project=pk)
+    user = User.objects.get(id=id_user)
     project.collaborators.add(user)
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    
+    context = {
+        'primary_key': pk,
+        'searched_members': [],
+        'add_success': True,
+        'remove_success': None,
+    }
+    return http_members(request, context)
+
 
 # not search authenticate user, and user that are already
 # in project
@@ -231,6 +235,17 @@ def search_members(request, project, pk):
     return result_list
 
 
+def http_members(request, context):
+    pk = context.get("primary_key")
+    project = Project.objects.get(id_project=pk)
+    add_form = ManageUserForm()
+    choices = ((x.username, x.username) for x in project.collaborators.all())
+    remove_form = ChooseUserForm(choices)  
+    context['add_form'] = add_form
+    context['remove_form'] = remove_form
+    return render(request, 'project/member_form.html', context)
+
+
 @login_required
 def manage_members(request, pk):
     # what happen if remove myself?
@@ -244,18 +259,13 @@ def manage_members(request, pk):
             remove_success = remove_member(request, project, pk)
         if 'SearchUserButton' in request.POST:
             searched_members = search_members(request, project, pk)
-    add_form = ManageUserForm()
-    choices = ((x.username, x.username) for x in project.collaborators.all())
-    remove_form = ChooseUserForm(choices)  
     context = {
         'primary_key': pk,
         'searched_members': searched_members,
-        'add_form': add_form,
-        'remove_form': remove_form,
         'add_success': add_success,
         'remove_success': remove_success,
     }
-    return render(request, 'project/member_form.html', context)
+    return http_members(request, context)
 
 
 @login_required
