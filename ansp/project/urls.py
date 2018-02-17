@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/delete-comment/$', views.delete_comment, name="delete-comment"),
     url(r'^(?P<pk>[0-9]+)/members/$', views.manage_members, name="manage-members"),
     url(r'^(?P<pk>[0-9]+)/members/add-searched-member/$', views.add_searched_member, name="add-searched-member"),
+    url(r'^(?P<pk>[0-9]+)/create-task/$', views.create_task, name="create-task"),
     url(r'^(?P<pk>[0-9]+)/update/$', views.ProjectUpdate.as_view(), name="project-update"),
     url(r'^(?P<pk>[0-9]+)/delete/$', views.ProjectDelete.as_view(), name="project-delete"),
 ]

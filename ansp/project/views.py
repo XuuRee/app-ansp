@@ -1,8 +1,8 @@
 from django.views.generic.edit import DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
-from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, ManageUserForm, ChooseUserForm
-from .models import Project, File, Note, Comment
+from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, ManageUserForm, ChooseUserForm, TaskForm
+from .models import Project, File, Note, Comment, Task
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
@@ -266,6 +266,27 @@ def manage_members(request, pk):
         'remove_success': remove_success,
     }
     return http_members(request, context)
+
+
+########################################################
+# TASK FUNCTIONS
+########################################################
+
+@login_required
+def create_task(request, pk):
+    """ Create a new task. """
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.id_project = Project.objects.get(id_project=pk)
+            form.save()
+            return redirect('/projects/{}/'.format(pk))
+    else:
+        project = Project.objects.get(id_project=pk)
+        choices = ((x.username, x.username) for x in project.collaborators.all())
+        task_form = TaskForm(choices)
+        return render(request, 'project/task_form.html', {'task_form': task_form})
 
 
 @login_required

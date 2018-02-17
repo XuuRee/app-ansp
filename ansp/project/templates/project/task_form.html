@@ -1,0 +1,23 @@
+{% extends 'project/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Assign collaborators{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-md-4">
+            <div class="page-header">
+                <h4>Add task</h4>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                {{ task_form|crispy }}
+                <button type="submit" class="btn btn-success" name="AddTaskButton">Add to project</button>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <div class="page-header">
+                <h4>Tasks</h4>
+            </div>
+        </div>
+    </div>
+{% endblock%}

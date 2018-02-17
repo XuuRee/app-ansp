@@ -9,6 +9,7 @@ from project.models import (
     File,
     Note,
     Comment,
+    Task,
 )
 
 class ProjectForm(forms.ModelForm):
@@ -96,4 +97,25 @@ class ChooseUserForm(forms.Form):
     def __init__(self, choices, *args, **kwargs):
         super(ChooseUserForm, self).__init__(*args, **kwargs)
         self.fields['user'].choices = choices
+
+
+class TaskForm(forms.ModelForm):
+    
+    user = forms.ChoiceField(widget=forms.CheckboxSelectMultiple(), choices=[], label="Choose user from project")
+    
+    def __init__(self, choices, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        self.fields['user'].choices = choices
+    
+    class Meta:
+        model = Task
+        fields = ['important', 'description']
+        widgets = {
+          'description': forms.Textarea(attrs={'rows': 4}),
+        }
+        labels = {
+            'decription': _('Description'),
+            'important': _('Is this important task?'),
+            'Collaborators': _('Collaborators'),
+        }
 
