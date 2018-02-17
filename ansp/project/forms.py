@@ -101,20 +101,21 @@ class ChooseUserForm(forms.Form):
 
 class TaskForm(forms.ModelForm):
     
-    user = forms.ChoiceField(widget=forms.CheckboxSelectMultiple(), choices=[], label="Choose user from project")
+    users = forms.ModelChoiceField(queryset=User.objects.none(), widget=forms.CheckboxSelectMultiple(), label="Choose user from project")
     
     def __init__(self, choices, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
-        self.fields['user'].choices = choices
+        self.fields['users'].queryset = choices
     
     class Meta:
         model = Task
+        exclude = ['id_project']
         fields = ['important', 'description']
         widgets = {
           'description': forms.Textarea(attrs={'rows': 4}),
         }
         labels = {
-            'decription': _('Description'),
+            'description': _('Description'),
             'important': _('Is this important task?'),
             'Collaborators': _('Collaborators'),
         }

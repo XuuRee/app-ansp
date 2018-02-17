@@ -105,7 +105,7 @@ def add_note(request, pk):
     form = NoteForm(request.POST)
     if form.is_valid():
         note = form.save(commit=False)
-        note.id_project = Project.objects.get(id_project=pk)
+        note.id_project = Project.objects.get(id_project=pk) # has to be?
         note.author = request.user
         form.save()
         return redirect('/projects/{}/'.format(pk))
@@ -278,15 +278,28 @@ def create_task(request, pk):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
+            print("VALID")
             task = form.save(commit=False)
             task.id_project = Project.objects.get(id_project=pk)
+            userlist = request.POST.getlist('collaborators')
+            print(userlist)
+            for username in userlist.values:
+                user = User.objects.get(username=username)
+                task.collaborators.add(user)
             form.save()
-            return redirect('/projects/{}/'.format(pk))
+            return redirect('/projects/{}/create-task'.format(pk))
+        else:
+            print("NOT VALID")
     else:
         project = Project.objects.get(id_project=pk)
-        choices = ((x.username, x.username) for x in project.collaborators.all())
-        task_form = TaskForm(choices)
-        return render(request, 'project/task_form.html', {'task_form': task_form})
+        queryset = project.collaborators.all()
+        task_form = TaskForm(queryset)
+        tasks = Task.objects.filter(id_project=pk)
+        context = {
+            'task_form': task_form,
+            'tasks': tasks,
+        }
+        return render(request, 'project/task_form.html', context)
 
 
 @login_required
