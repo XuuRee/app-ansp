@@ -15,7 +15,7 @@ class Project(models.Model):
     finish = models.BooleanField(default=False)
 
     def get_absolute_url(self):
-        return reverse('project:detail', kwargs={'pk': self.id_project})
+        return reverse('project:detail', kwargs={'pk': self.id_project})    # ?
 
     def __str__(self):
         return self.name

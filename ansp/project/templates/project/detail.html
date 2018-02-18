@@ -64,8 +64,8 @@
                     <div class="page-header">
                         <h4><b>Tasks</b></h4>
                         <p>
-                            <a href="#"><span class="glyphicon glyphicon-plus"></span> &nbsp;add task</a> /
-                            <a href="#">view all tasks</a>
+                            <a href="{% url 'project:task-handler' specific_project.id_project %}"><span class="glyphicon glyphicon-tasks"></span> &nbsp;task handler</a> /
+                            <a href="#">show done tasks</a>
                         </p>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                     {% else %}
                         <p>You have stored files.</p>
                     {% endif %}
-                    <p><span class="glyphicon glyphicon-file"></span><a href="{% url 'project:file-handler' specific_project.id_project %}"> &nbsp; file handler</a></p> <!-- /projects/{{specific_project.id_project}}/files -->
+                    <a href="{% url 'project:file-handler' specific_project.id_project %}"><span class="glyphicon glyphicon-file"></span> &nbsp; file handler</a> <!-- /projects/{{specific_project.id_project}}/files -->
                 </div>
                 <!-- notes -->
                 <div class="page-header">

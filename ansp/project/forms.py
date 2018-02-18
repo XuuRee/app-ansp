@@ -4,6 +4,7 @@ from django.forms import ModelForm, Form
 from django import forms 
 from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
+from django.forms.widgets import CheckboxSelectMultiple
 from project.models import (
     Project,
     File,
@@ -101,22 +102,22 @@ class ChooseUserForm(forms.Form):
 
 class TaskForm(forms.ModelForm):
     
-    users = forms.ModelChoiceField(queryset=User.objects.none(), widget=forms.CheckboxSelectMultiple(), label="Choose user from project")
-    
-    def __init__(self, choices, *args, **kwargs):
+    def __init__(self, pk, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
-        self.fields['users'].queryset = choices
-    
+        self.fields["collaborators"].widget = CheckboxSelectMultiple()
+        project = Project.objects.get(id_project=pk)
+        self.fields['collaborators'].queryset = project.collaborators.all()
+
     class Meta:
         model = Task
         exclude = ['id_project']
-        fields = ['important', 'description']
+        fields = ['important', 'description', 'collaborators']
         widgets = {
           'description': forms.Textarea(attrs={'rows': 4}),
         }
         labels = {
             'description': _('Description'),
             'important': _('Is this important task?'),
-            'Collaborators': _('Collaborators'),
+            'collaborators': _('Sketch members for the task'),
         }
 

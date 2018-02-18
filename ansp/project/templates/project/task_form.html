@@ -4,19 +4,65 @@
 
 {% block body %}
     <div class="container">
-        <div class="col-md-4">
+        <div class="row">
             <div class="page-header">
-                <h4>Add task</h4>
+                <h2>Tasks</h2>
+                <p>
+                    <a href="#"><span class="glyphicon glyphicon-arrow-left"></span> home</a> /
+                    <a href="#">project</a>
+                </p>
             </div>
-            <form method="post">
-                {% csrf_token %}
-                {{ task_form|crispy }}
-                <button type="submit" class="btn btn-success">Add to project</button>
-            </form>
-        </div>
-        <div class="col-md-8">
-            <div class="page-header">
-                <h4>Tasks</h4>
+            <div class="col-md-4">
+                <div class="page-header">
+                    <h4>Add task</h4>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ task_form|crispy }}
+                    <button type="submit" class="btn btn-success">Add to project</button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <div class="page-header">
+                    <h4>Unfinished tasks</h4>
+                </div>
+                {% if unfinished_tasks %}
+                    {% for task in unfinished_tasks %}
+                        <p>{{task.description}}</p>
+                        {% if task.important %}
+                            <p>IMPORTANT TASK!</p>
+                        {% endif %}
+                        <p>
+                            {% for user in task.collaborators.all %}
+                                {{user.username}} 
+                            {% endfor %}
+                        </p>
+                        {% if not forloop.last %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif%}
+            </div>
+            <div class="col-md-4">
+                <div class="page-header">
+                    <h4>Done</h4>
+                </div>
+                {% if finished_tasks %}
+                    {% for task in finished_tasks %}
+                        <p>{{task.description}}</p>
+                        {% if task.important %}
+                            <p>IMPORTANT TASK!</p>
+                        {% endif %}
+                        <p>
+                            {% for user in task.collaborators.all %}
+                                {{user.username}} 
+                            {% endfor %}
+                        </p>
+                        {% if not forloop.last %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif%}
             </div>
         </div>
     </div>

@@ -272,32 +272,36 @@ def manage_members(request, pk):
 # TASK FUNCTIONS
 ########################################################
 
+
+def distribute_tasks(tasks):
+    """ Divide all the tasks to to finish / unfinish. """
+    finish, unfinish = [], []
+    for task in tasks:
+        if task.finish:
+            finish.append(task)
+        else:
+            unfinish.append(task)
+    return (finish, unfinish)
+
+
 @login_required
-def create_task(request, pk):
-    """ Create a new task. """
+def task_handler(request, pk):
+    """ Task handler for creating, deleting and
+    updating the task . """
     if request.method == 'POST':
-        form = TaskForm(request.POST)
+        form = TaskForm(pk, request.POST or None)
         if form.is_valid():
-            print("VALID")
             task = form.save(commit=False)
             task.id_project = Project.objects.get(id_project=pk)
-            userlist = request.POST.getlist('collaborators')
-            print(userlist)
-            for username in userlist.values:
-                user = User.objects.get(username=username)
-                task.collaborators.add(user)
             form.save()
-            return redirect('/projects/{}/create-task'.format(pk))
-        else:
-            print("NOT VALID")
+            return redirect('/projects/{}/tasks'.format(pk))
     else:
-        project = Project.objects.get(id_project=pk)
-        queryset = project.collaborators.all()
-        task_form = TaskForm(queryset)
-        tasks = Task.objects.filter(id_project=pk)
+        task_form = TaskForm(pk)
+        tasks = distribute_tasks(Task.objects.filter(id_project=pk))
         context = {
             'task_form': task_form,
-            'tasks': tasks,
+            'finished_tasks': tasks[0],
+            'unfinished_tasks': tasks[1],
         }
         return render(request, 'project/task_form.html', context)
 
