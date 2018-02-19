@@ -8,8 +8,8 @@
             <div class="page-header">
                 <h2>Tasks</h2>
                 <p>
-                    <a href="#"><span class="glyphicon glyphicon-arrow-left"></span> home</a> /
-                    <a href="#">project</a>
+                    <a href="/projects"><span class="glyphicon glyphicon-arrow-left"></span> home</a> /
+                    <a href="{% url 'project:detail' primary_key %}">project</a>
                 </p>
             </div>
             <div class="col-md-4">
@@ -28,18 +28,56 @@
                 </div>
                 {% if unfinished_tasks %}
                     {% for task in unfinished_tasks %}
-                        <p>{{task.description}}</p>
-                        {% if task.important %}
-                            <p>IMPORTANT TASK!</p>
-                        {% endif %}
-                        <p>
-                            {% for user in task.collaborators.all %}
-                                {{user.username}} 
-                            {% endfor %}
-                        </p>
-                        {% if not forloop.last %}
-                            <hr>
-                        {% endif %}
+                        <div class="bs-callout bs-callout-danger">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    {% if request.user in task.collaborators.all %}
+                                        <span class="label label-primary">it is your task!</span>
+                                    {% endif %}
+                                    <p>
+                                        <br>
+                                        {{task.description}}
+                                    </p>
+                                    <p> workers:
+                                        {% for user in task.collaborators.all %}
+                                            <b>{{user.username}}</b>
+                                            {% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <div class="col-md-2">
+                                    {% if task.important %}
+                                            <form action="{% url 'project:change-importance' task.id_task %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
+                                            <button type="submit" class="btn btn-md btn-link">
+                                                <h6><span class="glyphicon glyphicon-star"></span></h6>
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <form action="{% url 'project:change-importance' task.id_task %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
+                                            <button type="submit" class="btn btn-link">
+                                                <p><span class="glyphicon glyphicon-star-empty"></span></p>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
+                                        <button type="submit" class="btn btn-link">
+                                            <p></p><span class="glyphicon glyphicon-ok"></span><p>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!--
+                            {% if not forloop.last %}
+                                <hr>
+                            {% endif %}
+                            -->
+                        </div>
                     {% endfor %}
                 {% endif%}
             </div>
@@ -49,18 +87,32 @@
                 </div>
                 {% if finished_tasks %}
                     {% for task in finished_tasks %}
-                        <p>{{task.description}}</p>
-                        {% if task.important %}
-                            <p>IMPORTANT TASK!</p>
-                        {% endif %}
-                        <p>
-                            {% for user in task.collaborators.all %}
-                                {{user.username}} 
-                            {% endfor %}
-                        </p>
-                        {% if not forloop.last %}
-                            <hr>
-                        {% endif %}
+                        <div class="bs-callout bs-callout-success">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <p>{{task.description}}</p>
+                                    <p>
+                                        {% for user in task.collaborators.all %}
+                                            {{user.username}} 
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <div class="col-md-2">
+                                    <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
+                                        <button type="submit" class="btn btn-link">
+                                            <p></p><span class="glyphicon glyphicon-wrench"></span><p>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!--
+                            {% if not forloop.last %}
+                                <hr>
+                            {% endif %}
+                            -->
+                        </div>
                     {% endfor %}
                 {% endif%}
             </div>

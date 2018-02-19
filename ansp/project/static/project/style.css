@@ -99,6 +99,14 @@ a:hover {
     visibility: hidden;
 }
 
+/* task, callout */
+.bs-task-callout {
+    padding: 20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
 /* note, callout */
 .bs-callout {
     padding: 20px;
@@ -107,6 +115,7 @@ a:hover {
     border-left-width: 5px;
     border-radius: 3px;
 }
+
 .bs-callout h4 {
     margin-top: 0;
     margin-bottom: 5px;

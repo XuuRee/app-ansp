@@ -43,8 +43,9 @@ class Comment(models.Model):
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
     author = models.ForeignKey('auth.User', null=True) # delete null
     comment_text = models.TextField(blank=False)
-    
-    
+
+
+# date
 class Task(models.Model):
     id_task = models.AutoField(primary_key=True)
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)

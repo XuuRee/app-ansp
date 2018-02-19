@@ -53,6 +53,7 @@ def detail(request, pk):
         comments = Comment.objects.filter(id_project=pk)
         note_form, comment_form = NoteForm(), CommentForm()
         date_deadline = is_past_due(specific_project.deadline)
+        tasks = distribute_tasks(Task.objects.filter(id_project=pk))
         context = {
             'specific_project': specific_project,
             'files': files,
@@ -61,6 +62,7 @@ def detail(request, pk):
             'comments': comments,
             'comment_form': comment_form,
             'date_deadline': date_deadline,
+            'tasks': tasks[1]
         }
         return render(request, "project/detail.html", context)
 
@@ -273,6 +275,28 @@ def manage_members(request, pk):
 ########################################################
 
 
+def change_finalization(request, pk):
+    """ Finish specific task. """
+    task = Task.objects.get(id_task=pk)
+    if task.finish:
+        task.finish = False
+    else:
+        task.finish = True
+    task.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def change_importance(request, pk):
+    """ Change importance of the task. """
+    task = Task.objects.get(id_task=pk)
+    if task.important:
+        task.important = False
+    else:
+        task.important = True
+    task.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER')) # really?
+
+
 def distribute_tasks(tasks):
     """ Divide all the tasks to to finish / unfinish. """
     finish, unfinish = [], []
@@ -302,6 +326,7 @@ def task_handler(request, pk):
             'task_form': task_form,
             'finished_tasks': tasks[0],
             'unfinished_tasks': tasks[1],
+            'primary_key': pk,
         }
         return render(request, 'project/task_form.html', context)
 

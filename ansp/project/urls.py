@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/delete-comment/$', views.delete_comment, name="delete-comment"),
     # tasks
     url(r'^(?P<pk>[0-9]+)/tasks/$', views.task_handler, name="task-handler"),
+    url(r'^(?P<pk>[0-9]+)/tasks/importance/$', views.change_importance, name="change-importance"),
+    url(r'^(?P<pk>[0-9]+)/tasks/finish/$', views.change_finalization, name="change-finalization"),
     # collaboration
     url(r'^(?P<pk>[0-9]+)/members/$', views.manage_members, name="manage-members"),
     url(r'^(?P<pk>[0-9]+)/members/add-searched-member/$', views.add_searched_member, name="add-searched-member"),
