@@ -24,10 +24,13 @@
                 </div>
                 <!-- items-->
                 <div class="collapse navbar-collapse" id="extend">
+                    <!--
                     <ul class="nav navbar-nav navbar-left">
-                        <li><p class="navbar-btn"><a href="/projects" class="btn btn-logo logo logo-navbar"><b>\|/</b></a></p></li> <!-- -->
+                        <li><p class="navbar-btn"><a href="/projects" class="btn btn-logo logo logo-navbar"><b>\|/</b></a></p></li> 
                     </ul>
+                    -->
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a class="navbar-font" href="{% url 'project:index' %}" aria-hidden="true">projects</a></li>
                         <li><p class="navbar-btn"><a href="{% url 'project:project-create' %}" class="btn btn-success">add project</a></p></li>
                         <li class="dropdown">
                             <a class="navbar-font dropdown-toggle" data-toggle="dropdown" aria-hidden="true" href="">user <span class="caret"></span></a>
@@ -38,7 +41,7 @@
                                 <li><a class="navbar-font" href="{% url 'account:change_password' %}" aria-hidden="true">change password</a></li>
                             </ul>
                         </li>
-                        <li><a class="navbar-font" href="#" aria-hidden="true">help</a></li>
+                        <!-- <li><a class="navbar-font" href="#" aria-hidden="true">help</a></li> -->
                         <li><a class="navbar-font" href="{% url 'account:logout' %}" aria-hidden="true"><span class="glyphicon glyphicon-log-out"></span>&nbsp; logout</a></li>
                     </ul>
                 </div>

@@ -7,11 +7,41 @@
 
 {% block body %}
     <div class="container">
-        <h1>Profile</h1>
-        <h6>Your data:</h6>
-        <p><b>Username: </b>{{ user.username }}</p>
-        <p><b>Name: </b>{{ user.first_name }}</p>
-        <p><b>Surname: </b>{{ user.last_name }}</p>
-        <p><b>E-mail: </b>{{ user.email }}</p>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-header">
+                    <h4><b>Profile</b></h4>
+                    <!-- edit profile -->
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input class="form-control" type="text" placeholder="{{ user.username }}" readonly>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input class="form-control" type="text" placeholder="{{ user.first_name }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Surname</label>
+                            <input class="form-control" type="text" placeholder="{{ user.last_name }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Public e-mail</label>
+                    <input class="form-control" type="text" placeholder="{{ user.email }}" readonly>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="page-header">
+                    <h4><b>Statistics</b></h4>
+                </div>
+                <p>Not implemented.</p>
+            </div>
+        </div>
     </div>
 {% endblock %}

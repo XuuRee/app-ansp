@@ -5,12 +5,15 @@
     <!-- content -->
     <div class="container">
         <div class="row">
-            <div class="col-pad col-sm-4">
-                <p>Welcome <a href="/accounts/profile">{{author_name}}</a>. You are logged in.</p><hr>
-                <h5>Pinned notes</h5>
+            <div class="col-md-12">     <!-- not sm -->
+                <div class="page-header">
+                    <p>Welcome <a href="/accounts/profile">{{author_name}}</a>. You are logged in.</p>
+                </div>
             </div>
-            <div class="col-pad col-sm-8">
-                <br><hr><h5>Overview</h5>
+        <div>
+        <div class="row">
+            <div class="col-md-7">
+                <h5>Overview</h5>
                 <p>List of all your projects.</p>
                 {% if all_projects %}
                     <div class="list-group">
@@ -21,8 +24,20 @@
                                     <!-- edit button -->
                                     <h6><a href="{% url 'project:project-update' project.id_project %}">
                                     <span class="glyphicon glyphicon-edit"></span>&nbsp{{ project.name }}</a></h6>
-                                    <p>Author: {{ project.author }}</p>
-                                    <p class="mb-1">Deadline: <b>{{ project.deadline }}</b></p>
+                                    <p>
+                                        <b>Description</b>
+                                        <br>
+                                        {{ project.description }}
+                                    </p>
+                                    <p>
+                                        <b>Deadline</b>
+                                        <br>
+                                        {% if project.deadline %}
+                                            {{ project.deadline }}
+                                        {% else %}
+                                            This project doesn't have deadline.
+                                        {% endif %}
+                                    </p>
                                 </div>
                                 <!-- detail button -->
                                 <a href="{% url 'project:detail' project.id_project %}" class="btn btn-primary">Detail view</a>
@@ -40,6 +55,11 @@
                 {% else %}
                     <p>You don't have any projects. Start right now!<p>
                 {% endif %}
+            </div>
+            <div class="col-md-5">
+                <h5>Tasks</h5>
+                <p>This is place for your unfinished and important task.</p>
+                <p>Not implemented.</p>
             </div>
         </div>
     </div>

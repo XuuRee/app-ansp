@@ -30,6 +30,10 @@ class RegistrationForm(UserCreationForm):
 
 class EditProfileForm(UserChangeForm):
     
+    def __init__(self, *args, **kwargs):
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+        self.fields['password'].widget = forms.HiddenInput()
+    
     class Meta:
         model = User
         fields = [
@@ -37,3 +41,4 @@ class EditProfileForm(UserChangeForm):
             'first_name',
             'last_name'
         ]
+
