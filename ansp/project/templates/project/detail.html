@@ -83,6 +83,7 @@
                                     <div class="col-md-8">
                                         <small><a href="#">task #{{forloop.counter}}</a></small>
                                         <p style="text-align:justify;">{{task.description}}</p>
+                                        <hr style="border-top: 1px solid #edaeab; background: transparent;">
                                         <p>
                                             {% for user in task.collaborators.all %}
                                                 <b><span class="glyphicon glyphicon-user"></span> &nbsp;{{user.username}}</b>
