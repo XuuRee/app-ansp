@@ -71,28 +71,35 @@
                         {% for task in tasks %}
                             <div class="bs-task-callout bs-callout-danger">
                                 <div class="row">
-                                    <div class="col-md-11">
-                                        {% if request.user in task.collaborators.all %}
-                                            <span class="label label-primary">it is your task!</span>
-                                        {% endif %}
+                                    <div class="col-md-2">
+                                        <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
+                                            <button type="submit" class="btn btn-link">
+                                                <h5><span class="glyphicon glyphicon-ok-sign ok-sign-color"></span></h5>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <small><a href="#">task #{{forloop.counter}}</a></small>
+                                        <p style="text-align:justify;">{{task.description}}</p>
                                         <p>
-                                            <br>
-                                            {{task.description}}
-                                        </p>
-                                        <p> workers:
                                             {% for user in task.collaborators.all %}
-                                                <b>{{user.username}}</b>
+                                                <b><span class="glyphicon glyphicon-user"></span> &nbsp;{{user.username}}</b>
+                                                {% if request.user == user %}
+                                                    <span class="label label-primary">it's you</span>
+                                                {% endif %}
                                                 {% if not forloop.last %}, {% endif %}
                                             {% endfor %}
                                         </p>
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         {% if task.important %}
-                                                <form action="{% url 'project:change-importance' task.id_task %}" method="post">
+                                            <form action="{% url 'project:change-importance' task.id_task %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
                                                 <button type="submit" class="btn btn-md btn-link">
-                                                    <h6><span class="glyphicon glyphicon-star"></span></h6>
+                                                    <h6><span class="glyphicon glyphicon-star star-important-color"></span></h6>
                                                 </button>
                                             </form>
                                         {% else %}
@@ -100,15 +107,15 @@
                                                 {% csrf_token %}
                                                 <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
                                                 <button type="submit" class="btn btn-link">
-                                                    <p><span class="glyphicon glyphicon-star-empty"></span></p>
+                                                    <h6><span class="glyphicon glyphicon-star star-not-important-color"></span></h6>
                                                 </button>
                                             </form>
                                         {% endif %}
-                                        <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
+                                        <form action="{% url 'project:delete-task' task.id_task %}" method="post">
                                             {% csrf_token %}
                                             <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
                                             <button type="submit" class="btn btn-link">
-                                                <p></p><span class="glyphicon glyphicon-ok"></span><p>
+                                                <h6><span class="glyphicon glyphicon-remove remove-danger"></span></h6>
                                             </button>
                                         </form>
                                     </div>

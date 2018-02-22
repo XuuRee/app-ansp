@@ -275,8 +275,14 @@ def manage_members(request, pk):
 ########################################################
 
 
+def delete_task(request, pk):
+    """ Remove a specific task. """
+    Task.objects.get(pk=pk).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
+
+
 def change_finalization(request, pk):
-    """ Finish specific task. """
+    """ Finish a specific task. """
     task = Task.objects.get(id_task=pk)
     if task.finish:
         task.finish = False

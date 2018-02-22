@@ -32,20 +32,20 @@ h6 {
     font-size: 18px;
 }
 
-.badge-circle {
-    font-size: 22px;
-    background-color: #428bca;
-    border-radius: 1em;
-    padding-left: 8px;
-    padding-right: 8px;
-}
-
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Fira Sans', sans-serif;
 }
 
 a:hover {
     text-decoration: none;
+}
+
+.badge-circle {
+    font-size: 22px;
+    background-color: #428bca;
+    border-radius: 1em;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 /* navbar, menu */
@@ -101,10 +101,47 @@ a:hover {
 
 /* task, callout */
 .bs-task-callout {
-    padding: 20px;
+    padding: 12px;
     border: 1px solid #eee;
     border-left-width: 5px;
     border-radius: 3px;
+}
+
+.bs-task-callout:hover {
+    background-color: #f6d6d5;
+}
+
+/* colors */
+.ok-sign-color {
+    color: #da5c58;
+}
+
+.ok-sign-color:hover {
+    color: #d64843;
+}
+
+.star-not-important-color {
+    color: grey;
+}
+
+.star-not-important-color:hover {
+    color: #f0ad4e;
+}
+
+.star-important-color {
+    color: #f0ad4e;
+}
+
+.star-important-color:hover {
+    color: grey;
+}
+
+.remove-danger {
+    color: grey;
+}
+
+.remove-danger:hover {
+    color: #d64843;
 }
 
 /* note, callout */
