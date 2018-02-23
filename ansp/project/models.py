@@ -43,6 +43,7 @@ class Comment(models.Model):
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
     author = models.ForeignKey('auth.User', null=True) # delete null
     comment_text = models.TextField(blank=False)
+    date = models.DateField(null=True, blank=True) # cant be null!
 
 
 # date

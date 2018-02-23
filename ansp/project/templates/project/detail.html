@@ -158,7 +158,7 @@
                                         </p>
                                     </div>
                                     <div class="col-md-10">
-                                        <p style="margin-left: 15px; text-align:justify;"><b>{{c.author.username}}</b><br>{{c.comment_text}}</p>
+                                        <p style="margin-left: 15px; text-align:justify;"><b>{{c.author.username}}</b> &nbsp;<small>{{c.date}}</small><br>{{c.comment_text}}
                                     </div>
                                     <div class="col-md-1">
                                         {% if c.author.username == user.get_username %}

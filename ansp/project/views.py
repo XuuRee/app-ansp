@@ -90,6 +90,7 @@ def add_comment(request, pk):
         comment = form.save(commit=False)
         comment.id_project = Project.objects.get(id_project=pk)
         comment.author = request.user
+        comment.date = date.today()
         form.save()
         return redirect('/projects/{}/'.format(pk))
 
