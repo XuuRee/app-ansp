@@ -314,6 +314,24 @@ def distribute_tasks(tasks):
     return (finish, unfinish)
 
 
+def update_task(request, pk):
+    """ Update a specific task. """
+    instance = Task.objects.get(id_task=pk)
+    project = instance.id_project
+    task_form = TaskForm(project.id_project, request.POST or None, instance=instance)
+    if task_form.is_valid():
+        task_form.save()
+        return redirect('/projects/{}/tasks'.format(project.id_project)) 
+    tasks = distribute_tasks(Task.objects.filter(id_project=project.id_project))
+    context = {
+        'task_form': task_form,
+        'finished_tasks': tasks[0],
+        'unfinished_tasks': tasks[1],
+        'primary_key': project.id_project,
+        'update': True,
+    }
+    return render(request, 'project/task_form.html', context)
+
 @login_required
 def task_handler(request, pk):
     """ Task handler for creating, deleting and
@@ -333,6 +351,7 @@ def task_handler(request, pk):
             'finished_tasks': tasks[0],
             'unfinished_tasks': tasks[1],
             'primary_key': pk,
+            'update': False,
         }
         return render(request, 'project/task_form.html', context)
 
