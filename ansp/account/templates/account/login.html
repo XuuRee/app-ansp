@@ -4,25 +4,33 @@
 
 {% block body %}
     <div class="container">
-        <div class="row top-spaces">
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4">
-                <div align="center">
-                    <a href="/projects" class="btn btn-lg btn-logo logo logo-header"><b>\|/</b></a>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row top-spaces">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-8">
+                        <!--
+                        <div align="center">
+                            <a href="/projects" class="btn btn-lg btn-logo logo logo-header"><b>\|/</b></a>
+                        </div>
+                        -->
+                        <div class="page-header">
+                            <h1><b>Sign in</b></h1> <!-- Administration -->
+                            <p>Please login to access this application.<!--<a href="#">Forgot password?</a>--></p>
+                        </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <br><button type="submit" class="btn btn-block btn-success">Login</button>
+                        </form>
+                        <br><a href="{% url 'account:register' %}" class="btn btn-block btn-info" role="button">Register</a><br>
+                    </div>
+                    <div class="col-md-2">
+                    </div>
                 </div>
-                <div class="page-header">
-                    <h2><b>Administration</b></h2> <!-- Sign in -->
-                    <p>Please login to access this application. <a href="#">Forgot password?</a></p>
-                </div>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <br><button type="submit" class="btn btn-block btn-success">Login</button>
-                </form>
-                <br><a href="{% url 'account:register' %}" class="btn btn-block btn-info" role="button">Register</a><br>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
             </div>
         </div>
     </div>

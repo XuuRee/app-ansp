@@ -1,40 +1,32 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 html, body {
-    font-family: 'Fira Sans', sans-serif;
-    background: white;    /*#4ABDAC, #66B9BF, #77C9D4, #01ABAA */
-    
+    font-family: 'Open Sans', 'MS Trebuchet', sans-serif;
+    background: white;
 }
 
 h1 {
-    font-size: 52px;
-    font-weight: bold;
+    font-size: 40px;
 }
 
 h2 {
-    font-size: 46px;
-    font-weight: bold;
-}
-
-h3 {
-    font-size: 40px;
-}
- 
-h4 {
     font-size: 34px;
 }
 
-h5 {
+h3 {
     font-size: 28px;
-    font-weight: bold;
+}
+ 
+h4 {
+    font-size: 24px;
+}
+
+h5 {
+    font-size: 20px;
 }
 
 h6 {
-    font-size: 22px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Fira Sans', sans-serif;
+    font-size: 16px;
 }
 
 a:hover {
@@ -82,7 +74,7 @@ a:hover {
 /* logo */
 
 .top-spaces {
-    margin-top: 40px;
+    margin-top: 20%;
 }
 
 .logo {
