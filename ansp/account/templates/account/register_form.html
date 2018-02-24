@@ -4,22 +4,41 @@
 
 {% block body %}
     <div class="container">
-        <div class="row top-spaces">
-            <div class="col-md-2 top-spaces">
-                <div align="center">
-                    <a href="/projects" class="btn btn-lg btn-logo logo logo-header"><b>\|/</b></a>
-                </div>
+        <div class="row margin-top-5">
+            <div class="col-md-2">
             </div>
             <div class="col-md-6">
-                <div class="page-header">
-                    <h2><b>Registration</b></h2>
-                    <p>Welcome. Please register here. <a href="#">Do you want to go back?</a></p>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="circle-logo bg-primary"><b>a</b></div>
+                    </div>
+                    <div class="col-md-10">
+                        <h6 class="text-primary"><b>application for collaboration<br>and cooperation</b></h6>
+                    </div>
                 </div>
+                <div class="page-header">
+                    <h2>Registration</h2>
+                    <p>Welcome. Please register here. <a href="/accounts/login/">Do you want to go back?</a></p>
+                </div>
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <form method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <br><button type="submit" class="btn btn-block btn-success">Register</button><br>
-                </form>
+                    <br><button type="submit" class="btn btn-block btn-primary-login bg-primary">Register</button><br>
+                </form>                 
             </div>
             <div class="col-md-4">
             </div>

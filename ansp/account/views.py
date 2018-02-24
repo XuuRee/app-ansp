@@ -8,27 +8,38 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from project.models import Project, File, Note, Comment, Task
 
 
-# after registration user must be log in and
-# login function: if user is authenticated,
-# than show home page.
 def register(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST or None)
         if form.is_valid():
-            form.save()
-            return redirect('/accounts/login')
+            form.save()                                         # return object 'user' -> user.username
+            username = form.cleaned_data.get('username') 
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('/projects/')
+        else:
+            return render(request, 'account/register_form.html', {'form': form})
     else:
         form = RegistrationForm()
-        args = {'form': form}
-        return render(request, 'account/register_form.html', args)
+        context = {'form': form}
+        return render(request, 'account/register_form.html', context)
 
-   
+
 @login_required
 def view_profile(request):
-    args = {'user': request.user}
-    return render(request, 'account/profile.html', args)
+    user = request.user
+    notes = Note.objects.get(author=user)
+    # statistics etc.
+    context = {
+        'user': user,
+        'notes': notes,
+    }
+    return render(request, 'account/profile.html', context)
 
 
 @login_required
@@ -40,8 +51,7 @@ def edit_profile(request):
             return redirect('/accounts/profile') 
     else:
         form = EditProfileForm(instance=request.user)
-        args = {'form': form}
-        return render(request, 'account/edit_profile.html', args)
+        return render(request, 'account/edit_profile.html', {'form': form})
     
 
 @login_required    
@@ -56,6 +66,5 @@ def change_password(request):
             return redirect('/accounts/change-password')
     else:
         form = PasswordChangeForm(user=request.user)
-        args = {'form': form}
-        return render(request, 'account/change_password.html', args)
+        return render(request, 'account/change_password.html', {'form': form})
 

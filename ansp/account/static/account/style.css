@@ -2,7 +2,7 @@
 
 html, body {
     font-family: 'Open Sans', 'MS Trebuchet', sans-serif;
-    background: white;
+    background-color: white;
 }
 
 h1 {
@@ -31,6 +31,58 @@ h6 {
 
 a:hover {
     text-decoration: none;
+}
+
+/* buttons */
+.btn-round {
+    border-radius: 17px;
+}
+
+.btn-round-lg{
+    border-radius: 22.5px;
+}
+
+.btn-primary-login {
+    color: white;
+}
+
+.btn-primary-login:hover {
+    color: white;
+    text-decoration: none;
+    opacity: 0.85
+}
+
+.btn-grey-login {
+    background-color: lightgrey;
+    color: black;
+}
+
+.btn-grey-login:hover {
+    color: black;
+    text-decoration: none;
+    opacity: 0.85
+}
+
+.right-col {
+    height: 100vh;
+}
+
+.margin-top-5 {
+    margin-top: 5%;
+}
+
+.margin-top-15 {
+    margin-top: 15%;
+}
+
+.circle-logo {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    font-size: 55px;
+    color: white;
+    line-height: 50px;
+    text-align: center;
 }
 
 /* navbar, menu */
@@ -72,11 +124,6 @@ a:hover {
 }
 
 /* logo */
-
-.top-spaces {
-    margin-top: 20%;
-}
-
 .logo {
     font-family: sans-serif;
 }
