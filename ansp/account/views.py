@@ -13,6 +13,8 @@ from project.models import Project, File, Note, Comment, Task
 
 
 def register(request):
+    if request.user:
+        return redirect('/projects/')
     if request.method == 'POST':
         form = RegistrationForm(request.POST or None)
         if form.is_valid():
@@ -33,11 +35,20 @@ def register(request):
 @login_required
 def view_profile(request):
     user = request.user
-    notes = Note.objects.get(author=user)
-    # statistics etc.
+    notes = Note.objects.filter(author=user) # print author note
+    comments = Comment.objects.filter(author=user)
+    projects = Project.objects.filter(collaborators__in=[request.user]) #!
+    tasks = Task.objects.filter(collaborators__in=[request.user])
+    statistics = [
+        len(notes),
+        len(comments),
+        len(projects),
+        len(tasks)
+    ]
     context = {
-        'user': user,
-        'notes': notes,
+        'user': user,               # has to be?
+        'statistics': statistics,
+        'highest': max(statistics),
     }
     return render(request, 'account/profile.html', context)
 

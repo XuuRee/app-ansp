@@ -40,7 +40,14 @@
                 <div class="page-header">
                     <h4><b>Statistics</b></h4>
                 </div>
-                <p>Not implemented.</p>
+                {% for stat in statistics %}
+                    <small>Label</small>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{stat}}" aria-valuemin="0" aria-valuemax="{{highest}}" style="width:{{stat}}%">
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
             </div>
         </div>
     </div>
