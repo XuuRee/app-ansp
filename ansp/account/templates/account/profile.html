@@ -8,23 +8,27 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-md-6">
                 <div class="page-header">
-                    <h4><b>Profile</b></h4>
-                    <!-- edit profile -->
+                    <h2>Profile</h2>
+                    <p>
+                        <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> projects</a> /
+                        <a href="{% url 'account:edit_profile' %}">edit profile</a> /
+                        <a href="{% url 'account:change_password' %}">change password</a>
+                    </p>
                 </div>
                 <div class="form-group">
                     <label>Username</label>
                     <input class="form-control" type="text" placeholder="{{ user.username }}" readonly>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label>Name</label>
                             <input class="form-control" type="text" placeholder="{{ user.first_name }}" readonly>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label>Surname</label>
                             <input class="form-control" type="text" placeholder="{{ user.last_name }}" readonly>
@@ -36,17 +40,43 @@
                     <input class="form-control" type="text" placeholder="{{ user.email }}" readonly>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-6">
                 <div class="page-header">
-                    <h4><b>Statistics</b></h4>
+                    <h2>Statistics</h2>
                 </div>
-                {% for stat in statistics %}
-                    <small>Label</small>
+                <h6>In percent</h6>
+                {% for key, value in statistics.items %}
+                    <small>{{key}}</small>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{stat}}" aria-valuemin="0" aria-valuemax="{{highest}}" style="width:{{stat}}%">
+                        <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" style="width:{{value}}%">
+                            {{value}} %
                         </div>
                     </div>
                 {% endfor %}
+                <h6>In numbers</h6>
+                <div class="row" align="center">
+                    <div style="padding: 5%;" class="col-md-3">
+                        <h2><b>{{items.0}}</b></h2>
+                        <h6>projects</h6>
+                    </div>
+                    <div style="padding: 5%;" class="col-md-3">
+                        <h2><b>{{items.1}}</b></h2>
+                        <h6>tasks</h6>
+                    </div>
+                    <div style="padding: 5%;" class="col-md-3">
+                        <h2><b>{{items.2}}</b></h2>
+                        <h6>comments</h6>
+                    </div>
+                    <div style="padding: 5%;" class="col-md-3">
+                        <h2><b>{{items.3}}</b></h2>
+                        <h6>notes</h6>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:{{ratio.0}}%"></div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" style="width:{{ratio.1}}%"></div>
+                    <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:{{ratio.2}}%"></div>
+                    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width:{{ratio.3}}%"></div>
                 </div>
             </div>
         </div>

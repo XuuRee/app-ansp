@@ -13,8 +13,6 @@ from project.models import Project, File, Note, Comment, Task
 
 
 def register(request):
-    if request.user:
-        return redirect('/projects/')
     if request.method == 'POST':
         form = RegistrationForm(request.POST or None)
         if form.is_valid():
@@ -32,23 +30,40 @@ def register(request):
         return render(request, 'account/register_form.html', context)
 
 
+def compute_percent(item, one_percent):
+    result = item / one_percent
+    return round(result, 2)
+
+
+def make_dict_statistics(items):
+    one_percent = sum(items) / 100
+    statistics = {
+        'Projects': compute_percent(items[0], one_percent),
+        'Tasks': compute_percent(items[1], one_percent),
+        'Comments': compute_percent(items[2], one_percent),
+        'Notes': compute_percent(items[3], one_percent),
+    }
+    return statistics
+
+
 @login_required
 def view_profile(request):
-    user = request.user
-    notes = Note.objects.filter(author=user) # print author note
-    comments = Comment.objects.filter(author=user)
-    projects = Project.objects.filter(collaborators__in=[request.user]) #!
+    notes = Note.objects.filter(author=request.user) # print author note
+    comments = Comment.objects.filter(author=request.user)
+    projects = Project.objects.filter(collaborators__in=[request.user])
     tasks = Task.objects.filter(collaborators__in=[request.user])
-    statistics = [
-        len(notes),
-        len(comments),
+    items = [
         len(projects),
-        len(tasks)
+        len(tasks),
+        len(comments),
+        len(notes)
     ]
+    statistics = make_dict_statistics(items)
+    ratio = list(statistics.values())
     context = {
-        'user': user,               # has to be?
         'statistics': statistics,
-        'highest': max(statistics),
+        'items': items,
+        'ratio': ratio,
     }
     return render(request, 'account/profile.html', context)
 
@@ -59,7 +74,7 @@ def edit_profile(request):
         form = EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('/accounts/profile') 
+            return redirect('/accounts/profile')
     else:
         form = EditProfileForm(instance=request.user)
         return render(request, 'account/edit_profile.html', {'form': form})
@@ -74,7 +89,7 @@ def change_password(request):
             update_session_auth_hash(request, form.user)
             return redirect('/accounts/profile')
         else:
-            return redirect('/accounts/change-password')
+            return render(request, 'account/change_password.html', {'form': form})
     else:
         form = PasswordChangeForm(user=request.user)
         return render(request, 'account/change_password.html', {'form': form})

@@ -1,34 +1,32 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 html, body {
-    font-family: 'Open sans', 'MS Trebuchet', sans-serif;
-    background: white;    /*#4ABDAC, #66B9BF, #77C9D4, #01ABAA */
+    font-family: 'Open Sans', 'MS Trebuchet', sans-serif;
+    background-color: white;
 }
 
 h1 {
-    font-size: 38px;
-    font-weight: bold;
+    font-size: 40px;
 }
 
 h2 {
     font-size: 34px;
-    font-weight: bold;
 }
 
 h3 {
-    font-size: 30px;
+    font-size: 28px;
 }
  
 h4 {
-    font-size: 26px;
+    font-size: 24px;
 }
 
 h5 {
-    font-size: 22px;
+    font-size: 20px;
 }
 
 h6 {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 a:hover {

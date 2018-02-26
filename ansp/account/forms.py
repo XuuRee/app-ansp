@@ -44,3 +44,5 @@ class EditProfileForm(UserChangeForm):
             'last_name'
         ]
 
+    def clean_password(self):
+        return

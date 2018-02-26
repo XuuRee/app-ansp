@@ -11,13 +11,33 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="page-header">
-                    <h4><b>Edit profile</b></h4>
-                    <!-- change password -->
-                </div> 
+                    <h2>Edit profile</h2>
+                    <p>
+                        <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> projects</a> /
+                        <a href="{% url 'account:view_profile' %}">profile</a> /
+                        <a href="{% url 'account:change_password' %}">change password</a>
+                    </p>
+                </div>
+                <!--
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                -->
                 <form method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn btn-block btn-success">Submit</button>
                 </form>  
             </div>
             <div class="col-md-6">

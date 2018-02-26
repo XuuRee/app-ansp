@@ -99,18 +99,6 @@ a:hover {
     padding-right: 10px;
 }
 
-/*list group hover */
-
-.bck {
-    border-style: dotted;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.bck:hover {
-    background-color: #F3F3F3;
-}
-
 /* content */
 .col-pad {
     padding: 20px;
