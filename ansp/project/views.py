@@ -17,22 +17,19 @@ IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 @login_required
 def index(request):
     """ Index page. """
-    author_name = request.user.username
-    all_projects, projects = Project.objects.all(), []
-    # better solution
-    for project in all_projects:
-        if request.user in project.collaborators.all():
-            projects.append(project)
-    # ---
+    projects = Project.objects.filter(collaborators__in=[request.user])
+    all_tasks = Task.objects.filter(collaborators__in=[request.user])
+    #important_tasks = all_tasks.filter(important=True and unfinished=True)
+    #print(important_tasks)    
     context = {
-        'author_name': author_name,
-        'all_projects': projects,
+        'projects': projects,
+        'tasks': all_tasks,
     }
     return render(request, "project/index.html/", context)
 
 
-def is_past_due(project_date):
-    """ Check if deadline is past due. """
+def is_past_due(project_date):      # not necessery
+    """ Check if deadline is past due. """ 
     if project_date is None:
         return False
     return date.today() > project_date
@@ -378,6 +375,8 @@ class ProjectUpdate(UpdateView):
     fields = ['name', 'description', 'created', 'deadline']
 
 
-class ProjectDelete(DeleteView):
-    model = Project
-    success_url = reverse_lazy('project:index')
+def delete_project(request, pk):
+    """ Delete a specific project. """
+    Project.objects.get(pk=pk).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
+

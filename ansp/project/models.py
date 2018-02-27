@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from datetime import date
 
 
 class Project(models.Model):
@@ -14,11 +15,21 @@ class Project(models.Model):
     deadline = models.DateField(null=True, blank=True)
     finish = models.BooleanField(default=False)
 
-    def get_absolute_url(self):
-        return reverse('project:detail', kwargs={'pk': self.id_project})    # ?
+    #def get_absolute_url(self):
+    #    return reverse('project:detail', kwargs={'pk': self.id_project})    # ?
 
     def __str__(self):
         return self.name
+    
+    @property
+    def is_past_due(self):
+        if self.deadline is None:
+            return False
+        return date.today() > self.deadline
+    
+    @property
+    def is_finish(self):
+        return self.finish
     
     
 class File(models.Model):

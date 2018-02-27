@@ -16,24 +16,20 @@
         <!-- navigation -->
         <nav class="navbar navbar-inverse"> 
             <div class="container-fluid">
-                <!-- header -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#extend">
                         <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                     </button>
                 </div>
-                <!-- items-->
                 <div class="collapse navbar-collapse" id="extend">
-                    <!--
                     <ul class="nav navbar-nav navbar-left">
-                        <li><p class="navbar-btn"><a href="/projects" class="btn btn-logo logo logo-navbar"><b>\|/</b></a></p></li> 
+                        <li><div class="circle-logo bg-primary" onclick="window.location='/projects';">a</div></li>
                     </ul>
-                    -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a class="navbar-font" href="{% url 'project:index' %}" aria-hidden="true">projects</a></li>
-                        <li><p class="navbar-btn"><a href="{% url 'project:project-create' %}" class="btn btn-success">add project</a></p></li>
+                        <li><p class="navbar-btn"><a href="{% url 'project:project-create' %}" class="btn btn-primary">add project</a></p></li>
                         <li class="dropdown">
-                            <a class="navbar-font dropdown-toggle" data-toggle="dropdown" aria-hidden="true" href="">user <span class="caret"></span></a>
+                            <a class="navbar-font dropdown-toggle" data-toggle="dropdown" aria-hidden="true" href="">{{request.user.username}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="navbar-font" href="{% url 'account:view_profile' %}" aria-hidden="true">profile</a></li>
                                 <li class="divider"></li>
@@ -52,7 +48,7 @@
         <!-- footer -->
         <div class="footer fixed-bottom">
             <div class="container">
-                <hr style="height:2px; border:none; color:LightGrey; background-color:LightGrey"/>
+                <hr style="height: 1px; border:none; color:LightGrey; background-color:LightGrey"/>
                 <p class="text-right" style="padding-right:5px;">&copy; 2017 Filip Valchar, bachelor thesis.</br>You can <a href="mailto:filipvalchar@gmail.com">contact</a> me.</p>
             </div>
         </div>

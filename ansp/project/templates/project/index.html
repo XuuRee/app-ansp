@@ -2,64 +2,74 @@
 {% block title %}Projects{% endblock %}
 
 {% block body %}
-    <!-- content -->
     <div class="container">
         <div class="row">
-            <div class="col-md-12">     <!-- not sm -->
-                <div class="page-header">
-                    <p>Welcome <a href="/accounts/profile">{{author_name}}</a>. You are logged in.</p>
-                </div>
-            </div>
-        <div>
-        <div class="row">
             <div class="col-md-7">
-                <h5>Overview</h5>
-                <p>List of all your projects.</p>
-                {% if all_projects %}
-                    <div class="list-group">
-                        {% for project in all_projects %}
-                            <!-- project item -->
-                            <div class="bck list-group-item list-group-item-action flex-column align-items-start">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <!-- edit button -->
-                                    <h6><a href="{% url 'project:project-update' project.id_project %}">
-                                    <span class="glyphicon glyphicon-edit"></span>&nbsp{{ project.name }}</a></h6>
-                                    <p>
-                                        <b>Description</b>
+                <div class="page-header">
+                    <h3>Overview</h3>
+                    <p>List of all your projects.</p>
+                    <p>
+                        <a href="#" title="see all projects">see finished projects</a>
+                    </p>
+                </div>
+                {% if projects %}
+                    <div class="row">
+                        {% for project in projects %}
+                            <div style="cursor: pointer;" onclick="window.location='/projects/' + {{project.id_project}}">
+                            <div class="col-md-4 margin-top-20px">
+                                <div class="col-md-12 project-container">
+                                    {% if project.is_past_due %}
+                                        <h6 class="text-danger">
+                                            <span class="glyphicon glyphicon-bookmark"></span>
+                                        </h6>
+                                    {% else %}
+                                        <h6 class="text-success">
+                                            <span class="glyphicon glyphicon-bookmark"></span>
+                                        </h6>
+                                    {% endif %}
+                                    <h5>
+                                        {% if project.name|length > 30 %} <!-- not working? -->
+                                            {{ project.name|slice:"0:30" }}...
+                                        {% else %}
+                                            {{ project.name }}
+                                        {% endif %}
                                         <br>
-                                        {{ project.description }}
-                                    </p>
+                                        <small>
+                                            <a href="{% url 'project:project-update' project.id_project %}" title="edit project">edit</a> /
+                                            <a href="{% url 'project:project-delete' project.id_project %}" title="delete project">delete</a>
+                                        </small>
+                                    </h5>
                                     <p>
-                                        <b>Deadline</b>
-                                        <br>
+                                        Deadline<br>
                                         {% if project.deadline %}
-                                            {{ project.deadline }}
+                                            {% if project.is_past_due %}
+                                                <b class="text-danger">{{ project.deadline }}</b>
+                                            {% else %}
+                                                {{ project.deadline }}
+                                            {% endif %}
                                         {% else %}
                                             This project doesn't have deadline.
                                         {% endif %}
                                     </p>
                                 </div>
-                                <!-- detail button -->
-                                <a href="{% url 'project:detail' project.id_project %}" class="btn btn-primary">Detail view</a>
-                                <!-- delete button -->
-                                <form action="{% url 'project:project-delete' project.id_project %}" method="post" style="display: inline;">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="id_project" value="{{ project.id_project }}"/>
-                                    <button type="submit" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
-                                </form>
                             </div>
+                        </div>
                         {% endfor %}
                     </div>
                 {% else %}
                     <p>You don't have any projects. Start right now!<p>
+                    <!--
+                    <div class="text-center">
+                        <img src="http://www.siriuscom.com/wp-content/uploads/2015/08/Collaboration.png" class="rounded" alt="collaborate!">
+                    </div>
+                    -->
                 {% endif %}
             </div>
             <div class="col-md-5">
-                <h5>Tasks</h5>
-                <p>This is place for your unfinished and important task.</p>
-                <p>Not implemented.</p>
+                <div class="page-header">
+                    <h3>Tasks</h3>
+                    <p>This is place for your unfinished and important task.</p>
+                </div>
             </div>
         </div>
     </div>

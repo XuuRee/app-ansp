@@ -33,6 +33,39 @@ a:hover {
     text-decoration: none;
 }
 
+.project-container {
+    min-height: 200px;
+    background-color: #d5eef6;
+    transition: background-color 0.5s ease;
+}
+
+.project-container:hover {
+    min-height: 200px;
+    background-color: #c0e6f2;
+}
+
+/* overview */
+.margin-top-20px {
+    margin-top: 20px;
+}
+
+/* navbar logo */
+.circle-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 30px;
+    color: white;
+    line-height: 27px;
+    text-align: center;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.circle-logo:hover {
+    opacity: 0.95;
+}
+
 .badge-circle {
     font-size: 22px;
     background-color: #428bca;

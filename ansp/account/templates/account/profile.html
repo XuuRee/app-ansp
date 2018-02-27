@@ -1,10 +1,6 @@
 {% extends 'project/base.html' %}
 {% block title %}Profile{% endblock %}
 
-{% block navbar %}
-    <li><a class="navbar-font" href="{% url 'project:index' %}" aria-hidden="true">projects</a></li>
-{% endblock %}
-
 {% block body %}
     <div class="container">
         <div class="row">
@@ -60,12 +56,12 @@
                         <h6>projects</h6>
                     </div>
                     <div style="padding: 5%;" class="col-md-3">
-                        <h2><b>{{items.1}}</b></h2>
-                        <h6>tasks</h6>
-                    </div>
-                    <div style="padding: 5%;" class="col-md-3">
                         <h2><b>{{items.2}}</b></h2>
                         <h6>comments</h6>
+                    </div>
+                    <div style="padding: 5%;" class="col-md-3">
+                        <h2><b>{{items.1}}</b></h2>
+                        <h6>tasks</h6>
                     </div>
                     <div style="padding: 5%;" class="col-md-3">
                         <h2><b>{{items.3}}</b></h2>
@@ -73,10 +69,10 @@
                     </div>
                 </div>
                 <div class="progress">
-                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:{{ratio.0}}%"></div>
-                    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" style="width:{{ratio.1}}%"></div>
-                    <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:{{ratio.2}}%"></div>
-                    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width:{{ratio.3}}%"></div>
+                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:{{ratio.0}}%">{{ratio.0}}%</div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" style="width:{{ratio.1}}%">{{ratio.1}}%</div>
+                    <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:{{ratio.2}}%">{{ratio.2}}%</div>
+                    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width:{{ratio.3}}%">{{ratio.3}}%</div>
                 </div>
             </div>
         </div>
