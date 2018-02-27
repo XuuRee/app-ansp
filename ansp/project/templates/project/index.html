@@ -8,52 +8,53 @@
                 <div class="page-header">
                     <h3>Overview</h3>
                     <p>List of all your projects.</p>
+                    <!--
                     <p>
                         <a href="#" title="see all projects">see finished projects</a>
                     </p>
+                    -->
                 </div>
                 {% if projects %}
                     <div class="row">
                         {% for project in projects %}
                             <div style="cursor: pointer;" onclick="window.location='/projects/' + {{project.id_project}}">
-                            <div class="col-md-4 margin-top-20px">
-                                <div class="col-md-12 project-container">
-                                    {% if project.is_past_due %}
-                                        <h6 class="text-danger">
-                                            <span class="glyphicon glyphicon-bookmark"></span>
-                                        </h6>
-                                    {% else %}
-                                        <h6 class="text-success">
-                                            <span class="glyphicon glyphicon-bookmark"></span>
-                                        </h6>
-                                    {% endif %}
-                                    <h5>
-                                        {% if project.name|length > 30 %} <!-- not working? -->
-                                            {{ project.name|slice:"0:30" }}...
+                                <div class="col-md-4 margin-top-20px">
+                                    <div class="col-md-12 project-container">
+                                        {% if project.is_past_due %}
+                                            <h6 class="text-danger">
+                                                <span class="glyphicon glyphicon-bookmark"></span>
+                                            </h6>
                                         {% else %}
-                                            {{ project.name }}
+                                            <h6 class="text-success">
+                                                <span class="glyphicon glyphicon-bookmark"></span>
+                                            </h6>
                                         {% endif %}
-                                        <br>
-                                        <small>
-                                            <a href="{% url 'project:project-update' project.id_project %}" title="edit project">edit</a> /
-                                            <a href="{% url 'project:project-delete' project.id_project %}" title="delete project">delete</a>
-                                        </small>
-                                    </h5>
-                                    <p>
-                                        Deadline<br>
-                                        {% if project.deadline %}
-                                            {% if project.is_past_due %}
-                                                <b class="text-danger">{{ project.deadline }}</b>
+                                        <h5>
+                                            {% if project.name|length > 18 %} <!-- not working? -->
+                                                {{ project.name|slice:"0:18" }}...
                                             {% else %}
-                                                {{ project.deadline }}
+                                                {{ project.name }}
                                             {% endif %}
-                                        {% else %}
-                                            This project doesn't have deadline.
-                                        {% endif %}
-                                    </p>
+                                            <br>
+                                            <small>
+                                                <a href="{% url 'project:project-update' project.id_project %}" title="edit project">edit project</a>
+                                            </small>
+                                        </h5>
+                                        <p>
+                                            Deadline<br>
+                                            {% if project.deadline %}
+                                                {% if project.is_past_due %}
+                                                    <b class="text-danger">{{ project.deadline }}</b>
+                                                {% else %}
+                                                    {{ project.deadline }}
+                                                {% endif %}
+                                            {% else %}
+                                                This project doesn't have deadline.
+                                            {% endif %}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         {% endfor %}
                     </div>
                 {% else %}

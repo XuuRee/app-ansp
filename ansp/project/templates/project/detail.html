@@ -12,8 +12,26 @@
                         <p>
                             <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> /
                             <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a> /
-                            <a href="{% url 'project:manage-members' specific_project.id_project %}">manage collaborators</a>
+                            <a href="{% url 'project:manage-members' specific_project.id_project %}">manage collaborators</a> /
+                            <a style="cursor: pointer;" data-toggle="modal" data-target="#remove-modal" title="delete project">delete project</a>
                         </p>
+                        <!-- modal window -->
+                        <div class="modal fade" id="remove-modal" tabindex="-1" role="dialog" aria-labelledby="remove-modal" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="remove-modal"><b>Are you sure?</b></h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        Do you really want delete this project? 
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <a href="{% url 'project:project-delete' specific_project.id_project %}" class="btn btn-danger">Delete</a>            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% if specific_project.finish %}
                             <form action="{% url 'project:project-continue' specific_project.id_project %}" style="margin-bottom: 8px;" method="post">
                                 {% csrf_token %}

@@ -378,5 +378,6 @@ class ProjectUpdate(UpdateView):
 def delete_project(request, pk):
     """ Delete a specific project. """
     Project.objects.get(pk=pk).delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
+    return redirect('/projects/')
+    #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
 
