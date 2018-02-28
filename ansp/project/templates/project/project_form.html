@@ -3,24 +3,40 @@
 {% block title %}Create project{% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-6">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <div class="page-header">
+                    {% if update %}
+                        <h2>Update your project</h2>
+                    {% else %}
+                        <h2>Create new project</h2>
+                        <p>As soon as you base your project you can add files, notes etc.</p>
+                    {% endif %}
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <br>
+                    {% if update %}
+                        <button type="submit" class="btn btn-block btn-success">Update project</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-block btn-success">Create project</button>
+                    {% endif %}
+                    <br>
+                </form>
+            </div>
         </div>
         <div class="col-md-6">
-            <div class="page-header">
-                <h2><b>Create new project</b></h2>
-                <p>As soon as you base your project you can add files, notes etc.</p>
-            </div>
-            <form method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <br><button type="submit" class="btn btn-block btn-success">Create project</button><br>
-            </form>
-        </div>
-        <div class="col-md-5">
-            <div class="page-header">
-                <h2><b>Some tips.</b></h2>
+            <div style="padding: 15%">
+                <h1><b>Some tips</b></h1><br>
+                <h6>When you get to overview just click on your project and you will see
+                all details and your new work area.</h6>
+                <h6>After you create your project you can add files, notes, tasks and your
+                collaborators.</h6>
             </div>
         </div>
     </div>

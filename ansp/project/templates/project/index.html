@@ -7,12 +7,12 @@
             <div class="col-md-7">
                 <div class="page-header">
                     <h3>Overview</h3>
-                    <p>List of all your projects.</p>
-                    <!--
                     <p>
-                        <a href="#" title="see all projects">see finished projects</a>
+                        List your projects: &nbsp;
+                        <a href="#" title="sorting latest projects">newest</a> /
+                        <a href="#" title="sorting oldest projects">oldest</a> /
+                        <a href="#" title="finish projects">already finished</a>
                     </p>
-                    -->
                 </div>
                 {% if projects %}
                     <div class="row">
@@ -30,14 +30,14 @@
                                             </h6>
                                         {% endif %}
                                         <h5>
-                                            {% if project.name|length > 18 %} <!-- not working? -->
+                                            {% if project.name|length > 18 %} <!-- not working? parsing in view -->
                                                 {{ project.name|slice:"0:18" }}...
                                             {% else %}
                                                 {{ project.name }}
                                             {% endif %}
                                             <br>
                                             <small>
-                                                <a href="{% url 'project:project-update' project.id_project %}" title="edit project">edit project</a>
+                                                <a href="{% url 'project:project-update' project.id_project %}" title="edit project">edit project</a> <!-- method post -->
                                             </small>
                                         </h5>
                                         <p>
@@ -71,6 +71,32 @@
                     <h3>Tasks</h3>
                     <p>This is place for your unfinished and important task.</p>
                 </div>
+                {% if tasks %}
+                    <div class="row">
+                        {% for task in tasks %}
+                            <div class="col-md-12">
+                                <div class="bs-task-callout bs-callout-danger">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
+                                                <button type="submit" class="btn btn-link">
+                                                    <h5><span class="glyphicon glyphicon-new-window ok-sign-color"></span></h5>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <p>{{task.description}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>You don't have any tasks.</p>
+                {% endif %}
             </div>
         </div>
     </div>

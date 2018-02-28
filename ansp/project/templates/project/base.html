@@ -11,13 +11,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <!-- css -->
         <link rel="stylesheet" type="text/css" href="{% static 'project/style.css' %}"/>
-        <!-- js 
-        <script>
-            $('#myModal').on('shown.bs.modal', function () {
-                $('#myInput').trigger('focus')
-            })
-        </script>
-        -->
     </head>
     <body>
         <!-- navigation -->
@@ -44,7 +37,6 @@
                                 <li><a class="navbar-font" href="{% url 'account:change_password' %}" aria-hidden="true">change password</a></li>
                             </ul>
                         </li>
-                        <!-- <li><a class="navbar-font" href="#" aria-hidden="true">help</a></li> -->
                         <li><a class="navbar-font" href="{% url 'account:logout' %}" aria-hidden="true"><span class="glyphicon glyphicon-log-out"></span>&nbsp; logout</a></li>
                     </ul>
                 </div>
@@ -56,7 +48,7 @@
         <div class="footer fixed-bottom">
             <div class="container">
                 <hr style="height: 1px; border:none; color:LightGrey; background-color:LightGrey"/>
-                <p class="text-right" style="padding-right:5px;">&copy; 2017 Filip Valchar, bachelor thesis.</br>You can <a href="mailto:filipvalchar@gmail.com">contact</a> me.</p>
+                <p class="text-right" style="padding-right:5px;">&copy; 2017 Filip Valchar, bachelor thesis.</p>
             </div>
         </div>
     </body>

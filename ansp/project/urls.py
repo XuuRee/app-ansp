@@ -8,10 +8,9 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/$', views.detail, name="detail"),
     # projects
     url(r'create/$', views.create_project, name="project-create"),
-    url(r'^(?P<pk>[0-9]+)/update/$', views.ProjectUpdate.as_view(), name="project-update"), #
+    url(r'^(?P<pk>[0-9]+)/update/$', views.update_project, name="project-update"),
     url(r'^(?P<pk>[0-9]+)/delete/$', views.delete_project, name="project-delete"),
-    url(r'^(?P<pk>[0-9]+)/project-finish/$', views.project_finish, name="project-finish"),
-    url(r'^(?P<pk>[0-9]+)/project-continue/$', views.project_continue, name="project-continue"),
+    url(r'^(?P<pk>[0-9]+)/finish/$', views.change_project_finalization, name="change-project-finalization"),
     # notes
     url(r'^(?P<pk>[0-9]+)/delete-note/$', views.delete_note, name="delete-note"),
     # files

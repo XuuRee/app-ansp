@@ -1,7 +1,7 @@
 import datetime
 from django.utils.translation import gettext_lazy as _
 from django.forms import ModelForm, Form
-from django import forms 
+from django import forms
 from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 from django.forms.widgets import CheckboxSelectMultiple
@@ -12,6 +12,7 @@ from project.models import (
     Comment,
     Task,
 )
+
 
 class ProjectForm(forms.ModelForm):
     

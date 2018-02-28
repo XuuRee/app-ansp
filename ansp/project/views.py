@@ -15,24 +15,19 @@ IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 
 @login_required
-def index(request):
+def index(request, sorting=False, finished=False):
     """ Index page. """
-    projects = Project.objects.filter(collaborators__in=[request.user])
-    all_tasks = Task.objects.filter(collaborators__in=[request.user])
-    #important_tasks = all_tasks.filter(important=True and unfinished=True)
-    #print(important_tasks)    
+    projects = Project.objects.filter(collaborators__in=[request.user], finish=False).order_by('-created')
+    tasks = Task.objects.filter(
+        collaborators__in=[request.user],
+        finish=False,
+        important=True
+    )
     context = {
         'projects': projects,
-        'tasks': all_tasks,
+        'tasks': tasks,
     }
     return render(request, "project/index.html/", context)
-
-
-def is_past_due(project_date):      # not necessery
-    """ Check if deadline is past due. """ 
-    if project_date is None:
-        return False
-    return date.today() > project_date
 
 
 @login_required
@@ -64,6 +59,11 @@ def detail(request, pk):
         return render(request, "project/detail.html", context)
 
 
+########################################################
+# PROJECTS FUNCTIONS
+########################################################
+
+
 @login_required
 def create_project(request):
     """ Create new project. """
@@ -77,6 +77,52 @@ def create_project(request):
     else:
         form = ProjectForm()
         return render(request, 'project/project_form.html', {'form': form})
+
+
+@login_required
+def update_project(request, pk):
+    """ Update a specific project. """
+    instance = Project.objects.get(id_project=pk)
+    form = ProjectForm(request.POST or None, instance=instance)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('/projects')
+    else:
+        context = {
+            'form': form,
+            'update': True,
+        }
+        return render(request, 'project/project_form.html', context)
+
+
+def delete_project(request, pk):
+    """ Delete a specific project. """
+    Project.objects.get(pk=pk).delete()
+    return redirect('/projects')           # index(request)
+
+
+def change_project_finalization(request, pk):
+    """ Finish or restore project. """
+    project = Project.objects.get(pk=pk)
+    if project.finish:
+        project.finish = False
+    else:
+        project.finish = True
+    project.save()
+    return redirect('/projects')
+
+
+def is_past_due(project_date):      # not necessary
+    """ Check if deadline is past due. """ 
+    if project_date is None:
+        return False
+    return date.today() > project_date
+
+
+########################################################
+# COMMENTS FUNCTIONS
+########################################################
 
 
 @login_required
@@ -99,6 +145,11 @@ def delete_comment(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
 
 
+########################################################
+# NOTE FUNCTIONS
+########################################################
+
+
 @login_required
 def add_note(request, pk):
     """ Add a note to the project. """
@@ -115,6 +166,11 @@ def add_note(request, pk):
 def delete_note(request, pk):
     Note.objects.get(pk=pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
+
+
+########################################################
+# FILE FUNCTIONS
+########################################################
 
 
 def add_file(request, pk):
@@ -352,32 +408,4 @@ def task_handler(request, pk):
             'update': False,
         }
         return render(request, 'project/task_form.html', context)
-
-
-@login_required
-def project_finish(request, pk):
-    project = Project.objects.get(pk=pk)
-    project.finish = True
-    project.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
-@login_required
-def project_continue(request, pk):
-    project = Project.objects.get(pk=pk)
-    project.finish = False
-    project.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
-class ProjectUpdate(UpdateView):
-    model = Project
-    fields = ['name', 'description', 'created', 'deadline']
-
-
-def delete_project(request, pk):
-    """ Delete a specific project. """
-    Project.objects.get(pk=pk).delete()
-    return redirect('/projects/')
-    #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
 

@@ -33,17 +33,9 @@
                             </div>
                         </div>
                         {% if specific_project.finish %}
-                            <form action="{% url 'project:project-continue' specific_project.id_project %}" style="margin-bottom: 8px;" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
-                                <button class="btn btn-xs btn-warning">Open project</button>
-                            </form>
+                            <a href="{% url 'project:change-project-finalization' specific_project.id_project %}" class="btn btn-xs btn-warning">Restore project</a>
                         {% else %}
-                            <form action="{% url 'project:project-finish' specific_project.id_project %}" style="margin-bottom: 8px;" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="id_project" value="{{ specific_project.id_project }}"/>
-                                <button class="btn btn-xs btn-success">Finish project</button>
-                            </form>
+                            <a href="{% url 'project:change-project-finalization' specific_project.id_project %}" class="btn btn-xs btn-success">Finish project</a>
                         {% endif %}
                     </div>
                     {% if not specific_project.finish and date_deadline %}
