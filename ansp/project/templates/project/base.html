@@ -11,14 +11,13 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <!-- css -->
         <link rel="stylesheet" type="text/css" href="{% static 'project/style.css' %}"/>
-        <script type="text/javascript">
-            function toggle_visibility(id) {
-                var e = document.getElementById(id);
-                if(e.style.display == 'block')
-                    e.style.display = 'none';
-                else
-                    e.style.display = 'block';
-            }
+        <!-- scripts -->
+        <script>
+            $(document).ready(function(){
+                $("#show_projects").click(function(){
+                    $("#history").slideToggle(800);
+                });
+            });
         </script>
     </head>
     <body>

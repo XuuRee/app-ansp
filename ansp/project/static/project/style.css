@@ -38,6 +38,15 @@ a:hover {
     margin-top: 20px;
 }
 
+.task-container {
+    background-color: #ffcccc;
+    transition: background-color 1.0s ease;
+}
+
+.task-container:hover {
+    background-color: #ff8080;
+}
+
 .project-container {
     min-height: 200px;
     background-color: #d5eef6;

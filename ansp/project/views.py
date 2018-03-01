@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import date
 
 
@@ -16,14 +17,22 @@ IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 @login_required
 def index(request):
-    """ Index page. """
-    projects = Project.objects.filter(collaborators__in=[request.user], finish=False).order_by('-created')
+    """ Main view, index page. """
+    unfinished_projects = Project.objects.filter(collaborators__in=[request.user], finish=False).order_by('-created')
     finished_projects = Project.objects.filter(collaborators__in=[request.user], finish=True).order_by('-created')
     tasks = Task.objects.filter(
         collaborators__in=[request.user],
         finish=False,
         important=True
     )
+    page = request.GET.get('page', 1)
+    paginator = Paginator(unfinished_projects, 9)
+    try:
+        projects = paginator.page(page)
+    except PageNotAnInteger:
+        projects = paginator.page(1)
+    except EmptyPage:
+        projects = paginator.page(paginator.num_pages)
     context = {
         'projects': projects,
         'finished_projects': finished_projects,
@@ -75,10 +84,10 @@ def create_project(request):
             project = form.save(commit=False)
             form.save()
             project.collaborators.add(request.user)
-            return redirect('/projects')
+            return redirect('/projects')    # on specific project
     else:
         form = ProjectForm()
-        return render(request, 'project/project_form.html', {'form': form})
+        return render(request, 'project/project_form.html', {'form': form}) # project_form
 
 
 @login_required
@@ -105,7 +114,7 @@ def delete_project(request, pk):
 
 
 def change_project_finalization(request, pk):
-    """ Finish or restore project. """
+    """ Finish or restore a project. """
     project = Project.objects.get(pk=pk)
     if project.finish:
         project.finish = False

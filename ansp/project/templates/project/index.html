@@ -7,14 +7,18 @@
             <div class="col-md-7">
                 <div class="page-header">
                     <h3>Overview</h3>
-                    <p>List your projects: <a style="cursor: pointer;" onclick="toggle_visibility('history');" title="I want to see a finished projects">old projects <span class="glyphicon glyphicon-menu-down"></span></a></p>
+                    <p>List your projects:
+                        <a style="cursor: pointer;" id="show_projects" title="I want to see a finished projects">old projects
+                            <span class="glyphicon glyphicon-menu-down"></span>
+                        </a>
+                    </p>
                 </div>
                 <div id="history" style="display: none;">
                     {% if finished_projects %}
                         <h6>History</h6>
                         <div class="row">
                             {% for project in finished_projects %}
-                                {% include 'project/single_project.html' %} 
+                                {% include 'project/single_project.html' %}
                             {% endfor %}
                         </div>
                         <hr>
@@ -28,6 +32,7 @@
                             {% include 'project/single_project.html' %}
                         {% endfor %}
                     </div>
+                    {% include 'project/paginator.html' with objects=projects %}
                 {% else %}
                     <p>You don't have any projects. Start right now!<p>
                     <!--
@@ -43,7 +48,26 @@
                     <p>This is place for your unfinished and important task.</p>
                 </div>
                 {% if tasks %}
-                    <p>Not implemented.</p>
+                    {% for task in tasks %}
+                        <div class="row" style="padding: 20px 14px 0px 14px;">
+                            <div style="cursor: pointer;" onclick="window.location='/projects/' + {{ task.id_project.id_project }} + '/tasks';">
+                                <div class="col-md-12 task-container">
+                                    <h6>
+                                        <span class="text-danger glyphicon glyphicon-bookmark"></span> &nbsp;{{task.id_project.name}}
+                                    </h6>
+                                    <p style="text-align: justify;">
+                                        <small>Description</small>
+                                        <br>
+                                        {% if task.description|length > 200 %}
+                                            {{ task.description|slice:"0:200" }}...
+                                        {% else %}
+                                            {{ task.description }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 {% else %}
                     <p>You don't have any tasks.</p>
                 {% endif %}

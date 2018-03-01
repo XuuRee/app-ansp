@@ -10,8 +10,6 @@
                 <a href="{% url 'project:detail' primary_key %}"><span class="glyphicon glyphicon-arrow-left"></span> project</a>
                 <!-- <a href="#"> don't want be in this project</a> -->
             </div>
-            <!-- <p>You can join...</p> 
-            <hr> -->
             {% if add_success is not None or remove_success is not None %}
                 {% if add_success %}
                     <div class="alert alert-warning alert-dismissible" role="alert">
