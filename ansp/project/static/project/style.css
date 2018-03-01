@@ -44,7 +44,7 @@ a:hover {
 }
 
 .task-container:hover {
-    background-color: #ff8080;
+    background-color: #ff9999;
 }
 
 .project-container {
@@ -97,7 +97,7 @@ a:hover {
     padding-right: 10px;
 }
 
-/* list group hover */
+/* list group hover 
 .bck {
     border-style: dotted;
     margin-top: 5px;
@@ -107,6 +107,7 @@ a:hover {
 .bck:hover {
     background-color: #F3F3F3;
 }
+*/
 
 /* backgroung change color */
 .background_change {

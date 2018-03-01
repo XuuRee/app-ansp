@@ -12,7 +12,12 @@ from project.models import (
     Comment,
     Task,
 )
+from django.contrib.admin import widgets
 
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+    
 
 class ProjectForm(forms.ModelForm):
     
@@ -22,6 +27,10 @@ class ProjectForm(forms.ModelForm):
         labels = {
             'decription': _('Description (optional)'),
             'deadline': _('Deadline (optional)'),
+        }
+        widgets = {
+          'description': forms.Textarea(attrs={'rows': 6}),
+          'deadline': DateInput()
         }
         error_messages = {
             'name': {
@@ -58,6 +67,9 @@ class NoteForm(forms.ModelForm):
         fields = ['note_text']
         labels = {       # work?
             'note_text': _("Write a note"), # text field
+        }
+        widget = {
+            'note_text': forms.Textarea(attrs={'rows': 5, 'cols': 10}), # why not?
         }
         error_messages = {
             'note_text': {

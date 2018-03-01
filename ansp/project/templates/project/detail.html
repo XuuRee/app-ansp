@@ -38,7 +38,7 @@
                             <a href="{% url 'project:change-project-finalization' specific_project.id_project %}" class="btn btn-xs btn-success">Finish project</a>
                         {% endif %}
                     </div>
-                    {% if not specific_project.finish and date_deadline %}
+                    {% if not specific_project.finish and specific_project.is_past_due %}
                         <div class="alert alert-danger alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -195,17 +195,15 @@
             <div class="col-md-5">
                 <!-- files -->
                 <div class="page-header">
-                    <h4><b>Files</b></h4>
-                    {% if not files %}
-                        <p>You don't have any stored files.</p>
-                    {% else %}
-                        <p>You have stored files.</p>
-                    {% endif %}
+                    <h3><b>Files</b></h3>
+                    <p>Explore your stored files.</p>
                     <a href="{% url 'project:file-handler' specific_project.id_project %}"><span class="glyphicon glyphicon-file"></span> &nbsp; file handler</a> <!-- /projects/{{specific_project.id_project}}/files -->
                 </div>
                 <!-- notes -->
                 <div class="page-header">
-                    <h4><b>Private notes</b> <span class="badge badge-circle">{{notes|length}}</span></h4>
+                    <h3>
+                        <b>Private notes</b> <span class="badge badge-circle">{{notes|length}}</span>
+                    </h3>
                     <p>You can keep all your notes here.</p>
                 </div>
                 <form method="post">

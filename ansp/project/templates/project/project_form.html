@@ -3,18 +3,14 @@
 {% block title %}Create project{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-6">
-            <div class="col-md-2">
-            </div>
-            <div class="col-md-10">
                 <div class="page-header">
                     {% if update %}
                         <h2>Update your project</h2>
                     {% else %}
                         <h2>Create new project</h2>
-                        <p>As soon as you base your project you can add files, notes etc.</p>
                     {% endif %}
                 </div>
                 <form method="post">
@@ -28,16 +24,28 @@
                     {% endif %}
                     <br>
                 </form>
-            </div>
         </div>
         <div class="col-md-6">
-            <div style="padding: 15%">
-                <h1><b>Some tips</b></h1><br>
+            <div class="page-header">
+                <h2>Some tips</h2>
+            </div>
+            <h6>Before you start your journey, please read:</h6><br>
+            <ul>
+                <li>
                 <h6>When you get to overview just click on your project and you will see
                 all details and your new work area.</h6>
+                </li>
+                <br>
+                <li>
                 <h6>After you create your project you can add files, notes, tasks and your
                 collaborators.</h6>
-            </div>
+                </li>
+                <br>
+                <li>
+                <h6>After you create your project you can add files, notes, tasks and your
+                collaborators.</h6>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

@@ -49,23 +49,17 @@ def detail(request, pk):
         if 'CommentFormButton' in request.POST:
             return add_comment(request, pk)
     else:
-        specific_project = Project.objects.get(id_project=pk)
-        files = File.objects.filter(id_project=pk)
-        notes = Note.objects.filter(id_project=pk)
-        notes = notes.filter(author=request.user)
+        project = Project.objects.get(id_project=pk)
+        notes = Note.objects.filter(id_project=pk, author=request.user)
         comments = Comment.objects.filter(id_project=pk)
-        note_form, comment_form = NoteForm(), CommentForm()
-        date_deadline = is_past_due(specific_project.deadline)
-        tasks = distribute_tasks(Task.objects.filter(id_project=pk))
+        tasks = Task.objects.filter(id_project=pk, finish=False)
         context = {
-            'specific_project': specific_project,
-            'files': files,
+            'specific_project': project,
+            'form': NoteForm(),
+            'comment_form': CommentForm(),
             'notes': notes,
-            'form': note_form,
             'comments': comments,
-            'comment_form': comment_form,
-            'date_deadline': date_deadline,
-            'tasks': tasks[1]
+            'tasks': tasks,
         }
         return render(request, "project/detail.html", context)
 
@@ -122,13 +116,6 @@ def change_project_finalization(request, pk):
         project.finish = True
     project.save()
     return redirect('/projects')
-
-
-def is_past_due(project_date):      # not necessary
-    """ Check if deadline is past due. """ 
-    if project_date is None:
-        return False
-    return date.today() > project_date
 
 
 ########################################################
