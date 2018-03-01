@@ -7,54 +7,25 @@
             <div class="col-md-7">
                 <div class="page-header">
                     <h3>Overview</h3>
-                    <p>
-                        List your projects: &nbsp;
-                        <a href="#" title="sorting latest projects">newest</a> /
-                        <a href="#" title="sorting oldest projects">oldest</a> /
-                        <a href="#" title="finish projects">already finished</a>
-                    </p>
+                    <p>List your projects: <a style="cursor: pointer;" onclick="toggle_visibility('history');" title="I want to see a finished projects">old projects <span class="glyphicon glyphicon-menu-down"></span></a></p>
+                </div>
+                <div id="history" style="display: none;">
+                    {% if finished_projects %}
+                        <h6>History</h6>
+                        <div class="row">
+                            {% for project in finished_projects %}
+                                {% include 'project/single_project.html' %} 
+                            {% endfor %}
+                        </div>
+                        <hr>
+                    {% else %}
+                        <p>Ouch. This is empty.</p>
+                    {% endif %}
                 </div>
                 {% if projects %}
                     <div class="row">
                         {% for project in projects %}
-                            <div style="cursor: pointer;" onclick="window.location='/projects/' + {{project.id_project}}">
-                                <div class="col-md-4 margin-top-20px">
-                                    <div class="col-md-12 project-container">
-                                        {% if project.is_past_due %}
-                                            <h6 class="text-danger">
-                                                <span class="glyphicon glyphicon-bookmark"></span>
-                                            </h6>
-                                        {% else %}
-                                            <h6 class="text-success">
-                                                <span class="glyphicon glyphicon-bookmark"></span>
-                                            </h6>
-                                        {% endif %}
-                                        <h5>
-                                            {% if project.name|length > 18 %} <!-- not working? parsing in view -->
-                                                {{ project.name|slice:"0:18" }}...
-                                            {% else %}
-                                                {{ project.name }}
-                                            {% endif %}
-                                            <br>
-                                            <small>
-                                                <a href="{% url 'project:project-update' project.id_project %}" title="edit project">edit project</a> <!-- method post -->
-                                            </small>
-                                        </h5>
-                                        <p>
-                                            Deadline<br>
-                                            {% if project.deadline %}
-                                                {% if project.is_past_due %}
-                                                    <b class="text-danger">{{ project.deadline }}</b>
-                                                {% else %}
-                                                    {{ project.deadline }}
-                                                {% endif %}
-                                            {% else %}
-                                                This project doesn't have deadline.
-                                            {% endif %}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            {% include 'project/single_project.html' %}
                         {% endfor %}
                     </div>
                 {% else %}
@@ -72,28 +43,7 @@
                     <p>This is place for your unfinished and important task.</p>
                 </div>
                 {% if tasks %}
-                    <div class="row">
-                        {% for task in tasks %}
-                            <div class="col-md-12">
-                                <div class="bs-task-callout bs-callout-danger">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                                <button type="submit" class="btn btn-link">
-                                                    <h5><span class="glyphicon glyphicon-new-window ok-sign-color"></span></h5>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <p>{{task.description}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+                    <p>Not implemented.</p>
                 {% else %}
                     <p>You don't have any tasks.</p>
                 {% endif %}

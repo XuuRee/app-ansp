@@ -15,9 +15,10 @@ IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 
 @login_required
-def index(request, sorting=False, finished=False):
+def index(request):
     """ Index page. """
     projects = Project.objects.filter(collaborators__in=[request.user], finish=False).order_by('-created')
+    finished_projects = Project.objects.filter(collaborators__in=[request.user], finish=True).order_by('-created')
     tasks = Task.objects.filter(
         collaborators__in=[request.user],
         finish=False,
@@ -25,6 +26,7 @@ def index(request, sorting=False, finished=False):
     )
     context = {
         'projects': projects,
+        'finished_projects': finished_projects,
         'tasks': tasks,
     }
     return render(request, "project/index.html/", context)

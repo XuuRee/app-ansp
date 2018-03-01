@@ -1,0 +1,40 @@
+<!-- render single project -->
+
+<div style="cursor: pointer;" onclick="window.location='/projects/' + {{project.id_project}}">
+    <div class="col-md-4 margin-top-20px">
+        <div class="col-md-12 project-container">
+            {% if project.is_past_due and not project.is_finish %}
+                <h6 class="text-danger">
+                    <span class="glyphicon glyphicon-bookmark"></span>
+                </h6>
+            {% else %}
+                <h6 class="text-success">
+                    <span class="glyphicon glyphicon-bookmark"></span>
+                </h6>
+            {% endif %}
+            <h5>
+                {% if project.name|length > 18 %} <!-- not working? parsing in view -->
+                    {{ project.name|slice:"0:18" }}...
+                {% else %}
+                    {{ project.name }}
+                {% endif %}
+                <br>
+                <small>
+                    <a href="{% url 'project:project-update' project.id_project %}" title="edit project">edit project</a> <!-- method post -->
+                </small>
+            </h5>
+            <p>
+                Deadline<br>
+                {% if project.deadline %}
+                    {% if project.is_past_due and not project.is_finish %}
+                        <b class="text-danger">{{ project.deadline }}</b>
+                    {% else %}
+                        {{ project.deadline }}
+                    {% endif %}
+                {% else %}
+                    This project doesn't have deadline.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
