@@ -67,13 +67,12 @@ class NoteForm(forms.ModelForm):
     
     class Meta:
         model = Note
-        exclude = ['id_project']    # has to be?
         fields = ['note_text']
-        labels = {       
+        labels = {
             'note_text': _("Write a note"),
         }
-        widget = {
-            'note_text': forms.Textarea(attrs={'rows': 5, 'cols': 10}), # why not?
+        widgets = {
+            'note_text': forms.Textarea(attrs={'rows': 2}),
         }
         error_messages = {
             'note_text': {

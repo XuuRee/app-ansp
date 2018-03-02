@@ -17,6 +17,21 @@
                         <h4><b>Add task</b></h4>
                     {% endif %}
                 </div>
+                <!-- include -->
+                {% if task_form.errors %}
+                    {% for field in task_form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in task_form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <form method="post">
                     {% csrf_token %}
                     {{ task_form|crispy }}

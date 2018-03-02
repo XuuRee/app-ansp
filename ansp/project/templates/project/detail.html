@@ -8,7 +8,7 @@
             <div class="col-md-7">
                 <div>
                     <div class="page-header">
-                        <h2><b>{{ specific_project.name }}</b></h2>
+                        <h1>{{ specific_project.name }}</h1>
                         <p>
                             <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> /
                             <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a> /
@@ -72,11 +72,42 @@
                 <!-- Tasks -->
                 <div>
                     <div class="page-header">
-                        <h4><b>Tasks</b> <span class="badge badge-circle">{{tasks|length}}</span></h4>
-                        <p>
-                            <a href="{% url 'project:task-handler' specific_project.id_project %}"><span class="glyphicon glyphicon-tasks"></span> &nbsp;task handler</a>
-                        </p>
+                        <h3>Tasks <span class="badge">{{tasks|length}}</span></h3>
+                        <p>List of all tasks in this project.</p>
+                        <a href="{% url 'project:task-handler' specific_project.id_project %}"><span class="glyphicon glyphicon-tasks"></span> &nbsp;task handler</a>
                     </div>
+                    {% if tasks %}
+                        {% for task in tasks %}
+                            <div class="row" style="padding: 8px 14px 0px 14px;">
+                                <div style="cursor: pointer;" onclick="window.location='/projects/' + {{ task.id_project.id_project }} + '/tasks';">
+                                    <div class="col-md-12 task-container">
+                                        <h6>
+                                            <span class="text-danger glyphicon glyphicon-bookmark"></span> &nbsp;{{task.id_project.name}}
+                                            <br>
+                                            <small>
+                                                <a href="{% url 'project:update-task' task.id_task %}">edit task</a> /
+                                                <a href="{% url 'project:change-finalization' task.id_task %}">done</a> /
+                                                <a href="{% url 'project:change-importance' task.id_task %}">not important</a>
+                                            </small>
+                                        </h6>
+                                        <p style="text-align: justify;">
+                                            <small>Description</small>
+                                            <br>
+                                            {% if task.description|length > 180 %}
+                                                {{ task.description|slice:"0:180" }}...
+                                            {% else %}
+                                                {{ task.description }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <!-- pagination -->
+                    {% else %}
+                        <p>You don't have any tasks.</p>
+                    {% endif %}
+                    <!--
                     {% if tasks %}
                         {% for task in tasks %}
                             <div class="bs-task-callout bs-callout-danger">
@@ -93,9 +124,6 @@
                                     <div class="col-md-8">
                                         <small><a href="{% url 'project:update-task' task.id_task %}">update task #{{forloop.counter}}</a></small>
                                         <p style="text-align:justify;">{{task.description}}</p>
-                                        <!--
-                                        <hr style="border-top: 1px solid #edaeab; background: transparent;">
-                                        -->
                                         <p>
                                             {% for user in task.collaborators.all %}
                                                 <b><span class="glyphicon glyphicon-user"></span> &nbsp;{{user.username}}</b>
@@ -134,20 +162,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--
-                            {% if not forloop.last %}
-                                <hr>
-                            {% endif %}
-                            -->
                         {% endfor %}
                     {% else %}
                         <p>You dont have any task!</p>
                     {% endif %}
+                    -->
                 </div>
                 <!-- Comments -->
                 <div>
                     <div class="page-header">
-                        <h4><b>Comments</b> <span class="badge badge-circle">{{comments|length}}</span></h4>
+                        <h3>Comments <span class="badge badge-circle">{{comments|length}}</span></h3>
                     </div>
                     <form method="post">
                         {% csrf_token %}
@@ -201,9 +225,7 @@
                 </div>
                 <!-- notes -->
                 <div class="page-header">
-                    <h3>
-                        <b>Private notes</b> <span class="badge badge-circle">{{notes|length}}</span>
-                    </h3>
+                    <h3>Private notes <span class="badge">{{notes|length}}</span></h3>
                     <p>You can keep all your notes here.</p>
                 </div>
                 <form method="post">

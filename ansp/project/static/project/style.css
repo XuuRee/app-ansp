@@ -33,11 +33,17 @@ a:hover {
     text-decoration: none;
 }
 
-/* overview */
+/* margins */
 .margin-top-20px {
     margin-top: 20px;
 }
 
+/* paddings */
+.col-pad {
+    padding: 20px;
+}
+
+/* overview */
 .task-container {
     background-color: #ffcccc;
     transition: background-color 1.0s ease;
@@ -75,12 +81,16 @@ a:hover {
     opacity: 0.95;
 }
 
-.badge-circle {
-    font-size: 22px;
+/* badge */
+.badge {
+    padding: 6px 10px 6px;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
     background-color: #428bca;
-    border-radius: 1em;
-    padding-left: 8px;
-    padding-right: 8px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
 }
 
 /* navbar, menu */
@@ -97,18 +107,6 @@ a:hover {
     padding-right: 10px;
 }
 
-/* list group hover 
-.bck {
-    border-style: dotted;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.bck:hover {
-    background-color: #F3F3F3;
-}
-*/
-
 /* backgroung change color */
 .background_change {
     background-color: transparent;    
@@ -116,11 +114,6 @@ a:hover {
 
 .background_change:hover {
     background-color: #F3F3F3;
-}
-
-/* content */
-.col-pad {
-    padding: 20px;
 }
 
 /* footer */

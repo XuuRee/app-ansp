@@ -9,9 +9,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import date
 
 
-IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
-
-
 @login_required
 def index(request):
     """ Main view, index page. """
@@ -75,7 +72,7 @@ def create_project(request):
             project = form.save(commit=False)
             form.save()
             project.collaborators.add(request.user)
-            return redirect('/projects')    # on specific project
+            return redirect('/projects')
     else:
         form = ProjectForm()
         context = {
@@ -141,11 +138,11 @@ def add_comment(request, pk):
 def delete_comment(request, pk):
     """ Delete comment from the project. """
     Comment.objects.get(pk=pk).delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
+    return redirect(request.META.get('HTTP_REFERER'))   # better solution
 
 
 ########################################################
-# NOTE FUNCTIONS
+# NOTES FUNCTIONS
 ########################################################
 
 
@@ -155,7 +152,7 @@ def add_note(request, pk):
     form = NoteForm(request.POST)
     if form.is_valid():
         note = form.save(commit=False)
-        note.id_project = Project.objects.get(id_project=pk) # has to be?
+        note.id_project = Project.objects.get(id_project=pk)
         note.author = request.user
         form.save()
         return redirect('/projects/{}/'.format(pk))
@@ -340,13 +337,14 @@ def manage_members(request, pk):
 
 ########################################################
 # TASK FUNCTIONS
+#   - if task has no members than exception is raised
 ########################################################
 
 
 def delete_task(request, pk):
     """ Remove a specific task. """
     Task.objects.get(pk=pk).delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
+    return redirect(request.META.get('HTTP_REFERER'))   # better solution
 
 
 def change_finalization(request, pk):
@@ -357,7 +355,7 @@ def change_finalization(request, pk):
     else:
         task.finish = True
     task.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def change_importance(request, pk):
@@ -368,18 +366,7 @@ def change_importance(request, pk):
     else:
         task.important = True
     task.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER')) # really?
-
-
-def distribute_tasks(tasks):
-    """ Divide all the tasks to to finish / unfinish. """
-    finish, unfinish = [], []
-    for task in tasks:
-        if task.finish:
-            finish.append(task)
-        else:
-            unfinish.append(task)
-    return (finish, unfinish)
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def update_task(request, pk):
@@ -389,16 +376,19 @@ def update_task(request, pk):
     task_form = TaskForm(project.id_project, request.POST or None, instance=instance)
     if task_form.is_valid():
         task_form.save()
-        return redirect('/projects/{}/tasks'.format(project.id_project)) 
-    tasks = distribute_tasks(Task.objects.filter(id_project=project.id_project))
-    context = {
-        'task_form': task_form,
-        'finished_tasks': tasks[0],
-        'unfinished_tasks': tasks[1],
-        'primary_key': project.id_project,
-        'update': True,
-    }
-    return render(request, 'project/task_form.html', context)
+        return redirect('/projects/{}/tasks'.format(project.id_project))
+    else:
+        finished_tasks = Task.objects.filter(finish=True)
+        unfinished_tasks = Task.objects.filter(finish=False)
+        context = {
+            'task_form': task_form,
+            'finished_tasks': finished_tasks,
+            'unfinished_tasks': unfinished_tasks,
+            'primary_key': project.id_project,
+            'update': True,
+        }
+        return render(request, 'project/task_form.html', context)
+
 
 @login_required
 def task_handler(request, pk):
@@ -411,17 +401,18 @@ def task_handler(request, pk):
             task.id_project = Project.objects.get(id_project=pk)
             form.save()
             return redirect('/projects/{}/tasks'.format(pk))
-    else:
-        task_form = TaskForm(pk)
-        finished_tasks = Task.objects.filter(finish=True)
-        unfinished_tasks = Task.objects.filter(finish=False)
-        tasks = distribute_tasks(Task.objects.filter(id_project=pk))
-        context = {
-            'task_form': task_form,
-            'finished_tasks': finished_tasks,
-            'unfinished_tasks': unfinished_tasks,
-            'primary_key': pk,
-            'update': False,
-        }
-        return render(request, 'project/task_form.html', context)
+        else:
+            # None no members sketch
+            pass
+    task_form = TaskForm(pk)
+    finished_tasks = Task.objects.filter(finish=True)
+    unfinished_tasks = Task.objects.filter(finish=False)
+    context = {
+        'task_form': task_form,
+        'finished_tasks': finished_tasks,
+        'unfinished_tasks': unfinished_tasks,
+        'primary_key': pk,
+        'update': False,
+    }
+    return render(request, 'project/task_form.html', context)
 
