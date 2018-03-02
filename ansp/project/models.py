@@ -1,7 +1,6 @@
 import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from datetime import date
 
@@ -11,7 +10,7 @@ class Project(models.Model):
     collaborators = models.ManyToManyField(User)
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
-    created = models.DateField(_("Created"), default=datetime.date.today)
+    created = models.DateField(_("Created"), default=datetime.date.today)   # in forms.py, widget
     deadline = models.DateField(null=True, blank=True)
     finish = models.BooleanField(default=False)
     
@@ -31,22 +30,19 @@ class File(models.Model):
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
     filename = models.CharField(max_length=100)
     filepath = models.FileField(null=True, blank=False)
-
-    def __str__(self):
-        return self.filename
     
 
 class Note(models.Model):
     id_note = models.AutoField(primary_key=True)
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    author = models.ForeignKey('auth.User', null=True) # delete null
-    note_text = models.CharField(max_length=400)
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE) # delete null
+    note_text = models.CharField(max_length=400) # textfield?
 
 
 class Comment(models.Model):
     id_comment = models.AutoField(primary_key=True)
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    author = models.ForeignKey('auth.User', null=True) # delete null
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE) # delete null
     comment_text = models.TextField(blank=False)
     date = models.DateField(null=True, blank=True) # cant be null!
 

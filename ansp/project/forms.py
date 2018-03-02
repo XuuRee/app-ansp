@@ -27,6 +27,7 @@ class ProjectForm(forms.ModelForm):
         labels = {
             'decription': _('Description (optional)'),
             'deadline': _('Deadline (optional)'),
+            'created': _('Created (set today)'),
         }
         widgets = {
           'description': forms.Textarea(attrs={'rows': 6}),
@@ -43,11 +44,8 @@ class FileForm(forms.ModelForm):
     
     class Meta:
         model = File
-        exclude = ['id_project']
-        fields = [
-            'filename',
-            'filepath'
-        ]
+        exclude = ['id_project']    # really?
+        fields = ['filename', 'filepath']
         labels = {                   
             'filename': _('Name of the file'),
             'filepath': _('Select a file'),
@@ -57,16 +55,22 @@ class FileForm(forms.ModelForm):
                 'max_length': _("This text is too long (100 characters max)."),
             },
         }
+
+
+class FilterFileForm(forms.Form):
+    
+    file_types = forms.CharField(max_length=200, label="",
+                                 widget=forms.TextInput(attrs={'placeholder': 'jpg, png, pdf etc.'}))
         
 
 class NoteForm(forms.ModelForm):
     
     class Meta:
         model = Note
-        exclude = ['id_project']
+        exclude = ['id_project']    # has to be?
         fields = ['note_text']
-        labels = {       # work?
-            'note_text': _("Write a note"), # text field
+        labels = {       
+            'note_text': _("Write a note"),
         }
         widget = {
             'note_text': forms.Textarea(attrs={'rows': 5, 'cols': 10}), # why not?
@@ -76,12 +80,6 @@ class NoteForm(forms.ModelForm):
                 'max_length': _("This text is too long (400 characters max)."),
             },
         }
-
-
-class SearchFileForm(forms.Form):
-    
-    file_types = forms.CharField(max_length=200, label="",
-                                 widget=forms.TextInput(attrs={'placeholder': 'jpg, png, pdf etc.'}))
 
 
 class CommentForm(forms.ModelForm):

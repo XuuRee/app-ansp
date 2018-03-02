@@ -1,7 +1,4 @@
-from django.views.generic.edit import DeleteView, UpdateView
-from django.core.urlresolvers import reverse_lazy
-from django.views import generic
-from project.forms import ProjectForm, FileForm, NoteForm, SearchFileForm, CommentForm, ManageUserForm, ChooseUserForm, TaskForm
+from project.forms import ProjectForm, FileForm, NoteForm, FilterFileForm, CommentForm, ManageUserForm, ChooseUserForm, TaskForm
 from .models import Project, File, Note, Comment, Task
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
@@ -81,7 +78,11 @@ def create_project(request):
             return redirect('/projects')    # on specific project
     else:
         form = ProjectForm()
-        return render(request, 'project/project_form.html', {'form': form}) # project_form
+        context = {
+            'form': form,
+            'update': False,
+        }
+        return render(request, 'project/project_form.html', context) # project_form
 
 
 @login_required
@@ -163,25 +164,37 @@ def add_note(request, pk):
 @login_required
 def delete_note(request, pk):
     Note.objects.get(pk=pk).delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   # better solution
+    return redirect(request.META.get('HTTP_REFERER'))   # better solution
 
 
 ########################################################
-# FILE FUNCTIONS
+# FILES FUNCTIONS
+#   - where heroku save files.
 ########################################################
 
 
 def add_file(request, pk):
     """ Add a file to the project. """
-    form = FileForm(request.POST, request.FILES)
-    if form.is_valid():
-        file = form.save(commit=False)
-        file.id_project = Project.objects.get(id_project=pk)
-        form.save()
+    file_form = FileForm(request.POST, request.FILES)
+    if file_form.is_valid():
+        upload_file = file_form.save(commit=False)
+        upload_file.id_project = Project.objects.get(id_project=pk)
+        file_form.save()
         return redirect('/projects/{}/files'.format(pk))
+    else:
+        filter_form = FilterFileForm()
+        files = File.objects.filter(id_project=pk)
+        context = {
+            'file_form': file_form,
+            'filter_form': filter_form,
+            'files': files,
+            'project_pk': pk,
+        }
+        return render(request, 'project/file_form.html', context)
 
 
 def get_files(files, types):
+    """ Return files with given types. """
     types, match = list(map(lambda s:s.strip(), types.split(','))), []
     for orig_file in files:
         file_type = orig_file.filepath.url.split('.')[-1]
@@ -191,37 +204,35 @@ def get_files(files, types):
     return match
 
 
-def filter_files(request, pk):
-    form = SearchFileForm(request.POST)     #not search, but filter form
-    if form.is_valid():
-        file_types = form.cleaned_data['file_types']
-        files = File.objects.filter(id_project=pk)  # twice
-        files = get_files(files, file_types)
-        form, filter_form = FileForm(), SearchFileForm()        
+def filter_files(request, files, pk):
+    """ Filter all files with the given suffixes. """
+    filter_form = FilterFileForm(request.POST)
+    if filter_form.is_valid():
+        file_types = filter_form.cleaned_data['file_types']
+        files = get_files(files, file_types)      
         context = {
-            'form': form,
-            'filter_form': filter_form,
+            'file_form': FileForm(),
+            'filter_form': FilterFileForm(),
             'files': files,
-            'primary_key': pk,
+            'project_pk': pk,
         }
         return render(request, 'project/file_form.html', context)
 
 
 @login_required
 def file_handler(request, pk):
+    files = File.objects.filter(id_project=pk)
     if request.method == 'POST':
         if 'FileFormButton' in request.POST:
-            return add_file(request, pk)    # empty file!
-        if 'SearchFileFormButton' in request.POST:
-            return filter_files(request, pk)    
+            return add_file(request, pk)    
+        if 'FilterFileFormButton' in request.POST:  
+            return filter_files(request, files, pk)    
     else:
-        form, filter_form = FileForm(), SearchFileForm()
-        files = File.objects.filter(id_project=pk)
         context = {
-            'form': form,
-            'filter_form': filter_form,
+            'file_form': FileForm(),
+            'filter_form': FilterFileForm(),
             'files': files,
-            'primary_key': pk,
+            'project_pk': pk,
         }
         return render(request, 'project/file_form.html', context)
     
@@ -229,7 +240,12 @@ def file_handler(request, pk):
 @login_required
 def delete_file(request, pk):
     File.objects.get(pk=pk).delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect(request.META.get('HTTP_REFERER')) # better solution
+
+
+########################################################
+# MEMBERS FUNCTIONS
+########################################################
 
 
 def remove_member(request, project, pk):
@@ -397,11 +413,13 @@ def task_handler(request, pk):
             return redirect('/projects/{}/tasks'.format(pk))
     else:
         task_form = TaskForm(pk)
+        finished_tasks = Task.objects.filter(finish=True)
+        unfinished_tasks = Task.objects.filter(finish=False)
         tasks = distribute_tasks(Task.objects.filter(id_project=pk))
         context = {
             'task_form': task_form,
-            'finished_tasks': tasks[0],
-            'unfinished_tasks': tasks[1],
+            'finished_tasks': finished_tasks,
+            'unfinished_tasks': unfinished_tasks,
             'primary_key': pk,
             'update': False,
         }

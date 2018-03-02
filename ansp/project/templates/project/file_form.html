@@ -5,30 +5,49 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="page-header">
-            <h2>File handler</h2>
-            <a href="{% url 'project:detail' primary_key %}"><span class="glyphicon glyphicon-arrow-left"></span> project</a> 
-        </div>
         <div class="col-md-4">
             <div class="page-header">
-                <h3><b>Upload new file</b></h3>
+                <h3>File handler</h3>
+                <p>
+                    <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> / 
+                    <a href="{% url 'project:detail' project_pk %}">project</a> 
+                </p>
             </div>
+            <h4>Upload new file</h4>
+            <br>
+            <!-- include -->
+            {% if file_form.errors %}
+                {% for field in file_form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in file_form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form|crispy }}
+                {{ file_form|crispy }}
                 <br><button type="submit" class="btn btn-block btn-success" name="FileFormButton">add file</button><br>
             </form>
         </div>
         <div class="col-md-8">
             <div class="page-header">
-                <h3><b>Files</b></h3>
-                <a href="{% url 'project:file-handler' primary_key %}"><span class="glyphicon glyphicon-file"></span>&nbsp; view all files</a>
+                <h3>Files</h3>
+                <p>
+                    <a href="{% url 'project:file-handler' project_pk %}"><span class="glyphicon glyphicon-file"></span>&nbsp; view all files</a>
+                </p>
             </div>
             <form class="form-inline" method="post">
                 <div class="form-group">
                     {% csrf_token %}
                     {{ filter_form|crispy }}
-                    <button type="submit" class="btn btn-success" name="SearchFileFormButton">Filter</button>
+                    <button type="submit" class="btn btn-success" name="FilterFileFormButton">Filter</button>
                 </div>
             </form>
             <hr>
@@ -52,7 +71,7 @@
                                     <form action="{% url 'project:delete-file' file.id_file %}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" name="id_note" value="{{ file.id_file }}"/>
-                                        <button type="submit" class="btn btn-xs btn-warning">delete</button>
+                                        <button type="submit" class="btn btn-xs btn-danger">delete</button>
                                     </form>
                                 </td>
                             </tr>
