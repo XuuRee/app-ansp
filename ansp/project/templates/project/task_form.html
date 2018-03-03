@@ -1,16 +1,16 @@
 {% extends 'project/base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Assign collaborators{% endblock %}
+{% block title %}Tasks{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="page-header">
                     <h3>Tasks</h3>
                     <p>
                         <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> / 
-                        <a href="{% url 'project:detail' primary_key %}">project</a>
+                        <a href="{% url 'project:detail' project_pk %}">project</a>
                     </p>
                 </div>
                 {% if update %}
@@ -45,96 +45,89 @@
                     </button>
                 </form>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <div class="page-header">
-                    <h3>Unfinished tasks</h3>
+                    <h3>Tasks in progress</h3>
+                    <p>This list stores all your undone tasks.</p>
                 </div>
                 {% if unfinished_tasks %}
                     {% for task in unfinished_tasks %}
-                        <div class="bs-callout bs-callout-danger">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    {% if request.user in task.collaborators.all %}
-                                        <span class="label label-primary">it is your task!</span>
-                                    {% endif %}
-                                    <p>
+                        <div class="row" style="padding: 8px 14px 0px 14px;">
+                            <div style="cursor: pointer;" onclick="window.location='/projects/' + {{ task.id_project.id_project }} + '/tasks';">
+                                <div class="col-md-12 task-container">
+                                    <h6>
+                                        <span class="text-danger glyphicon glyphicon-bookmark"></span> &nbsp;{{task.id_project.name}} task&nbsp;
+                                        {% if task.important %}
+                                            <a href="{% url 'project:change-importance' task.id_task %}">
+                                                <span class="glyphicon glyphicon-star star-important-color"></span>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'project:change-importance' task.id_task %}">
+                                                <span class="glyphicon glyphicon-star star-not-important-color"></span>
+                                            </a>
+                                        {% endif %}
                                         <br>
-                                        {{task.description}}
+                                        <small>
+                                            <a href="{% url 'project:update-task' task.id_task %}">edit task</a> /
+                                            <span tooltip="{{task.collaborators.all|join:", " }}">
+                                                <a style="pointer-events: none; cursor: default;">collaborators</a> /
+                                            </span>
+                                            <a href="{% url 'project:change-finalization' task.id_task %}">done</a> /
+                                            <!-- delete task only when task is finished? -->
+                                            <a href="{% url 'project:delete-task' task.id_task %}">delete</a>
+                                        </small>
+                                    </h6>
+                                    <p style="text-align: justify;">
+                                        {% if task.description %}
+                                            <small>Description</small>
+                                            <br>
+                                            {{ task.description }}
+                                        {% endif %}
+                                        <br>
                                     </p>
-                                    <p> workers:
-                                        {% for user in task.collaborators.all %}
-                                            <b>{{user.username}}</b>
-                                            {% if not forloop.last %}, {% endif %}
-                                        {% endfor %}
-                                    </p>
-                                </div>
-                                <div class="col-md-2">
-                                    {% if task.important %}
-                                            <form action="{% url 'project:change-importance' task.id_task %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                            <button type="submit" class="btn btn-md btn-link">
-                                                <h6><span class="glyphicon glyphicon-star"></span></h6>
-                                            </button>
-                                        </form>
-                                    {% else %}
-                                        <form action="{% url 'project:change-importance' task.id_task %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                            <button type="submit" class="btn btn-link">
-                                                <p><span class="glyphicon glyphicon-star-empty"></span></p>
-                                            </button>
-                                        </form>
-                                    {% endif %}
-                                    <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                        <button type="submit" class="btn btn-link">
-                                            <p></p><span class="glyphicon glyphicon-ok"></span><p>
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
-                            <!--
-                            {% if not forloop.last %}
-                                <hr>
-                            {% endif %}
-                            -->
                         </div>
                     {% endfor %}
-                {% endif%}
+                    <!-- pagination -->
+                {% else %}
+                    <p>You don't have any unfinished tasks.</p>
+                {% endif %}
                 <div class="page-header">
                     <h4>Done</h4>
+                    <p>This list stores all your completed tasks.</p>
                 </div>
                 {% if finished_tasks %}
                     {% for task in finished_tasks %}
-                        <div class="bs-callout bs-callout-success">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <p>{{task.description}}</p>
-                                    <p>
-                                        {% for user in task.collaborators.all %}
-                                            {{user.username}} 
-                                        {% endfor %}
-                                    </p>
-                                </div>
-                                <div class="col-md-2">
-                                    <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                        <button type="submit" class="btn btn-link">
-                                            <p></p><span class="glyphicon glyphicon-wrench"></span><p>
-                                        </button>
-                                    </form>
-                                </div>
+                        <div class="row" style="padding: 8px 14px 0px 14px;">
+                            <div class="col-md-12 task-container-success">
+                                <h6>
+                                    <span class="text-success glyphicon glyphicon-bookmark"></span> &nbsp;{{task.id_project.name}} task&nbsp;
+                                    {% if task.important %}
+                                        <span class="text-success glyphicon glyphicon-star"></span>
+                                    {% endif %}
+                                    <br>
+                                    <small>
+                                        <a href="{% url 'project:change-finalization' task.id_task %}">restore</a> /
+                                        <span tooltip="{{task.collaborators.all|join:", " }}">
+                                            <a style="pointer-events: none; cursor: default;">collaborators</a>
+                                        </span>
+                                    </small>
+                                </h6>
+                                <p style="text-align: justify;">
+                                    {% if task.description %}
+                                        <small>Description</small>
+                                        <br>
+                                        {{ task.description }}
+                                    {% endif %}
+                                    <br>
+                                </p>
                             </div>
-                            <!--
-                            {% if not forloop.last %}
-                                <hr>
-                            {% endif %}
-                            -->
                         </div>
                     {% endfor %}
+                    <!-- pagination -->
+                {% else %}
+                    <p>You don't have any finish tasks yet.</p>
                 {% endif%}
             </div>
         </div>

@@ -183,21 +183,20 @@ def add_file(request, pk):
         upload_file.id_project = Project.objects.get(id_project=pk)
         file_form.save()
         return redirect('/projects/{}/files'.format(pk))
-    else:
-        filter_form = FilterFileForm()
-        files = File.objects.filter(id_project=pk)
-        context = {
-            'file_form': file_form,
-            'filter_form': filter_form,
-            'files': files,
-            'project_pk': pk,
-        }
-        return render(request, 'project/file_form.html', context)
+    filter_form = FilterFileForm()
+    files = File.objects.filter(id_project=pk)
+    context = {
+        'file_form': file_form,
+        'filter_form': filter_form,
+        'files': files,
+        'project_pk': pk,
+    }
+    return render(request, 'project/file_form.html', context)
 
 
 def get_files(files, types):
     """ Return files with given types. """
-    types, match = list(map(lambda s:s.strip(), types.split(','))), []
+    types, match = list(map(lambda s: s.strip(), types.split(','))), []
     for orig_file in files:
         file_type = orig_file.filepath.url.split('.')[-1]
         file_type = file_type.lower()
@@ -211,7 +210,7 @@ def filter_files(request, files, pk):
     filter_form = FilterFileForm(request.POST)
     if filter_form.is_valid():
         file_types = filter_form.cleaned_data['file_types']
-        files = get_files(files, file_types)      
+        files = get_files(files, file_types)
         context = {
             'file_form': FileForm(),
             'filter_form': FilterFileForm(),
@@ -226,9 +225,9 @@ def file_handler(request, pk):
     files = File.objects.filter(id_project=pk)
     if request.method == 'POST':
         if 'FileFormButton' in request.POST:
-            return add_file(request, pk)    
-        if 'FilterFileFormButton' in request.POST:  
-            return filter_files(request, files, pk)    
+            return add_file(request, pk)
+        if 'FilterFileFormButton' in request.POST:
+            return filter_files(request, files, pk)
     else:
         context = {
             'file_form': FileForm(),
@@ -237,7 +236,7 @@ def file_handler(request, pk):
             'project_pk': pk,
         }
         return render(request, 'project/file_form.html', context)
-    
+
 
 @login_required
 def delete_file(request, pk):
@@ -341,8 +340,7 @@ def manage_members(request, pk):
 
 
 ########################################################
-# TASK FUNCTIONS
-#   - if task has no members than exception is raised
+# TASKS FUNCTIONS
 ########################################################
 
 
@@ -374,50 +372,56 @@ def change_importance(request, pk):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
 def update_task(request, pk):
     """ Update a specific task. """
     instance = Task.objects.get(id_task=pk)
     project = instance.id_project
-    task_form = TaskForm(project.id_project, request.POST or None, instance=instance)
+    task_form = TaskForm(
+        project.id_project,
+        request.POST or None,
+        instance=instance
+    )
     if task_form.is_valid():
         task_form.save()
         return redirect('/projects/{}/tasks'.format(project.id_project))
-    else:
-        finished_tasks = Task.objects.filter(finish=True)
-        unfinished_tasks = Task.objects.filter(finish=False)
-        context = {
-            'task_form': task_form,
-            'finished_tasks': finished_tasks,
-            'unfinished_tasks': unfinished_tasks,
-            'primary_key': project.id_project,
-            'update': True,
-        }
-        return render(request, 'project/task_form.html', context)
+    finished_tasks = Task.objects.filter(
+        id_project=project.id_project,
+        finish=True
+    )
+    unfinished_tasks = Task.objects.filter(
+        id_project=project.id_project,
+        finish=False
+    )
+    context = {
+        'task_form': task_form,
+        'finished_tasks': finished_tasks,
+        'unfinished_tasks': unfinished_tasks,
+        'project_pk': project.id_project,
+        'update': True,
+    }
+    return render(request, 'project/task_form.html', context)
 
 
 @login_required
 def task_handler(request, pk):
     """ Task handler for creating, deleting and
     updating the task . """
-    if request.method == 'POST':
-        form = TaskForm(pk, request.POST or None)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.id_project = Project.objects.get(id_project=pk)
-            form.save()
-            return redirect('/projects/{}/tasks'.format(pk))
-        else:
-            # None no members sketch
-            pass
     task_form = TaskForm(pk)
+    if request.method == 'POST':
+        task_form = TaskForm(pk, request.POST or None)
+        if task_form.is_valid():
+            task = task_form.save(commit=False)
+            task.id_project = Project.objects.get(id_project=pk)
+            task_form.save()
+            return redirect('/projects/{}/tasks'.format(pk))
     finished_tasks = Task.objects.filter(id_project=pk, finish=True)
     unfinished_tasks = Task.objects.filter(id_project=pk, finish=False)
     context = {
         'task_form': task_form,
         'finished_tasks': finished_tasks,
         'unfinished_tasks': unfinished_tasks,
-        'primary_key': pk,
+        'project_pk': pk,
         'update': False,
     }
     return render(request, 'project/task_form.html', context)
-

@@ -53,6 +53,15 @@ a:hover {
     background-color: #ff9999;
 }
 
+.task-container-success {
+    background-color: #b8e0b8;
+    transition: background-color 1.0s ease;
+}
+
+.task-container-success:hover {
+    background-color: #83c983;
+}
+
 .project-container {
     min-height: 200px;
     background-color: #d5eef6;
@@ -132,7 +141,7 @@ a:hover {
     padding-right: 10px;
 }
 
-/* backgroung change color */
+/* backgroung change color 
 .background_change {
     background-color: transparent;    
 }
@@ -140,6 +149,7 @@ a:hover {
 .background_change:hover {
     background-color: #F3F3F3;
 }
+*/
 
 /* footer */
 .footer {

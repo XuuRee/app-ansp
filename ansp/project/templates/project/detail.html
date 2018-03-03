@@ -99,7 +99,7 @@
                                                     <a style="pointer-events: none; cursor: default;">collaborators</a> /
                                                 </span>
                                                 <a href="{% url 'project:change-finalization' task.id_task %}">done</a> /
-                                                <a href="#">delete</a>
+                                                <a href="{% url 'project:delete-task' task.id_task %}">delete</a>
                                             </small>
                                         </h6>
                                         <p style="text-align: justify;">
