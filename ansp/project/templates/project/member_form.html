@@ -4,11 +4,14 @@
 
 {% block body %}
     <div class="container">
-        <div class="col-md-7">
+        <div class="col-md-6">
             <div class="page-header">
-                <h2>Manage collaborators</h2>
-                <a href="{% url 'project:detail' primary_key %}"><span class="glyphicon glyphicon-arrow-left"></span> project</a>
-                <!-- <a href="#"> don't want be in this project</a> -->
+                <h3>Manage collaborators</h3>
+                <p>
+                    <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> /
+                    <a href="{% url 'project:detail' primary_key %}">project</a> /
+                    <a href="#">leave</a>
+                </p>
             </div>
             {% if add_success is not None or remove_success is not None %}
                 {% if add_success %}
@@ -47,13 +50,13 @@
                 <button type="submit" class="btn btn-success" name="RemoveUserButton">Remove user</button>
             </form>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <div class="page-header">
-                <h5><b>Search members</b>
+                <h3>Search members
                     {% if searched_members %}
-                        <span class="badge badge-circle">{{searched_members|length}}</span>
+                        <span class="badge">{{searched_members|length}}</span>
                     {% endif %}
-                </h5>
+                </h3>
                 <p>List of all register people in application.</p>
                 <form class="form-inline" method="post">
                     <div class="form-group">

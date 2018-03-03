@@ -11,7 +11,7 @@
                         <h1>{{ specific_project.name }}</h1>
                         <p>
                             <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> /
-                            <a href="{% url 'project:project-update' specific_project.id_project %}">edit information</a> /
+                            <a href="{% url 'project:project-update' specific_project.id_project %}">edit project</a> /
                             <a href="{% url 'project:manage-members' specific_project.id_project %}">manage collaborators</a> /
                             <a style="cursor: pointer;" data-toggle="modal" data-target="#remove-modal" title="delete project">delete project</a>
                         </p>
@@ -122,66 +122,6 @@
                     {% else %}
                         <p>You don't have any tasks.</p>
                     {% endif %}
-                    <!--
-                    {% if tasks %}
-                        {% for task in tasks %}
-                            <div class="bs-task-callout bs-callout-danger">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <form action="{% url 'project:change-finalization' task.id_task %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                            <button type="submit" class="btn btn-link">
-                                                <h5><span class="glyphicon glyphicon-ok-sign ok-sign-color"></span></h5>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <small><a href="{% url 'project:update-task' task.id_task %}">update task #{{forloop.counter}}</a></small>
-                                        <p style="text-align:justify;">{{task.description}}</p>
-                                        <p>
-                                            {% for user in task.collaborators.all %}
-                                                <b><span class="glyphicon glyphicon-user"></span> &nbsp;{{user.username}}</b>
-                                                {% if request.user == user %}
-                                                    <span class="label label-primary">it's you</span>
-                                                {% endif %}
-                                                {% if not forloop.last %}, {% endif %}
-                                            {% endfor %}
-                                        </p>
-                                    </div>
-                                    <div class="col-md-2">
-                                        {% if task.important %}
-                                            <form action="{% url 'project:change-importance' task.id_task %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                                <button type="submit" class="btn btn-md btn-link">
-                                                    <h6><span class="glyphicon glyphicon-star star-important-color"></span></h6>
-                                                </button>
-                                            </form>
-                                        {% else %}
-                                            <form action="{% url 'project:change-importance' task.id_task %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                                <button type="submit" class="btn btn-link">
-                                                    <h6><span class="glyphicon glyphicon-star star-not-important-color"></span></h6>
-                                                </button>
-                                            </form>
-                                        {% endif %}
-                                        <form action="{% url 'project:delete-task' task.id_task %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="id_task" value="{{ task.id_task }}"/>
-                                            <button type="submit" class="btn btn-link">
-                                                <h6><span class="glyphicon glyphicon-remove remove-danger"></span></h6>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>You dont have any task!</p>
-                    {% endif %}
-                    -->
                 </div>
                 <!-- Comments -->
                 <div>
@@ -250,55 +190,22 @@
                 </form>
                 <hr>
                 {% if notes %}
-                    <div class="list-group">
-                        {% for note in notes %}
-                            <div id="{{note.id_note}}" class="bs-callout bs-callout-primary">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <p style="text-align: justify;">{{note.note_text}}</p>
-                                        <a style="cursor: pointer;" onclick="changeVisibility({{note.id_note}})">change colours &nbsp;<span class="glyphicon glyphicon-chevron-down"></span></a>
-                                        <!-- change visibility only add or remove hidden -->
-                                        <div id="visible{{note.id_note}}" class ="btn-toolbar btn-group-xs hidden">
-                                            <button type ="button" onClick="changeToPrimary({{note.id_note}})" class ="btn btn-default btn-primary">&nbsp; &nbsp;</button>
-                                            <button type ="button" onClick="changeToSuccess({{note.id_note}})" class ="btn btn-default btn-success">&nbsp; &nbsp;</button>
-                                            <button type ="button" onClick="changeToWarning({{note.id_note}})" class ="btn btn-default btn-warning">&nbsp; &nbsp;</button>
-                                            <button type ="button" onClick="changeToDanger({{note.id_note}})" class ="btn btn-default btn-danger">&nbsp; &nbsp;</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <form action="{% url 'project:delete-note' note.id_note %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="id_note" value="{{ note.id_note }}"/>
-                                            <button style="margin-left: 10px;" type="submit" class="btn btn-xs">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
+                    {% for note in notes %}
+                        <div class="row" style="padding: 8px 14px 0px 14px;">
+                            <div class="col-md-12 note-container">
+                                <h6>
+                                    <span class="text-info glyphicon glyphicon-tag"></span> &nbsp;Note
+                                    <br>
+                                    <small>
+                                        <span tooltip="Delete note">
+                                            <a href="{% url 'project:delete-note' note.id_note %}" method="post">delete</a>
+                                        </span>
+                                    </small>
+                                </h6>        
+                                <p style="text-align: justify;">{{note.note_text}}</p>        
                             </div>
-                        {% endfor %}
-                        <script type="text/javascript">
-                            function changeToPrimary(id) {
-                                document.getElementById(id).className = "bs-callout bs-callout-primary";
-                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs hidden";
-                            }
-                            function changeToSuccess(id) {
-                                document.getElementById(id).className = "bs-callout bs-callout-success";
-                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs hidden";
-                            }
-                            function changeToWarning(id) {
-                                document.getElementById(id).className = "bs-callout bs-callout-warning";
-                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs hidden";
-                            }
-                            function changeToDanger(id) {
-                                document.getElementById(id).className = "bs-callout bs-callout-danger";
-                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs hidden";
-                            }
-                            function changeVisibility(id) {
-                                document.getElementById('visible' + id).className = "btn-toolbar btn-group-xs";
-                            }
-                        </script>
-                    </div>
+                        </div>
+                    {% endfor %}
                 {% else %}
                     <p>You don't have any notes.<p>
                 {% endif %}

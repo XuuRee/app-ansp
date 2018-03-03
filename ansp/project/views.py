@@ -269,6 +269,8 @@ def add_member(request, project, pk):
         userstring = form.cleaned_data['user']
         try:
             user = User.objects.get(username=userstring)   # not only username?
+            #if not user:
+            #    user = User.objects.get(email=userstring)
         except User.DoesNotExist:
             return False
         project.collaborators.add(user)
@@ -415,8 +417,8 @@ def task_handler(request, pk):
             task.id_project = Project.objects.get(id_project=pk)
             task_form.save()
             return redirect('/projects/{}/tasks'.format(pk))
-    finished_tasks = Task.objects.filter(id_project=pk, finish=True)
-    unfinished_tasks = Task.objects.filter(id_project=pk, finish=False)
+    finished_tasks = Task.objects.filter(id_project=pk, finish=True).order_by('-important')
+    unfinished_tasks = Task.objects.filter(id_project=pk, finish=False).order_by('-important')
     context = {
         'task_form': task_form,
         'finished_tasks': finished_tasks,
