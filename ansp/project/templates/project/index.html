@@ -8,9 +8,12 @@
                 <div class="page-header">
                     <h3>Overview</h3>
                     <p>List your projects:
-                        <a style="cursor: pointer;" id="show_projects" title="I want to see a finished projects">old projects
+                    <span tooltip="I want to see a finished projects">
+                        <!-- ... tooltip="" tooltip-persistent> -->
+                        <a style="cursor: pointer;" id="show">old projects
                             <span class="glyphicon glyphicon-menu-down"></span>
                         </a>
+                    </span>
                     </p>
                 </div>
                 <div id="history" style="display: none;">
@@ -58,6 +61,9 @@
                                         <br>
                                         <small>
                                             <a href="{% url 'project:update-task' task.id_task %}">edit task</a> /
+                                            <span tooltip="{{task.collaborators.all|join:", " }}">
+                                                <a style="pointer-events: none; cursor: default;">collaborators</a> /
+                                            </span>
                                             <a href="{% url 'project:change-finalization' task.id_task %}">done</a> /
                                             <a href="{% url 'project:change-importance' task.id_task %}">not important</a>
                                         </small>

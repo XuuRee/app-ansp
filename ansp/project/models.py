@@ -47,7 +47,6 @@ class Comment(models.Model):
     date = models.DateField(null=True, blank=True) # cant be null!
 
 
-# date
 class Task(models.Model):
     id_task = models.AutoField(primary_key=True)
     id_project = models.ForeignKey('Project', on_delete=models.CASCADE)
@@ -55,4 +54,6 @@ class Task(models.Model):
     description = models.TextField(blank=False)
     important = models.BooleanField(default=False)
     finish = models.BooleanField(default=False)
+    #date = models.DateField()
+    # headline?
 

@@ -44,9 +44,14 @@ def detail(request, pk):
             return add_comment(request, pk)
     else:
         project = Project.objects.get(id_project=pk)
-        notes = Note.objects.filter(id_project=pk, author=request.user)
-        comments = Comment.objects.filter(id_project=pk)
-        tasks = Task.objects.filter(id_project=pk, finish=False)
+        notes = Note.objects.filter(
+                    id_project=pk,
+                    author=request.user
+                )
+        comments = Comment.objects.filter(id_project=pk).order_by('-date')
+        tasks = Task.objects.filter(
+                    id_project=pk,
+                    finish=False).order_by('-important')
         context = {
             'specific_project': project,
             'form': NoteForm(),
@@ -405,8 +410,8 @@ def task_handler(request, pk):
             # None no members sketch
             pass
     task_form = TaskForm(pk)
-    finished_tasks = Task.objects.filter(finish=True)
-    unfinished_tasks = Task.objects.filter(finish=False)
+    finished_tasks = Task.objects.filter(id_project=pk, finish=True)
+    unfinished_tasks = Task.objects.filter(id_project=pk, finish=False)
     context = {
         'task_form': task_form,
         'finished_tasks': finished_tasks,

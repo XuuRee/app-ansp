@@ -81,6 +81,31 @@ a:hover {
     opacity: 0.95;
 }
 
+/* tooltip */
+[tooltip]:before {
+    content: attr(tooltip);
+    position: absolute;
+    opacity: 0;    
+    /* customizable */
+    transition: all 0.15s ease;
+    padding: 8px;
+    color: white;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+[tooltip]:hover:before {
+    opacity: 1;
+    /* customizable */
+    background: #333333;
+    margin-top: -50px;
+    margin-left: 20px;    
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+    pointer-events: none;
+}
+
 /* badge */
 .badge {
     padding: 6px 10px 6px;
@@ -154,11 +179,11 @@ a:hover {
 }
 
 .star-not-important-color:hover {
-    color: #f0ad4e;
+    color: #d9534f;
 }
 
 .star-important-color {
-    color: #f0ad4e;
+    color: #d9534f;
 }
 
 .star-important-color:hover {

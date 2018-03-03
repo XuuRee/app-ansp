@@ -82,22 +82,37 @@
                                 <div style="cursor: pointer;" onclick="window.location='/projects/' + {{ task.id_project.id_project }} + '/tasks';">
                                     <div class="col-md-12 task-container">
                                         <h6>
-                                            <span class="text-danger glyphicon glyphicon-bookmark"></span> &nbsp;{{task.id_project.name}}
+                                            <span class="text-danger glyphicon glyphicon-bookmark"></span> &nbsp;{{task.id_project.name}} task&nbsp;
+                                            {% if task.important %}
+                                                <a href="{% url 'project:change-importance' task.id_task %}">
+                                                    <span class="glyphicon glyphicon-star star-important-color"></span>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'project:change-importance' task.id_task %}">
+                                                    <span class="glyphicon glyphicon-star star-not-important-color"></span>
+                                                </a>
+                                            {% endif %}
                                             <br>
                                             <small>
                                                 <a href="{% url 'project:update-task' task.id_task %}">edit task</a> /
+                                                <span tooltip="{{task.collaborators.all|join:", " }}">
+                                                    <a style="pointer-events: none; cursor: default;">collaborators</a> /
+                                                </span>
                                                 <a href="{% url 'project:change-finalization' task.id_task %}">done</a> /
-                                                <a href="{% url 'project:change-importance' task.id_task %}">not important</a>
+                                                <a href="#">delete</a>
                                             </small>
                                         </h6>
                                         <p style="text-align: justify;">
-                                            <small>Description</small>
-                                            <br>
-                                            {% if task.description|length > 180 %}
-                                                {{ task.description|slice:"0:180" }}...
-                                            {% else %}
-                                                {{ task.description }}
+                                            {% if task.description %}
+                                                <small>Description</small>
+                                                <br>
+                                                {% if task.description|length > 300 %}
+                                                    {{ task.description|slice:"0:300" }}...
+                                                {% else %}
+                                                    {{ task.description }}
+                                                {% endif %}
                                             {% endif %}
+                                            <br>
                                         </p>
                                     </div>
                                 </div>
@@ -199,7 +214,7 @@
                                             <form action="{% url 'project:delete-comment' c.id_comment %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="id_note" value="{{ c.id_comment }}"/> <!-- id comment -->
-                                                <button type="submit" class="btn btn-xs">
+                                                <button tooltip="Delete this comment" type="submit" class="btn btn-xs">
                                                     <span class="glyphicon glyphicon-remove"></span>
                                                 </button>
                                             </form>
