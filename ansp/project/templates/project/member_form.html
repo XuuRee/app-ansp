@@ -10,6 +10,9 @@
                 <p>
                     <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> /
                     <a href="{% url 'project:detail' project_pk %}">project</a> /
+                    <span tooltip="{{collaborators|join:", " }}">
+                        <a style="pointer-events: none; cursor: default;">collaborators</a> /
+                    </span>
                     <a style="cursor: pointer;" data-toggle="modal" data-target="#leave" tooltip="Leave from project">leave</a>
                 </p>
                 <!-- modal window -->
@@ -20,10 +23,11 @@
                                 <h5 class="modal-title" id="leave"><b>Are you sure?</b></h5>
                             </div>
                             <div class="modal-body">
-                                <!-- project.collaborators.count -->
-                                <p class="text-danger">
-                                    <b>If you are the last one collaborator then project will be removed pernamently.</b>
-                                </p>
+                                {% if collaborators.count == 1 %}
+                                    <h6 class="text-danger">
+                                        <b>You are last collaborator. If you leave then project will be removed pernamently.</b>
+                                    </h6>
+                                {% endif %}
                                 <p>Do you really want leave this project?</p>
                             </div>
                             <div class="modal-footer">
@@ -39,11 +43,6 @@
                 <h6>Your project has <span class="badge">{{ project.collaborators.count }}</span> members.</h6>
                 <hr>
                 print all collaborators
-                <p>
-                    <b>Collaborators</b>
-                    <br>
-                    { project.collaborators|join ... }
-                </p>
             -->
             <form method="post">
                 <label>Select member to invite</label>

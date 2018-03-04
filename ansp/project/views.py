@@ -269,9 +269,19 @@ def remove_member(request, project):
     try:
         user = User.objects.get(username=userstring)
     except User.DoesNotExist:
-        return False
-    project.collaborators.remove(user)
-    return True
+        messages.error(
+            request,
+            'ERROR: User is not in database.',
+            extra_tags='alert'
+        )
+    else:
+        project.collaborators.remove(user)
+        messages.success(
+            request,
+            'User was removed from the project.',
+            extra_tags='alert'
+        )
+    return redirect('/projects/{}/members'.format(project.id_project))  # http_referer
 
 
 def add_member(request, project):
@@ -286,30 +296,41 @@ def add_member(request, project):
             try:
                 user = User.objects.get(email=userstring)
             except User.DoesNotExist:
-                return False
+                messages.error(
+                    request,
+                    'ERROR: User is not in database.',
+                    extra_tags='alert'
+                )
+                return redirect('/projects/{}/members'.format(project.id_project))
         project.collaborators.add(user)
-        messages.success(request, 'User was added to the project.', extra_tags='alert')
-        return True
-    return False
+        messages.success(
+            request,
+            'User was added to the project.',
+            extra_tags='alert'
+        )
+        return redirect('/projects/{}/members'.format(project.id_project))
 
 
 @login_required
 def add_searched_member(request, pk):
-    id_user = request.POST.get('id_user')   # False
-    project = Project.objects.get(id_project=pk)
-    user = User.objects.get(id=id_user)
-    project.collaborators.add(user)
+    id_user = request.POST.get('id_user', False)
+    if not id_user:
+        messages.ERROR(
+            request,
+            'ERROR: User is not in database.',
+            extra_tags='alert'
+        )
+    else:
+        user = User.objects.get(id=id_user)
+        project = Project.objects.get(id_project=pk)
+        project.collaborators.add(user)
+        messages.success(
+            request,
+            'User was added to the project.',
+            extra_tags='alert'
+        )
     return redirect('/projects/{}/members'.format(pk))
-    """
-    context = {
-        'project_pk': pk,
-        'searched_members': [],
-        'add_success': True,
-        'remove_success': None,
-    }
-    return http_members(request, context)
-    """
-    
+
 
 def search_members(request, project):
     """ Search specific user in database of users. """
@@ -324,41 +345,35 @@ def search_members(request, project):
                     result_list.append(user)
                 elif userstring in user.email:
                     result_list.append(user)
+    if not result_list:
+        messages.warning(request, 'Not found any users.', extra_tags='alert')
     return result_list
-
-
-def http_members(request, context):
-    """ Render template with all variables. """
-    project = Project.objects.get(id_project=context.get("project_pk"))
-    choices = (
-        (user.username, user.username)
-        for user in project.collaborators.all()
-        if user != request.user
-    )
-    context['add_form'] = ManageUserForm()
-    context['remove_form'] = ChooseUserForm(choices)
-    return render(request, 'project/member_form.html', context)
 
 
 @login_required
 def manage_members(request, pk):
     project = Project.objects.get(id_project=pk)
     searched_members = []
-    add_success, remove_success = None, None
     if request.method == 'POST':
         if 'SelectMemberButton' in request.POST:
-            add_success = add_member(request, project)
+            return add_member(request, project)
         if 'RemoveUserButton' in request.POST:
-            remove_success = remove_member(request, project)
+            return remove_member(request, project)
         if 'SearchUserButton' in request.POST:
             searched_members = search_members(request, project)
+    choices = (
+        (user.username, user.username)
+        for user in project.collaborators.all()
+        if user != request.user
+    )
     context = {
         'project_pk': pk,
+        'collaborators': project.collaborators.all(),
         'searched_members': searched_members,
-        'add_success': add_success,
-        'remove_success': remove_success,
+        'add_form': ManageUserForm(),
+        'remove_form': ChooseUserForm(choices),
     }
-    return http_members(request, context)
+    return render(request, 'project/member_form.html', context)
 
 
 ########################################################

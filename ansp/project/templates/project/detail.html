@@ -61,7 +61,7 @@
                         <p>
                             {% for c in specific_project.collaborators.all %}
                                 <b><span class="glyphicon glyphicon-user"></span> &nbsp;{{c.get_username}}</b>
-                                {% if not forloop.last %}, {% endif %} 
+                                {% if not forloop.last %}, &nbsp;{% endif %} 
                             {% endfor %}
                         </p>
                         <hr>
