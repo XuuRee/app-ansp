@@ -9,34 +9,42 @@
                 <h3>Manage collaborators</h3>
                 <p>
                     <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> /
-                    <a href="{% url 'project:detail' primary_key %}">project</a> /
-                    <a href="#">leave</a>
+                    <a href="{% url 'project:detail' project_pk %}">project</a> /
+                    <a style="cursor: pointer;" data-toggle="modal" data-target="#leave" tooltip="Leave from project">leave</a>
                 </p>
+                <!-- modal window -->
+                <div class="modal fade" id="leave" tabindex="-1" role="dialog" aria-labelledby="leave" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="leave"><b>Are you sure?</b></h5>
+                            </div>
+                            <div class="modal-body">
+                                <!-- project.collaborators.count -->
+                                <p class="text-danger">
+                                    <b>If you are the last one collaborator then project will be removed pernamently.</b>
+                                </p>
+                                <p>Do you really want leave this project?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="{% url 'project:leave-project' project_pk %}" class="btn btn-danger">Leave</a>            
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            {% if add_success is not None or remove_success is not None %}
-                {% if add_success %}
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong>Success!</strong> Your add operation have been made.
-                    </div>
-                {% elif remove_success %}
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong>Success!</strong> Your remove operation have been made.
-                    </div>
-                {% else %}
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong>Oh no!</strong> User was not found.
-                    </div>
-                {% endif %}
-            {% endif %}
+            {% include 'project/messages.html' %}
+            <!--
+                <h6>Your project has <span class="badge">{{ project.collaborators.count }}</span> members.</h6>
+                <hr>
+                print all collaborators
+                <p>
+                    <b>Collaborators</b>
+                    <br>
+                    { project.collaborators|join ... }
+                </p>
+            -->
             <form method="post">
                 <label>Select member to invite</label>
                 {% csrf_token %}
@@ -57,7 +65,7 @@
                         <span class="badge">{{searched_members|length}}</span>
                     {% endif %}
                 </h3>
-                <p>List of all register people in application.</p>
+                <p>All registered people in application.</p>
                 <form class="form-inline" method="post">
                     <div class="form-group">
                         {% csrf_token %}
@@ -73,13 +81,20 @@
                             <b><span style="margin-left: 8px; font-size: 36px;" class="glyphicon glyphicon-user"></span></b>
                         </div>
                         <div class="col-md-9">
-                            <p><b>{{member.get_username}}</b><br>{{member.get_full_name}}</p>
+                            <p>
+                                <b>{{member.get_username}}</b> &nbsp;
+                                {% if member.get_full_name %}
+                                    <small>({{member.get_full_name}})</small>
+                                {% endif %}
+                                <br>
+                                {{member.email}}
+                            </p>
                         </div>
                         <div class="col-md-1">
-                            <form action="{% url 'project:add-searched-member' primary_key %}" method="post">
+                            <form action="{% url 'project:add-searched-member' project_pk %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="id_user" value="{{ member.id }}"/>
-                                <button type="submit" class="btn btn-sm">
+                                <button tooltip="add to project" type="submit" class="btn btn-sm">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
                             </form>
@@ -89,6 +104,7 @@
                         <hr>
                     {% endif %}
                 {% endfor %}
+                <!-- paginator -->
             {% else %}
                 <p>Please type searched username.</p>
             {% endif %}

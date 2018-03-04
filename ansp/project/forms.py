@@ -98,9 +98,9 @@ class CommentForm(forms.ModelForm):
 class ManageUserForm(forms.Form):
     
     user = forms.CharField(max_length=200, label="",
-                            widget=forms.TextInput(attrs={'placeholder': 'username'}))
-    
-    
+                            widget=forms.TextInput(attrs={'placeholder': 'username or email'}))
+
+
 class ChooseUserForm(forms.Form):
     
     user = forms.ChoiceField(choices = [], label="Choose user from project")

@@ -13,7 +13,7 @@
                             <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> /
                             <a href="{% url 'project:project-update' specific_project.id_project %}">edit project</a> /
                             <a href="{% url 'project:manage-members' specific_project.id_project %}">manage collaborators</a> /
-                            <a style="cursor: pointer;" data-toggle="modal" data-target="#remove-modal" title="delete project">delete project</a>
+                            <a style="cursor: pointer;" data-toggle="modal" data-target="#remove-modal" tooltip="delete project">delete project</a>
                         </p>
                         <!-- modal window -->
                         <div class="modal fade" id="remove-modal" tabindex="-1" role="dialog" aria-labelledby="remove-modal" aria-hidden="true">

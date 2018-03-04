@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/tasks/finish/$', views.change_finalization, name="change-finalization"),
     # collaboration
     url(r'^(?P<pk>[0-9]+)/members/$', views.manage_members, name="manage-members"),
+    url(r'^(?P<pk>[0-9]+)/members/leave/$', views.leave_project, name="leave-project"),
     url(r'^(?P<pk>[0-9]+)/members/add-searched-member/$', views.add_searched_member, name="add-searched-member"),
 ]
