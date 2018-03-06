@@ -13,6 +13,7 @@
                         <a href="{% url 'project:detail' project_pk %}">project</a>
                     </p>
                 </div>
+                {% include 'project/messages.html' %}
                 {% if update %}
                     <h4>Update task</h4>
                 {% else %}

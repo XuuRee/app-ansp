@@ -15,6 +15,7 @@
             </div>
             <h4>Upload new file</h4>
             <br>
+            {% include 'project/messages.html' %}
             <!-- include -->
             {% if file_form.errors %}
                 {% for field in file_form %}

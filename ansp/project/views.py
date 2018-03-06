@@ -1,9 +1,8 @@
 from project.forms import ProjectForm, FileForm, NoteForm, FilterFileForm, CommentForm, ManageUserForm, ChooseUserForm, TaskForm
 from .models import Project, File, Note, Comment, Task
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import date
@@ -49,10 +48,18 @@ def detail(request, pk):
                     id_project=pk,
                     author=request.user
                 )
-        comments = Comment.objects.filter(id_project=pk).order_by('-date')
+        all_comments = Comment.objects.filter(id_project=pk).order_by('-date')
         tasks = Task.objects.filter(
                     id_project=pk,
                     finish=False).order_by('-important')
+        page = request.GET.get('page', 1)
+        paginator = Paginator(all_comments, 18)
+        try:
+            comments = paginator.page(page)
+        except PageNotAnInteger:
+            comments = paginator.page(1)
+        except EmptyPage:
+            comments = paginator.page(paginator.num_pages)
         context = {
             'specific_project': project,
             'form': NoteForm(),
@@ -183,6 +190,11 @@ def add_file(request, pk):
         upload_file = file_form.save(commit=False)
         upload_file.id_project = Project.objects.get(id_project=pk)
         file_form.save()
+        messages.success(
+            request,
+            'The file was added.',
+            extra_tags='alert'
+        )
         return redirect('/projects/{}/files'.format(pk))
     filter_form = FilterFileForm()
     files = File.objects.filter(id_project=pk)
@@ -212,6 +224,12 @@ def filter_files(request, files, pk):
     if filter_form.is_valid():
         file_types = filter_form.cleaned_data['file_types']
         files = get_files(files, file_types)
+        if not files:
+            messages.info(
+                request,
+                'Not found any files.',
+                extra_tags='alert'
+            )
         context = {
             'file_form': FileForm(),
             'filter_form': FilterFileForm(),
@@ -242,6 +260,11 @@ def file_handler(request, pk):
 @login_required
 def delete_file(request, pk):
     File.objects.get(pk=pk).delete()
+    messages.success(
+        request,
+        'The file was deleted.',
+        extra_tags='alert'
+    )
     return redirect(request.META.get('HTTP_REFERER')) # better solution
 
 
@@ -384,6 +407,11 @@ def manage_members(request, pk):
 def delete_task(request, pk):
     """ Remove a specific task. """
     Task.objects.get(pk=pk).delete()
+    messages.success(
+        request,
+        'The task was deleted.',
+        extra_tags='alert'
+    )
     return redirect(request.META.get('HTTP_REFERER'))   # better solution
 
 
@@ -392,8 +420,18 @@ def change_finalization(request, pk):
     task = Task.objects.get(id_task=pk)
     if task.finish:
         task.finish = False
+        messages.success(
+            request,
+            'The task is in process again.',
+            extra_tags='alert'
+        )
     else:
         task.finish = True
+        messages.success(
+            request,
+            'The task was completed.',
+            extra_tags='alert'
+        )
     task.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -403,8 +441,18 @@ def change_importance(request, pk):
     task = Task.objects.get(id_task=pk)
     if task.important:
         task.important = False
+        messages.info(
+            request,
+            'The task is not important now.',
+            extra_tags='alert'
+        )
     else:
         task.important = True
+        messages.info(
+            request,
+            'The task is important now.',
+            extra_tags='alert'
+        )
     task.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -414,13 +462,14 @@ def update_task(request, pk):
     """ Update a specific task. """
     instance = Task.objects.get(id_task=pk)
     project = instance.id_project
-    task_form = TaskForm(
-        project.id_project,
-        request.POST or None,
-        instance=instance
-    )
+    task_form = TaskForm(project.id_project, request.POST or None, instance=instance)
     if task_form.is_valid():
         task_form.save()
+        messages.success(
+            request,
+            'The task was updated.',
+            extra_tags='alert'
+        )
         return redirect('/projects/{}/tasks'.format(project.id_project))
     finished_tasks = Task.objects.filter(
         id_project=project.id_project,
@@ -451,6 +500,11 @@ def task_handler(request, pk):
             task = task_form.save(commit=False)
             task.id_project = Project.objects.get(id_project=pk)
             task_form.save()
+            messages.success(
+                request,
+                'The task was added to the unfinished section.',
+                extra_tags='alert'
+            )
             return redirect('/projects/{}/tasks'.format(pk))
     finished_tasks = Task.objects.filter(id_project=pk, finish=True).order_by('-important')
     unfinished_tasks = Task.objects.filter(id_project=pk, finish=False).order_by('-important')
