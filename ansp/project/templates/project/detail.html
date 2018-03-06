@@ -11,8 +11,8 @@
                         <h1>{{ specific_project.name }}</h1>
                         <p>
                             <a href="{% url 'project:index' %}"><span class="glyphicon glyphicon-arrow-left"></span> overview</a> /
-                            <a href="{% url 'project:project-update' specific_project.id_project %}">edit project</a> /
-                            <a href="{% url 'project:manage-members' specific_project.id_project %}">manage collaborators</a> /
+                            <a href="{% url 'project:project-update' specific_project.id_project %}" tooltip="edit name, deadline etc.">edit project</a> /
+                            <a href="{% url 'project:manage-members' specific_project.id_project %}" tooltip="add or remove people from project">manage collaborators</a> /
                             <a style="cursor: pointer;" data-toggle="modal" data-target="#remove-modal" tooltip="delete project">delete project</a>
                         </p>
                         <!-- modal window -->
@@ -155,7 +155,7 @@
                                             <form action="{% url 'project:delete-comment' c.id_comment %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="id_note" value="{{ c.id_comment }}"/> <!-- id comment -->
-                                                <button tooltip="Delete this comment" type="submit" class="btn btn-xs">
+                                                <button tooltip="delete comment" type="submit" class="btn btn-xs">
                                                     <span class="glyphicon glyphicon-remove"></span>
                                                 </button>
                                             </form>
@@ -199,9 +199,7 @@
                                     <span class="text-info glyphicon glyphicon-tag"></span> &nbsp;Note
                                     <br>
                                     <small>
-                                        <span tooltip="Delete note">
-                                            <a href="{% url 'project:delete-note' note.id_note %}" method="post">delete</a>
-                                        </span>
+                                        <a href="{% url 'project:delete-note' note.id_note %}" method="post">delete</a>
                                     </small>
                                 </h6>        
                                 <p style="text-align: justify;">{{note.note_text}}</p>        

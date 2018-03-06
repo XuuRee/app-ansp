@@ -13,9 +13,9 @@
                     <a href="{% url 'project:detail' project_pk %}">project</a> 
                 </p>
             </div>
+            {% include 'project/messages.html' %}
             <h4>Upload new file</h4>
             <br>
-            {% include 'project/messages.html' %}
             <!-- include -->
             {% if file_form.errors %}
                 {% for field in file_form %}

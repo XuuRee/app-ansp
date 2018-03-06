@@ -5,14 +5,11 @@ from django import forms
 from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 from django.forms.widgets import CheckboxSelectMultiple
-from project.models import (
-    Project,
-    File,
-    Note,
-    Comment,
-    Task,
-)
 from django.contrib.admin import widgets
+from project.models import (
+    Project, File, Note,
+    Comment, Task,
+)
 
 
 class DateInput(forms.DateInput):
@@ -44,7 +41,7 @@ class FileForm(forms.ModelForm):
     
     class Meta:
         model = File
-        exclude = ['id_project']    # really?
+        #exclude = ['id_project']
         fields = ['filename', 'filepath']
         labels = {                   
             'filename': _('Name of the file'),
@@ -85,7 +82,7 @@ class CommentForm(forms.ModelForm):
     
     class Meta:
         model = Comment
-        exclude = ['id_project']
+        #exclude = ['id_project']
         fields = ['comment_text']
         widgets = {
           'comment_text': forms.Textarea(attrs={'rows': 3, 'cols': 15}),
@@ -95,7 +92,7 @@ class CommentForm(forms.ModelForm):
         }
 
 
-class ManageUserForm(forms.Form):
+class AddUserForm(forms.Form):
     
     user = forms.CharField(max_length=200, label="",
                             widget=forms.TextInput(attrs={'placeholder': 'username or email'}))
@@ -120,7 +117,7 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        exclude = ['id_project']
+        #exclude = ['id_project']
         fields = ['important', 'description', 'collaborators']
         widgets = {
           'description': forms.Textarea(attrs={'rows': 4}),

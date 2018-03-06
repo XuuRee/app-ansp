@@ -1,4 +1,7 @@
-from project.forms import ProjectForm, FileForm, NoteForm, FilterFileForm, CommentForm, ManageUserForm, ChooseUserForm, TaskForm
+from project.forms import (
+    ProjectForm, FileForm, NoteForm, FilterFileForm,
+    CommentForm, AddUserForm, ChooseUserForm, TaskForm
+)
 from .models import Project, File, Note, Comment, Task
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
@@ -310,7 +313,7 @@ def remove_member(request, project):
 def add_member(request, project):
     """ Add a member from project according to
     given operation. """
-    form = ManageUserForm(request.POST)
+    form = AddUserForm(request.POST)
     if form.is_valid():
         userstring = form.cleaned_data['user']
         try:
@@ -325,12 +328,19 @@ def add_member(request, project):
                     extra_tags='alert'
                 )
                 return redirect('/projects/{}/members'.format(project.id_project))
-        project.collaborators.add(user)
-        messages.success(
-            request,
-            'User was added to the project.',
-            extra_tags='alert'
-        )
+        if user in project.collaborators.all():
+            messages.info(
+                request,
+                'User is already in project.',
+                extra_tags='alert'
+            )
+        else:
+            project.collaborators.add(user)
+            messages.success(
+                request,
+                'User was added to the project.',
+                extra_tags='alert'
+            )
         return redirect('/projects/{}/members'.format(project.id_project))
 
 
@@ -359,7 +369,7 @@ def search_members(request, project):
     """ Search specific user in database of users. """
     result_list = []
     project_collaborators = project.collaborators.all()
-    form = ManageUserForm(request.POST)
+    form = AddUserForm(request.POST)
     if form.is_valid():
         userstring = form.cleaned_data['user']
         for user in User.objects.all():
@@ -393,7 +403,7 @@ def manage_members(request, pk):
         'project_pk': pk,
         'collaborators': project.collaborators.all(),
         'searched_members': searched_members,
-        'add_form': ManageUserForm(),
+        'add_form': AddUserForm(),
         'remove_form': ChooseUserForm(choices),
     }
     return render(request, 'project/member_form.html', context)
