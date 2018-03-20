@@ -1,5 +1,5 @@
 # Bachelor thesis.
-[ansp.herokuapp.com](https://ansp.herokuapp.com)
+[ansp-beta.herokuapp.com](https://ansp.herokuapp.com)
 
 ## Requirements
 
