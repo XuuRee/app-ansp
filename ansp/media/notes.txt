@@ -1,0 +1,72 @@
+= BUGS =====================================================================================
+
+HTML
+	- repair titles,
+
+
+FORMS
+	- deadline widget with better calendar (not mm/dd/yyyy),
+	- when do you want update the project, then deadline field do not remember
+	  time,
+
+
+PROJECTS
+	- if headline is too long then insert breakline <br> and if text is longer 
+	  than 18 characters then insert "..."
+	- order projects by deadine also, not only 'created' field
+
+
+COMMENTS
+	- different sorting.
+
+
+MEMBERS
+	- pagination from search member list.
+
+
+FILES
+	- better file view - buttons like 'view' (= for images etc.)
+		- how to check if file is image?
+		- which files can browser render?
+
+
+TOOLTIPS
+	- not done, for all labels. 
+
+
+OTHERS
+	- login_required for all functions and method!
+	- documentation and comments for code.
+
+
+= FEATURES =================================================================================
+
+DESIGN
+	MEMBERS
+		- search members list, remove buttons etc.
+	NOTES
+		- in model make row with headline (?),
+		- changing colors,
+		- date field for every note,
+
+
+
+= DEPLOY ===================================================================================
+
+Problem with commands makemigrations and migrate!
+	- probably need to remove all migrate steps like 001_migrate etc.
+	- new models are in 134 commit with name 'beta'
+
+
+= REPORTED PROBLEMS ========================================================================
+
+- stranky by se mely presmerovat automaticky na bezpecnou https formu.
+- je treba dodelat 'help' sekci (-> get more information)
+- lze pristupovat k cizim projektum po zadani primarniho klice do adresy. DONE
+- pokud zadam do adresy primarni klic projektu, ktery neexistuje, internal service error. DONE
+- pole created, ktere je predvyplnene by se nemelo dat zmenit.
+- projekt, ktery je ukonceny, by se nemel jiz dat upravovat. (restore tlacitko)
+- u edit profile, lze nastavit prazdny e-mail.
+
+
+ 

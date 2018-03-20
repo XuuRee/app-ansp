@@ -11,7 +11,7 @@ class Project(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     created = models.DateField(default=datetime.date.today)
-    deadline = models.DateField(null=True, blank=True)
+    deadline = models.DateField(null=True, blank=False)
     finish = models.BooleanField(default=False)
     
     @property

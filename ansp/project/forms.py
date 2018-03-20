@@ -10,6 +10,7 @@ from project.models import (
     Project, File, Note,
     Comment, Task,
 )
+from django.core.exceptions import ValidationError
 
 
 class DateInput(forms.DateInput):
@@ -17,17 +18,18 @@ class DateInput(forms.DateInput):
     
 
 class ProjectForm(forms.ModelForm):
-    
+
     class Meta:
         model = Project
         fields = ['name', 'description', 'created', 'deadline']
         labels = {
-            'decription': _('Description (optional)'),
+            'description': _('Description (optional)'),
             'deadline': _('Deadline (optional)'),
-            'created': _('Created (set today)'),
+            'created': _('Created'),
         }
         widgets = {
           'description': forms.Textarea(attrs={'rows': 6}),
+          'created': forms.DateInput(attrs={'disabled': True}),
           'deadline': DateInput()
         }
         error_messages = {
@@ -41,7 +43,6 @@ class FileForm(forms.ModelForm):
     
     class Meta:
         model = File
-        #exclude = ['id_project']
         fields = ['filename', 'filepath']
         labels = {                   
             'filename': _('Name of the file'),
@@ -82,7 +83,6 @@ class CommentForm(forms.ModelForm):
     
     class Meta:
         model = Comment
-        #exclude = ['id_project']
         fields = ['comment_text']
         widgets = {
           'comment_text': forms.Textarea(attrs={'rows': 3, 'cols': 15}),
@@ -117,7 +117,6 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        #exclude = ['id_project']
         fields = ['important', 'description', 'collaborators']
         widgets = {
           'description': forms.Textarea(attrs={'rows': 4}),

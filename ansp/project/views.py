@@ -40,13 +40,18 @@ def index(request):
 
 @login_required
 def detail(request, pk):
+    try:
+        project = Project.objects.get(id_project=pk)
+    except Project.DoesNotExist:
+        return redirect('/projects')
+    if not request.user in project.collaborators.all():
+        return redirect('/projects')
     if request.method == 'POST':    # better solution
         if 'NoteFormButton' in request.POST:
             return add_note(request, pk)
         if 'CommentFormButton' in request.POST:
             return add_comment(request, pk)
     else:
-        project = Project.objects.get(id_project=pk)
         notes = Note.objects.filter(
                     id_project=pk,
                     author=request.user
@@ -102,12 +107,13 @@ def create_project(request):
 def update_project(request, pk):
     """ Update a specific project. """
     instance = Project.objects.get(id_project=pk)
-    form = ProjectForm(request.POST or None, instance=instance)
     if request.method == 'POST':
+        form = ProjectForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/projects')
     else:
+        form = ProjectForm(instance=instance)
         context = {
             'form': form,
             'update': True,
@@ -153,7 +159,11 @@ def add_comment(request, pk):
 @login_required
 def delete_comment(request, pk):
     """ Delete comment from the project. """
-    Comment.objects.get(pk=pk).delete()
+    try:
+        comment = Comment.objects.get(pk=pk)
+    except Comment.DoesNotExist:
+        return redirect(request.META.get('HTTP_REFERER'))
+    comment.delete()
     return redirect(request.META.get('HTTP_REFERER'))   # better solution
 
 
@@ -176,7 +186,11 @@ def add_note(request, pk):
 
 @login_required
 def delete_note(request, pk):
-    Note.objects.get(pk=pk).delete()
+    try:
+        note = Note.objects.get(pk=pk)
+    except Note.DoesNotExist:
+        return redirect(request.META.get('HTTP_REFERER'))
+    note.delete()
     return redirect(request.META.get('HTTP_REFERER'))   # better solution
 
 
@@ -262,7 +276,11 @@ def file_handler(request, pk):
 
 @login_required
 def delete_file(request, pk):
-    File.objects.get(pk=pk).delete()
+    try:
+        d_file = File.objects.get(pk=pk)
+    except File.DoesNotExist:
+        return redirect(request.META.get('HTTP_REFERER'))    
+    d_file.delete()
     messages.success(
         request,
         'The file was deleted.',

@@ -31,7 +31,10 @@ def register(request):
 
 
 def compute_percent(item, one_percent):
-    result = item / one_percent
+    try:
+        result = item / one_percent
+    except ZeroDivisionError:
+        return 0
     return round(result, 2)
 
 
