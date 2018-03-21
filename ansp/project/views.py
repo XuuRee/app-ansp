@@ -107,13 +107,12 @@ def create_project(request):
 def update_project(request, pk):
     """ Update a specific project. """
     instance = Project.objects.get(id_project=pk)
+    form = ProjectForm(request.POST or None, instance=instance)
     if request.method == 'POST':
-        form = ProjectForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/projects')
     else:
-        form = ProjectForm(instance=instance)
         context = {
             'form': form,
             'update': True,

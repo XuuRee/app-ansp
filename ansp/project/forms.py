@@ -10,27 +10,25 @@ from project.models import (
     Project, File, Note,
     Comment, Task,
 )
-from django.core.exceptions import ValidationError
 
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
-    
 
 class ProjectForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(ProjectForm, self).__init__(*args, **kwargs)
+        self.fields['created'].widget.attrs['readonly'] = True
+    
     class Meta:
         model = Project
         fields = ['name', 'description', 'created', 'deadline']
         labels = {
             'description': _('Description (optional)'),
-            'deadline': _('Deadline (optional)'),
+            'deadline': _('Deadline'),
             'created': _('Created'),
         }
         widgets = {
           'description': forms.Textarea(attrs={'rows': 6}),
-          'created': forms.DateInput(attrs={'disabled': True}),
-          'deadline': DateInput()
+          'deadline': forms.DateInput(attrs={'class': 'datepicker'})
         }
         error_messages = {
             'name': {
