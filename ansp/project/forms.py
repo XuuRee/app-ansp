@@ -18,6 +18,7 @@ class ProjectForm(forms.ModelForm):
         super(ProjectForm, self).__init__(*args, **kwargs)
         self.fields['created'].widget.attrs['readonly'] = True
     
+    
     class Meta:
         model = Project
         fields = ['name', 'description', 'created', 'deadline']
@@ -35,8 +36,8 @@ class ProjectForm(forms.ModelForm):
                 'max_length': _("This name is too long (100 characters max)."),
             },
         }
-        
 
+    
 class FileForm(forms.ModelForm):
     
     class Meta:
